@@ -1,9 +1,10 @@
-// Grundprüfung: Die App lädt fehlerfrei, zeigt sinnvolle Startzustände und
-// belegt im localStorage ausschließlich eigene Schlüssel.
+// Grundprüfung: Die App lädt fehlerfrei, zeigt die Bereit-Ansicht mit dem
+// Hinweis auf ihre Grenzen und belegt im localStorage ausschließlich
+// eigene Schlüssel (alle Web-Versionen teilen sich die Origin!).
 import { test, expect } from "@playwright/test";
-import { appOeffnen } from "./helfer.mjs";
+import { appOeffnen, einsatzStarten } from "./helfer.mjs";
 
-test("lädt ohne Konsolenfehler und zeigt den leeren Zustand", async ({ page }) => {
+test("lädt ohne Konsolenfehler und zeigt die Bereit-Ansicht", async ({ page }) => {
   const fehler = [];
   page.on("console", m => { if (m.type() === "error") fehler.push(m.text()); });
   page.on("pageerror", e => fehler.push("PAGEERROR: " + e.message));
@@ -11,62 +12,64 @@ test("lädt ohne Konsolenfehler und zeigt den leeren Zustand", async ({ page }) 
   await appOeffnen(page);
 
   expect(fehler).toEqual([]);
-  await expect(page).toHaveTitle(/Never2Late/);
-  await expect(page.locator("#view-home")).toHaveClass(/active/);
-  await expect(page.locator("#home-inhalt")).toContainText("Noch nichts erfasst");
-  await expect(page.locator("#btn-neu")).toBeVisible();
+  await expect(page).toHaveTitle(/CPR Assist/);
+  await expect(page.locator("#view-bereit")).toHaveClass(/active/);
+  await expect(page.locator("#view-bereit .hinweisbox"))
+    .toContainText("keine Therapieentscheidungen");
+  await expect(page.locator("#btn-start")).toBeVisible();
+  await expect(page.locator("#head-sub")).toContainText("Bereit");
 });
 
-test("Kurzeinführung erscheint beim ersten Start und danach nicht mehr", async ({ page }) => {
-  await page.goto("/index.html");
-  await page.waitForFunction(() => !!window.N2L);
+test("Kurzeinführung erscheint beim ersten Start und nie wieder", async ({ page }) => {
+  await page.goto("/index.html");                 // ohne übersprungenes Onboarding
+  await page.waitForFunction(() => !!window.CPRA);
   await expect(page.locator("#modal-onboarding")).toHaveClass(/open/);
-
+  await expect(page.locator('.ob-step[data-step="0"]'))
+    .toContainText("keine Diagnose- oder Therapieentscheidungen");
   await page.click("#ob-next");
   await page.click("#ob-next");
-  await page.click("#ob-next");
+  await page.click("#ob-next");                   // "Verstanden – los geht's"
   await expect(page.locator("#modal-onboarding")).not.toHaveClass(/open/);
 
   await page.reload();
-  await page.waitForFunction(() => !!window.N2L);
+  await page.waitForFunction(() => !!window.CPRA);
   await expect(page.locator("#modal-onboarding")).not.toHaveClass(/open/);
 });
 
-test("belegt nur localStorage-Schlüssel mit dem Präfix n2l_", async ({ page }) => {
-  await appOeffnen(page);
-  await page.click("#btn-settings");
-  await page.click("#s-beispiele");
-  await expect(page.locator("#modal-settings")).not.toHaveClass(/open/);
+test("Einsatz starten: aktiver Screen, Ring läuft, nur cpra_-Schlüssel", async ({ page }) => {
+  const fehler = [];
+  page.on("console", m => { if (m.type() === "error") fehler.push(m.text()); });
+  page.on("pageerror", e => fehler.push("PAGEERROR: " + e.message));
 
-  const keys = await page.evaluate(() => Object.keys(localStorage));
-  expect(keys.length).toBeGreaterThan(0);
-  const fremd = keys.filter(k => !k.startsWith("n2l_"));
-  expect(fremd).toEqual([]);
+  await appOeffnen(page);
+  await einsatzStarten(page);
+
+  await expect(page.locator("#ring-zeit")).toContainText(/^[12]:\d\d$/);
+  await expect(page.locator("#ring-status")).toContainText("Zyklus 1");
+  await expect(page.locator("#head-sub")).toContainText("Aktiver Einsatz");
+  await expect(page.locator("#btn-cpr")).toContainText("Zyklus neu starten");
+
+  /* Metronom-Standard: 110 aktiv, aus */
+  await expect(page.locator('#bpm-chips button[data-bpm="110"]')).toHaveClass(/active/);
+  await expect(page.locator("#metro-an")).not.toBeChecked();
+
+  const fremde = await page.evaluate(() =>
+    Object.keys(localStorage).filter(k => !k.startsWith("cpra_")));
+  expect(fremde).toEqual([]);
+  expect(fehler).toEqual([]);
 });
 
-test("Beispieldaten decken alle Statuswerte ab", async ({ page }) => {
+test("laufender Einsatz übersteht einen Neustart der App", async ({ page }) => {
   await appOeffnen(page);
-  await page.click("#btn-settings");
-  await page.click("#s-beispiele");
+  await einsatzStarten(page);
+  await page.click("#btn-rhythmus");
+  await page.click('[data-rhythmus="schockbar"]');
 
-  const zahlen = await page.locator(".stat b").allTextContents();
-  expect(zahlen).toHaveLength(3);
-  zahlen.forEach(z => expect(Number(z)).toBeGreaterThan(0));
-  await expect(page.locator(".hero")).toBeVisible();
-});
+  await page.reload();
+  await page.waitForFunction(() => !!window.CPRA);
 
-test("Werbung und Käufe sind in V1 abgeschaltet und unsichtbar", async ({ page }) => {
-  await appOeffnen(page);
-  const r = await page.evaluate(() => ({
-    ads: window.N2L.Ads.ENABLED,
-    billing: window.N2L.Billing.ENABLED,
-    premium: window.N2L.Edition.isPremium(),
-    adbarSichtbar: getComputedStyle(document.getElementById("adbar")).display !== "none"
-  }));
-  expect(r.ads).toBe(false);
-  expect(r.billing).toBe(false);
-  expect(r.premium).toBe(false);
-  expect(r.adbarSichtbar).toBe(false);
-  await expect(page.locator("body")).not.toContainText("Premium");
-  await expect(page.locator("body")).not.toContainText("Werbung");
+  await expect(page.locator("#view-aktiv")).toHaveClass(/active/);
+  await expect(page.locator("#rhythmus-unter")).toContainText("VF/pVT");
+  const e = await page.evaluate(() => window.CPRA.Einsatz.e);
+  expect(e.rhythmus).toBe("schockbar");
 });

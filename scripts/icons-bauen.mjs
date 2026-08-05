@@ -25,16 +25,13 @@ const DICHTEN = { mdpi: 1, hdpi: 1.5, xhdpi: 2, xxhdpi: 3, xxxhdpi: 4 };
      muss das Motiv in die innere Sicherheitszone passen (Android beschneidet
      ringsum bis zu 18 dp von 108 dp), beim maskierbaren Web-Icon ebenso.
    - hintergrund: false lässt die Fläche transparent (Vordergrund-Ebene). */
-function seite(px, { rund = false, anteil = 1, hintergrund = true, stanzfarbe = null } = {}){
+function seite(px, { rund = false, anteil = 1, hintergrund = true } = {}){
   const inner = Math.round(px * anteil);
   const rand = Math.round((px - inner) / 2);
   // Beim Vordergrund entfällt die Kachel: nur das Motiv, transparent umgeben.
-  let svg = hintergrund
+  const svg = hintergrund
     ? SVG
-    : SVG.replace(/<rect width="512" height="512" rx="112" fill="url\(#bg\)"\/>/, "");
-  // Der Stanzkreis hinter der Uhr muss exakt die Fläche treffen, auf der er
-  // liegt – beim adaptiven Icon ist das die einfarbige Hintergrundebene.
-  if (stanzfarbe) svg = svg.replace(/(id="uhr-stanze"[^>]*fill=")url\(#bg\)"/, `$1${stanzfarbe}"`);
+    : SVG.replace(/<rect width="512" height="512" rx="112"[^/]*\/>/, "");
   return `<!doctype html><meta charset="utf-8"><style>
     html,body{margin:0;padding:0;background:transparent}
     #b{width:${px}px;height:${px}px;position:relative;overflow:hidden;
@@ -72,7 +69,9 @@ const farbe = await page.evaluate(async () => {
   c.width = c.height = 512;
   const ctx = c.getContext("2d");
   ctx.drawImage(img, 0, 0, 512, 512);
-  const p = ctx.getImageData(256, 256, 1, 1).data;   // Mitte der Kachel
+  /* Messpunkt oben mittig: dort liegt sicher die Kachelfläche –
+     in der Mitte säße das Herz-Motiv. */
+  const p = ctx.getImageData(256, 30, 1, 1).data;
   return "#" + [p[0], p[1], p[2]].map(v => v.toString(16).padStart(2, "0").toUpperCase()).join("");
 });
 writeFileSync(`${RES}/values/ic_launcher_background.xml`,
@@ -95,7 +94,7 @@ for (const [name, f] of Object.entries(DICHTEN)){
   await schreibe(`${dir}/ic_launcher_round.png`, Math.round(48 * f), { rund: true });
   /* Adaptives Icon: 108 dp Ebene, Motiv auf 72 dp = zwei Drittel begrenzt. */
   await schreibe(`${dir}/ic_launcher_foreground.png`, Math.round(108 * f),
-    { anteil: 72 / 108, hintergrund: false, stanzfarbe: farbe });
+    { anteil: 72 / 108, hintergrund: false });
 }
 
 /* ---- Startbildschirm (Splash) ----
@@ -122,7 +121,7 @@ for (const [dir, [w, h]] of Object.entries(SPLASH)){
     #s{width:${marke}px;height:${marke}px}
     #s svg{width:100%;height:100%;display:block}
     #t{color:#fff;font-size:${Math.round(marke * 0.3)}px;font-weight:700;letter-spacing:-.01em}
-  </style><div id="b"><div id="s">${SVG}</div><div id="t">Never2Late</div></div>`);
+  </style><div id="b"><div id="s">${SVG}</div><div id="t">CPR Assist</div></div>`);
   const buf = await page.locator("#b").screenshot();
   writeFileSync(`${RES}/${dir}/splash.png`, buf);
   console.log(`${RES}/${dir}/splash.png  (${w}x${h})`);

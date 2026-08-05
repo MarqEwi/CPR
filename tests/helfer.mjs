@@ -1,14 +1,14 @@
 // Gemeinsame Helfer für die Playwright-Tests.
 
 /* Öffnet die App mit übersprungener Kurzeinführung, damit die Tests direkt
-   auf dem Dashboard landen. */
+   auf der Bereit-Ansicht landen. */
 export async function appOeffnen(page, opts = {}){
   await page.addInitScript(() => {
-    localStorage.setItem("n2l_onboarding_done", "true");
+    localStorage.setItem("cpra_onboarding_done", "true");
   });
   if (opts.vorher) await page.addInitScript(opts.vorher);
   await page.goto("/index.html");
-  await page.waitForFunction(() => !!window.N2L);
+  await page.waitForFunction(() => !!window.CPRA);
 }
 
 /* Stellt die Android-App-Umgebung nach: window.Capacitor mit den Plugins,
@@ -23,64 +23,25 @@ export function capacitorMock(){
       App: {
         addListener: (ev, cb) => { (window.__listener ||= {})[ev] = cb; return { remove(){} }; },
         exitApp: () => merke("App.exitApp")
-      },
-      Filesystem: {
-        writeFile: async o => {
-          merke("Filesystem.writeFile", { path: o.path, directory: o.directory, data: o.data });
-          return {};
-        },
-        getUri: async o => {
-          merke("Filesystem.getUri", { path: o.path, directory: o.directory });
-          return { uri: "file:///cache/" + o.path };
-        }
-      },
-      Share: {
-        share: async o => { merke("Share.share", { title: o.title, files: o.files }); return {}; }
-      },
-      LocalNotifications: {
-        checkPermissions: async () => ({ display: "granted" }),
-        requestPermissions: async () => ({ display: "granted" }),
-        getPending: async () => ({ notifications: (window.__geplant || []).map(n => ({ id: n.id })) }),
-        cancel: async o => {
-          const ids = o.notifications.map(n => n.id);
-          merke("LocalNotifications.cancel", { anzahl: ids.length, ids });
-          window.__geplant = (window.__geplant || []).filter(n => ids.indexOf(n.id) < 0);
-        },
-        schedule: async o => {
-          // Wie das echte Plugin: bereits vorgemerkte Kennungen werden
-          // ersetzt, alles andere kommt hinzu.
-          const neu = o.notifications.map(n => ({
-            id: n.id, title: n.title, body: n.body,
-            // Die Capacitor-Brücke wandelt Date beim Übertragen in einen
-            // ISO-String – hier genauso, damit der Test dem Ernstfall folgt.
-            at: n.schedule && n.schedule.at
-              ? JSON.parse(JSON.stringify({ a: n.schedule.at })).a : null
-          }));
-          const ids = neu.map(n => n.id);
-          window.__geplant = (window.__geplant || []).filter(n => ids.indexOf(n.id) < 0).concat(neu);
-          merke("LocalNotifications.schedule", { anzahl: neu.length });
-        }
       }
     }
   };
 }
 
-/* Legt einen Eintrag über die Oberfläche an.
-   `kategorie` nimmt eine einzelne, `kategorien` mehrere Kategorien. */
-export async function eintragAnlegen(page, { titel, kategorie, kategorien, datum, typ = "ablauf" }){
-  const kats = kategorien || [kategorie || "ausweise"];
-  await page.click("#btn-neu");
-  await page.fill("#f-titel", titel);
-  for (const k of kats) await page.click(`#f-kategorie button[data-k="${k}"]`);
-  await page.click(`#f-datumstyp button[data-v="${typ}"]`);
-  await page.fill("#f-datum", datum);
-  await page.click("#f-speichern");
-  await page.waitForSelector("#view-detail.active");
+/* Startet einen Einsatz über die Oberfläche. */
+export async function einsatzStarten(page){
+  await page.click("#btn-start");
+  await page.waitForSelector("#view-aktiv.active");
 }
 
-/* Datum relativ zu heute als ISO-String (JJJJ-MM-TT). */
-export function inTagen(n){
-  const d = new Date();
-  d.setDate(d.getDate() + n);
-  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+/* Hält einen „Halten“-Knopf lange genug gedrückt (Schock, Re-Arrest).
+   `uhr: true`, wenn die Playwright-Uhr installiert ist – dann muss die
+   gefälschte Zeit weiterlaufen, damit requestAnimationFrame feuert. */
+export async function halten(page, selector, uhr){
+  const box = await page.locator(selector).boundingBox();
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  if (uhr) await page.clock.runFor(900);
+  else await page.waitForTimeout(900);
+  await page.mouse.up();
 }
