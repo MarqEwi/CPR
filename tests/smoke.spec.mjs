@@ -49,9 +49,10 @@ test("Einsatz starten: aktiver Screen, Ring läuft, nur cpra_-Schlüssel", async
   await expect(page.locator("#head-sub")).toContainText("Aktiver Einsatz");
   await expect(page.locator("#btn-cpr")).toContainText("Zyklus neu starten");
 
-  /* Metronom-Standard: 110 aktiv, aus */
-  await expect(page.locator('#bpm-chips button[data-bpm="110"]')).toHaveClass(/active/);
-  await expect(page.locator("#metro-an")).not.toBeChecked();
+  /* Metronom: kleiner Knopf in der Ecke, standardmäßig aus, Standard 110 */
+  await expect(page.locator("#metro-label")).toHaveText("Metronom aus");
+  const bpm = await page.evaluate(() => window.CPRA.Einst.werte.metronomBpm);
+  expect(bpm).toBe(110);
 
   const fremde = await page.evaluate(() =>
     Object.keys(localStorage).filter(k => !k.startsWith("cpra_")));

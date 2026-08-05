@@ -155,22 +155,39 @@ test("ROSC → Post-ROSC-Checkliste → Re-Arrest → Einsatz beenden", async ({
   expect(speicher.letzter.ereignisse.map(x => x.typ)).toContain("ende");
 });
 
-test("Metronom: an/aus und Preset-Wechsel, 110 als Standard", async ({ page }) => {
+test("Metronom: kleiner Eckknopf öffnet die Auswahl, 110 als Standard", async ({ page }) => {
   await appOeffnen(page);
   await einsatzStarten(page);
 
-  await expect(page.locator("#metro-sub")).toContainText("aus");
-  await page.locator(".metrocard .switch").click();
-  await expect(page.locator("#metro-an")).toBeChecked();
-  await expect(page.locator("#metro-sub")).toContainText("110/min läuft");
+  const knopf = page.locator("#btn-metronom");
+  await expect(knopf).toHaveText("Metronom aus");
+  await expect(knopf).not.toHaveClass(/an/);
 
-  await page.click('#bpm-chips button[data-bpm="120"]');
-  await expect(page.locator('#bpm-chips button[data-bpm="120"]')).toHaveClass(/active/);
-  await expect(page.locator("#metro-sub")).toContainText("120/min läuft");
-  const bpm = await page.evaluate(() => window.CPRA.Einst.werte.metronomBpm);
-  expect(bpm).toBe(120);
+  /* Auswahl öffnen: "Aus" ist markiert, solange nichts läuft */
+  await knopf.click();
+  await expect(page.locator("#modal-metronom")).toHaveClass(/open/);
+  await expect(page.locator('#metro-wahl button[data-bpm="0"]')).toHaveClass(/active/);
 
-  await page.locator(".metrocard .switch").click();
-  await expect(page.locator("#metro-an")).not.toBeChecked();
-  await expect(page.locator("#metro-sub")).toContainText("aus");
+  /* 110 wählen: Dialog schließt, Knopf zeigt die Frequenz */
+  await page.click('#metro-wahl button[data-bpm="110"]');
+  await expect(page.locator("#modal-metronom")).not.toHaveClass(/open/);
+  await expect(knopf).toHaveText("110/min");
+  await expect(knopf).toHaveClass(/an/);
+  expect(await page.evaluate(() => window.CPRA.Metronom.an)).toBe(true);
+
+  /* Frequenz wechseln */
+  await knopf.click();
+  await expect(page.locator('#metro-wahl button[data-bpm="110"]')).toHaveClass(/active/);
+  await page.click('#metro-wahl button[data-bpm="120"]');
+  await expect(knopf).toHaveText("120/min");
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.metronomBpm)).toBe(120);
+
+  /* Abschalten über dieselbe Auswahl */
+  await knopf.click();
+  await page.click('#metro-wahl button[data-bpm="0"]');
+  await expect(knopf).toHaveText("Metronom aus");
+  await expect(knopf).not.toHaveClass(/an/);
+  expect(await page.evaluate(() => window.CPRA.Metronom.an)).toBe(false);
+  /* Die zuletzt gewählte Frequenz bleibt für das nächste Einschalten erhalten */
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.metronomBpm)).toBe(120);
 });

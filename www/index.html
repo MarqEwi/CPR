@@ -7,7 +7,7 @@
 <meta name="description" content="Kognitive Unterstützung und Ereignis-Protokoll für die Reanimation Erwachsener (ALS): 2-Minuten-Zyklen, Rhythmusanalyse, Adrenalin- und Amiodaron-Status, Metronom, reversible Ursachen (4H/HITS) und Post-ROSC-Erinnerungen. Kein Ersatz für klinische Entscheidungen.">
 <meta name="theme-color" content="#0b0e10">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%2310161a'/%3E%3Cpath d='M256 442 C 130 352 66 272 66 190 C 66 121 119 68 186 68 C 216 68 244 85 256 112 C 268 85 296 68 326 68 C 393 68 446 121 446 190 C 446 272 382 352 256 442 Z' fill='%232fb3a3'/%3E%3Cpolyline points='90,240 186,240 210,188 242,304 268,218 284,240 422,240' fill='none' stroke='%23f4fbfa' stroke-width='24' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%2310161a'/%3E%3Cpath d='M256 442 C 130 352 66 272 66 190 C 66 121 119 68 186 68 C 216 68 244 85 256 112 C 268 85 296 68 326 68 C 393 68 446 121 446 190 C 446 272 382 352 256 442 Z' fill='%232fb3a3'/%3E%3Cpath d='M88 240H168C176 206 206 206 214 240H232L244 268L262 150L280 336L292 240H318C330 194 360 194 372 240H424' fill='none' stroke='%23f4fbfa' stroke-width='22' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
   /* ===================================================================
      Gestaltung – Einsatz-Design
@@ -175,20 +175,40 @@
   .medbtn:disabled{opacity:.4;cursor:not-allowed}
   .m-warn .medbtn{background:var(--warn);border-color:var(--warn);color:#231a05}
   .m-bad .medbtn{background:var(--bad);border-color:var(--bad);color:#2a0805}
-  /* ---------- Metronom ---------- */
-  .metrocard{display:flex;align-items:center;gap:11px;background:var(--bg2);
-    border:1px solid var(--line);border-radius:var(--radius);padding:11px 13px;margin:0 0 12px}
-  .metrocard .puls{width:11px;height:11px;border-radius:50%;background:var(--bg4);flex:none;
+  /* ---------- Kopfzeile des Einsatzes: Kennzahlen + Metronom ----------
+     Das Metronom sitzt bewusst klein in der oberen rechten Ecke: es ist
+     eine Hilfe, kein Hauptbedienelement. Ein Tipp öffnet die Auswahl. */
+  .aktivkopf{display:flex;align-items:center;gap:10px;margin:2px 0 0}
+  /* Zwei bewusst gesetzte Zeilen statt eines zufälligen Umbruchs. */
+  .aktivkopf .kennzahlen{flex:1;min-width:0;font-size:.79rem;color:var(--text3);
+    font-variant-numeric:tabular-nums;line-height:1.35}
+  .aktivkopf .kennzahlen b{display:block;font-size:.88rem;font-weight:660;color:var(--text2)}
+  .aktivkopf .kennzahlen span{display:block;white-space:nowrap;overflow:hidden;
+    text-overflow:ellipsis}
+  .metrobtn{display:inline-flex;align-items:center;gap:7px;flex:none;
+    background:var(--bg2);border:1px solid var(--line);border-radius:999px;
+    color:var(--text2);font:inherit;font-size:.82rem;font-weight:700;
+    padding:8px 13px;min-height:42px;cursor:pointer;font-variant-numeric:tabular-nums;
+    transition:background .13s, border-color .13s, color .13s}
+  .metrobtn:hover{background:var(--bg3)}
+  .metrobtn:active{transform:scale(.97)}
+  .metrobtn .puls{width:9px;height:9px;border-radius:50%;background:var(--line-stark);flex:none;
     transition:background .05s, box-shadow .05s}
-  .metrocard .puls.an{background:var(--accent);box-shadow:0 0 0 5px var(--accent-soft)}
-  .metrocard .lbl{font-size:.9rem;font-weight:700;flex:1;display:flex;flex-direction:column}
-  .metrocard .lbl span{font-size:.72rem;color:var(--text2);font-weight:500}
-  .bpmchips{display:flex;gap:6px}
-  .bpmchips button{background:var(--bg3);border:1px solid var(--line-stark);color:var(--text2);
-    border-radius:999px;min-width:48px;min-height:40px;padding:6px 10px;font:inherit;
-    font-size:.86rem;font-weight:700;cursor:pointer;font-variant-numeric:tabular-nums;
-    transition:background .13s, color .13s, border-color .13s}
-  .bpmchips button.active{background:var(--accent);border-color:var(--accent);color:var(--accent-text)}
+  .metrobtn.an{color:var(--accent);border-color:var(--accent-rand);background:var(--accent-soft)}
+  .metrobtn.an .puls{background:var(--accent)}
+  .metrobtn .puls.schlag{box-shadow:0 0 0 5px var(--accent-soft)}
+  /* Auswahl im Dialog: aus / 100 / 110 / 120 als große Zeilen */
+  .metrowahl{display:grid;gap:9px}
+  .metrowahl button{display:flex;align-items:center;gap:13px;background:var(--bg3);
+    border:1px solid var(--line-stark);border-radius:var(--radius-s);padding:14px 15px;
+    font:inherit;color:var(--text);cursor:pointer;text-align:left;min-height:60px;
+    transition:background .13s, border-color .13s}
+  .metrowahl button:hover{background:var(--bg4)}
+  .metrowahl button.active{border-color:var(--accent);background:var(--accent-soft)}
+  .metrowahl b{font-size:1.05rem;letter-spacing:-.015em;font-variant-numeric:tabular-nums}
+  .metrowahl span{display:block;font-size:.79rem;color:var(--text2);font-weight:500}
+  .metrowahl .mark{margin-left:auto;color:var(--accent);opacity:0}
+  .metrowahl button.active .mark{opacity:1}
   .switch{position:relative;width:50px;height:30px;flex:none}
   .switch input{opacity:0;width:0;height:0;position:absolute}
   .switch .track{position:absolute;inset:0;background:var(--bg4);border:1px solid var(--line-stark);
@@ -349,7 +369,7 @@
   <svg class="logo" viewBox="0 0 512 512" aria-hidden="true">
     <rect width="512" height="512" rx="112" fill="#10161a"/>
     <path d="M256 442 C 130 352 66 272 66 190 C 66 121 119 68 186 68 C 216 68 244 85 256 112 C 268 85 296 68 326 68 C 393 68 446 121 446 190 C 446 272 382 352 256 442 Z" fill="#2fb3a3"/>
-    <polyline points="90,240 186,240 210,188 242,304 268,218 284,240 422,240" fill="none" stroke="#f4fbfa" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M88 240H168C176 206 206 206 214 240H232L244 268L262 150L280 336L292 240H318C330 194 360 194 372 240H424" fill="none" stroke="#f4fbfa" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
   <div>
     <h1>CPR Assist</h1>
@@ -376,7 +396,7 @@
         <div><b>2-Minuten-Zyklen</b> mit Warnung vor dem Analysefenster und Erinnerung an den Helferwechsel</div></li>
       <li><svg class="ic" viewBox="0 0 24 24"><path d="M12 6v6M9 9h6"/><rect x="3" y="3" width="18" height="18" rx="5"/></svg>
         <div><b>Adrenalin &amp; Amiodaron</b> als verständlicher Status statt roher Timer</div></li>
-      <li><svg class="ic" viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>
+      <li><svg class="ic" viewBox="0 0 24 24"><path d="M2 12H7.2C7.6 9.8 9.2 9.8 9.6 12H10.6L11.1 13.4L12.1 5L13.1 16.6L13.8 12H15.2C15.8 8.9 17.8 8.9 18.4 12H22"/></svg>
         <div><b>Rhythmus, Schocks, ROSC, 4H/HITS</b> – jede Aktion einen Tipp entfernt, alles mit Zeitstempel</div></li>
     </ul>
     <button class="btn block" id="btn-start">
@@ -391,6 +411,14 @@
   <!-- ======================= Aktiver Einsatz ======================= -->
   <section class="view" id="view-aktiv">
 
+    <div class="aktivkopf">
+      <div class="kennzahlen" id="gesamtzeile"><b>Gesamt 0:00</b><span>noch keine Ereignisse</span></div>
+      <button class="metrobtn" id="btn-metronom" aria-label="Metronom einstellen">
+        <span class="puls" id="metro-puls" aria-hidden="true"></span>
+        <span id="metro-label">Metronom aus</span>
+      </button>
+    </div>
+
     <div class="ringwrap">
       <svg viewBox="0 0 220 220" aria-hidden="true">
         <circle class="ring-bg" cx="110" cy="110" r="96"/>
@@ -402,10 +430,8 @@
         <div id="ring-hinweis"></div>
       </div>
     </div>
-    <div class="gesamtzeile" id="gesamtzeile">Gesamt 0:00</div>
-
     <div class="analysechips">
-      <span><svg class="ic" viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg> Rhythmus prüfen</span>
+      <span><svg class="ic" viewBox="0 0 24 24"><path d="M2 12H7.2C7.6 9.8 9.2 9.8 9.6 12H10.6L11.1 13.4L12.1 5L13.1 16.6L13.8 12H15.2C15.8 8.9 17.8 8.9 18.4 12H22"/></svg> Rhythmus prüfen</span>
       <span><svg class="ic" viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M21 3l-7 7"/><path d="M8 21H3v-5"/><path d="M3 21l7-7"/></svg> Helfer wechseln</span>
     </div>
 
@@ -424,22 +450,9 @@
       </div>
     </div>
 
-    <div class="metrocard">
-      <span class="puls" id="metro-puls" aria-hidden="true"></span>
-      <div class="lbl">Metronom <span id="metro-sub">aus · Ziel 100–120/min</span></div>
-      <div class="bpmchips" id="bpm-chips">
-        <button data-bpm="100">100</button>
-        <button data-bpm="110" class="active">110</button>
-        <button data-bpm="120">120</button>
-      </div>
-      <label class="switch" aria-label="Metronom ein/aus">
-        <input type="checkbox" id="metro-an"><span class="track"></span>
-      </label>
-    </div>
-
     <div class="aktionsgrid">
       <button class="aktion a-rhythmus" id="btn-rhythmus">
-        <svg class="ic" viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M2 12H7.2C7.6 9.8 9.2 9.8 9.6 12H10.6L11.1 13.4L12.1 5L13.1 16.6L13.8 12H15.2C15.8 8.9 17.8 8.9 18.4 12H22"/></svg>
         Rhythmus
         <span class="unter" id="rhythmus-unter">noch nicht bestimmt</span>
       </button>
@@ -524,7 +537,7 @@
     <button class="modal-x" data-close="modal-rhythmus" aria-label="Schließen">
       <svg class="ic" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
-    <h3 class="mt"><svg class="ic" viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg> Rhythmusanalyse</h3>
+    <h3 class="mt"><svg class="ic" viewBox="0 0 24 24"><path d="M2 12H7.2C7.6 9.8 9.2 9.8 9.6 12H10.6L11.1 13.4L12.1 5L13.1 16.6L13.8 12H15.2C15.8 8.9 17.8 8.9 18.4 12H22"/></svg> Rhythmusanalyse</h3>
     <div class="rhythmuswahl">
       <button class="r-schockbar" data-rhythmus="schockbar">
         <svg class="ic" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
@@ -538,6 +551,28 @@
         <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 015 .3c0 1.7-2.5 2-2.5 3.7"/><path d="M12 17h.01"/></svg>
         <span><b>Unklar</b><span>beim nächsten Fenster erneut prüfen</span></span>
       </button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= Dialog: Metronom ======================= -->
+<div class="modal-back" id="modal-metronom">
+  <div class="modal">
+    <button class="modal-x" data-close="modal-metronom" aria-label="Schließen">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <h3 class="mt"><svg class="ic" viewBox="0 0 24 24"><path d="M10.4 3h3.2l4.4 18H6z"/><path d="M8.6 14.6h6.8"/><path d="M12 14.6L15.6 7.6"/></svg> Metronom</h3>
+    <p class="frage">Taktgeber für die Thoraxkompressionen. Zielbereich für
+      Erwachsene: 100–120 pro Minute. Ersetzt keine Qualitätskontrolle.</p>
+    <div class="metrowahl" id="metro-wahl">
+      <button data-bpm="0"><span><b>Aus</b><span>kein Ton</span></span>
+        <svg class="ic mark" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></button>
+      <button data-bpm="100"><span><b>100 / min</b><span>unteres Ende des Zielbereichs</span></span>
+        <svg class="ic mark" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></button>
+      <button data-bpm="110"><span><b>110 / min</b><span>Standard – Mitte des Zielbereichs</span></span>
+        <svg class="ic mark" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></button>
+      <button data-bpm="120"><span><b>120 / min</b><span>oberes Ende des Zielbereichs</span></span>
+        <svg class="ic mark" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></button>
     </div>
   </div>
 </div>
@@ -1349,10 +1384,17 @@ function renderRing(now){
     $("ring-status").textContent = zyk.warnung ? "Analyse gleich – Wechsel vorbereiten" : "Zyklus " + e.zyklusNr;
     $("ring-hinweis").textContent = e.rhythmus ? "Rhythmus: " + Kern.RHYTHMEN[e.rhythmus].kurz : "";
   }
-  $("gesamtzeile").textContent =
-    "Gesamt " + Kern.fmtUhr(now - e.startZeit)
-    + " · Schocks " + e.schocks.length
-    + " · Adrenalin " + e.adrenalin.length;
+  const zaehler = [];
+  if (e.schocks.length) zaehler.push(e.schocks.length + "× Schock");
+  if (e.adrenalin.length) zaehler.push(e.adrenalin.length + "× Adrenalin");
+  /* Amiodaron steht prominent in der eigenen Karte – hier würde es die
+     Zeile nur abschneiden. */
+  $("gesamtzeile").innerHTML = "";
+  const b = document.createElement("b"), s = document.createElement("span");
+  b.textContent = "Gesamt " + Kern.fmtUhr(now - e.startZeit);
+  s.textContent = zaehler.length ? zaehler.join(" · ") : "noch keine Ereignisse";
+  $("gesamtzeile").appendChild(b);
+  $("gesamtzeile").appendChild(s);
 }
 
 /* ---------- Rendering: Medikamente ---------- */
@@ -1491,17 +1533,20 @@ function renderSettings(){
 }
 const UI = {
   metronomAnzeigen(){
-    $("metro-an").checked = Metronom.an;
-    $("metro-sub").textContent = Metronom.an
-      ? Metronom.bpm() + "/min läuft" : "aus · Ziel 100–120/min";
-    document.querySelectorAll("#bpm-chips button").forEach(b =>
-      b.classList.toggle("active", Number(b.dataset.bpm) === Einst.werte.metronomBpm));
+    const an = Metronom.an;
+    $("btn-metronom").classList.toggle("an", an);
+    $("metro-label").textContent = an ? Metronom.bpm() + "/min" : "Metronom aus";
+    /* Im Dialog ist "Aus" die aktive Zeile, solange nichts läuft. */
+    document.querySelectorAll("#metro-wahl button").forEach(b => {
+      const bpm = Number(b.dataset.bpm);
+      b.classList.toggle("active", an ? bpm === Einst.werte.metronomBpm : bpm === 0);
+    });
   },
   metronomPuls(){
     const p = $("metro-puls");
-    p.classList.add("an");
+    p.classList.add("schlag");
     clearTimeout(this._pt);
-    this._pt = setTimeout(() => p.classList.remove("an"), 70);
+    this._pt = setTimeout(() => p.classList.remove("schlag"), 70);
   }
 };
 
@@ -1717,13 +1762,23 @@ $("ende-ok").addEventListener("click", () => {
   toast("Einsatz beendet – Protokoll gespeichert");
 });
 
-/* ---- Metronom ---- */
-$("metro-an").addEventListener("change", () => {
-  if ($("metro-an").checked) Metronom.start(); else Metronom.stop();
+/* ---- Metronom: kleiner Knopf in der Ecke, Auswahl im Dialog ---- */
+$("btn-metronom").addEventListener("click", () => {
+  UI.metronomAnzeigen();
+  openModal("modal-metronom");
 });
-document.querySelectorAll("#bpm-chips button").forEach(b =>
+document.querySelectorAll("#metro-wahl button").forEach(b =>
   b.addEventListener("click", () => {
-    Einst.set("metronomBpm", Number(b.dataset.bpm));
+    const bpm = Number(b.dataset.bpm);
+    if (bpm){
+      Einst.set("metronomBpm", bpm);
+      /* Läuft es schon, übernimmt der nächste geplante Klick die neue
+         Frequenz von selbst – sonst hier starten. */
+      if (!Metronom.an) Metronom.start(); else UI.metronomAnzeigen();
+    } else {
+      Metronom.stop();
+    }
+    closeModal("modal-metronom");
     UI.metronomAnzeigen();
   }));
 

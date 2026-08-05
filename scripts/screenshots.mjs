@@ -100,6 +100,10 @@ await schuss("05-ursachen", { aufbau: jetzt => {
   await p.click("#btn-ursachen");
 } });
 
+await schuss("07-metronom", { aufbau: einsatzAktiv, schritte: async p => {
+  await p.click("#btn-metronom");
+} });
+
 await schuss("06-rosc", { aufbau: jetzt => {
   const { Kern } = window.CPRA;
   const t0 = jetzt - 14 * 60000;

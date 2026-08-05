@@ -8,7 +8,7 @@
   <rect width="512" height="512" rx="112" fill="#10161a"/>
   <path d="M256 442 C 130 352 66 272 66 190 C 66 121 119 68 186 68 C 216 68 244 85 256 112 C 268 85 296 68 326 68 C 393 68 446 121 446 190 C 446 272 382 352 256 442 Z"
         fill="#2fb3a3"/>
-  <polyline points="90,240 186,240 210,188 242,304 268,218 284,240 422,240"
-            fill="none" stroke="#f4fbfa" stroke-width="24"
+  <path d="M88 240H168C176 206 206 206 214 240H232L244 268L262 150L280 336L292 240H318C330 194 360 194 372 240H424"
+        fill="none" stroke="#f4fbfa" stroke-width="22"
             stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
