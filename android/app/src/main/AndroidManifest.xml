@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation|density"
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBarLaunch"
+            android:launchMode="singleTask"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <!-- AdMob-App-ID. In V1 zeigt Never2Late KEINE Werbung; das AdMob-Plugin
+             ist aber installiert und braucht zwingend diesen Eintrag, sonst
+             stürzt die App beim Start ab. Bis eine echte Never2Late-AdMob-App
+             angelegt wird, steht hier Googles offizielle Test-App-ID. -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
+    </application>
+
+    <!-- Permissions -->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Erinnerungen: ab Android 13 muss die App die Berechtigung für
+         Benachrichtigungen zur Laufzeit anfragen (POST_NOTIFICATIONS). -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Werbe-ID ausdrücklich entfernen.
+         Das AdMob-Plugin zieht "play-services-ads" mit, und dieses Google-SDK
+         trägt die Berechtigung AD_ID von sich aus in das zusammengeführte
+         Manifest ein. Never2Late benutzt die Werbe-ID aber nicht: Werbung ist
+         in dieser Version über ADS_CONF.ENABLED abgeschaltet, das SDK wird nie
+         gestartet. Ohne diese Zeile stünde im fertigen Paket eine Berechtigung,
+         die die App nicht nutzt – die Play Console verlangt dann eine Erklärung
+         zur Werbe-ID, und die Angabe "keine Datenerhebung" wäre nicht mehr
+         stimmig.
+         WICHTIG: Wird Werbung später aktiviert (siehe docs/veroeffentlichung.md,
+         Abschnitt 7), muss diese Zeile wieder raus. -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"
+        tools:node="remove" />
+</manifest>
