@@ -1,8 +1,8 @@
-/* Service Worker: Offline-Fähigkeit für Never2Late (nur GitHub Pages).
+/* Service Worker: Offline-Fähigkeit für CPR Assist (nur GitHub Pages).
    Strategie: Netzwerk zuerst (damit Updates ankommen), Cache als Offline-Fallback.
    Der Cache-Name ist app-eigen, weil alle Web-Versionen unter marqewi.github.io
    dieselbe Origin teilen. */
-const CACHE = "never2late-v1";
+const CACHE = "cprassist-v1";
 const ASSETS = ["./", "./index.html", "./manifest.webmanifest"];
 
 self.addEventListener("install", e => {

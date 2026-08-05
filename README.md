@@ -1,55 +1,62 @@
-# Never2Late – Ablaufdaten im Blick
+# CPR Assist – Erwachsenen-Reanimation (ALS)
 
-Never2Late verwaltet **Ablaufdaten, Gültigkeiten und wiederkehrende Fristen**:
-Ausweise, Karten, berufliche Nachweise, Fahrzeugtermine, Gesundheitsdokumente,
-Reisedokumente und Verträge zentral erfassen, rechtzeitig erinnert werden und
-auf einen Blick sehen, was als Nächstes ansteht.
+CPR Assist ist eine **kognitive Unterstützung und ein strukturiertes
+Ereignis-Protokoll** für die Reanimation Erwachsener nach den
+Reanimationsleitlinien 2025 (GRC/ERC). Die App strukturiert den Ablauf –
+2-Minuten-Zyklen, Rhythmusanalyse, Medikamenten-Status, reversible Ursachen,
+Post-ROSC – und protokolliert jedes Ereignis mit Zeitstempel.
 
-> Alle Daten bleiben **lokal auf dem Gerät** – kein Konto, kein Server,
+> **CPR Assist trifft keine Therapieentscheidungen.** Die App ersetzt weder
+> Ausbildung noch klinisches Urteil; verantwortlich bleibt das behandelnde
+> Team. Alle Daten bleiben **lokal auf dem Gerät** – kein Konto, kein Server,
 > keine Cloud, kein Tracking. Die aktuelle Version (V1) enthält weder Werbung
 > noch Käufe.
 
 ## Funktionen (V1)
 
-- **Dashboard:** Abgelaufenes und bald Fälliges sofort sehen, schneller Zugriff
-  auf „Neuer Eintrag“
-- **Einträge:** Titel, Kategorien, Datumstyp (Gültig bis / Fällig am /
-  Wiederkehrend), Nummer/Referenz und Notiz
-- **Kategorien:** acht mitgelieferte (Ausweise, Karten, Beruflich, Fahrzeug,
-  Gesundheit, Reisen, Verträge, Sonstiges) plus eigene mit frei wählbarem
-  Emoji. Ein Eintrag kann **mehreren** Kategorien angehören – der Reisepass
-  steht damit unter „Ausweise" und unter „Reisen"
-- **Zentrale Statuslogik:** Aktiv · Bald fällig · Abgelaufen · Archiviert
-- **Erinnerungen:** Standard 3 Monate / 1 Woche / 1 Tag vorher, je Eintrag
-  anpassbar, ergänzbar und deaktivierbar – als lokale Benachrichtigungen
-- **Wiederkehrende Fristen:** jährlich, halbjährlich oder monatlich; nach
-  „Erledigt“ wird der nächste Termin automatisch berechnet
-- **Erneuern & Archivieren:** Einträge erneuern (neues Datum) oder ins Archiv
-  verschieben – nichts geht verloren
-- **Liste:** Suche, Status- und Kategorie-Filter, das Dringendste zuerst
-- **Kalender-Export:** einzelne Termine als .ics-Datei übernehmen (optional,
-  ohne Kalender-Berechtigung)
-- Helles Design mit Dark Mode, responsiv, Ersteinrichtungs-Dialog
+- **2-Minuten-CPR-Zyklen** als großer Fortschrittsring mit Restzeit; die
+  letzten 10 Sekunden warnen sichtbar, danach wechselt die App klar in das
+  **Analysefenster** (Rhythmus prüfen, Helfer wechseln)
+- **Adrenalin-Status** statt roher Zahl: zu früh (&lt; 3 min) · fällig
+  (3–5 min) · überfällig (&gt; 5 min) – plus „so bald wie möglich" bei nicht
+  schockbarem Rhythmus ohne bisherige Gabe
+- **Amiodaron als Dosis-/Ereignisstatus:** 300 mg nach dem 3. Schock bei
+  VF/pVT, 150 mg möglich nach dem 5. Schock – kein Wiederhol-Countdown
+- **Rhythmusauswahl** VF/pVT · PEA/Asystolie · unklar, mit Auswirkungen auf
+  Schock- und Medikamenten-Hinweise
+- **Schock-Protokoll** mit Zähler, abgesichert per Halten gegen
+  versehentliche Auslösung, danach sofortige Rückkehr in die CPR
+- **4 H's &amp; HITS** (reversible Ursachen) als strukturiertes Bottom Sheet:
+  jede Ursache mit drei Zuständen (offen · geprüft/unwahrscheinlich ·
+  verdächtig/behandelt) und optionaler Kurznotiz
+- **Post-ROSC-Modus** mit den Erinnerungen der Leitlinie (Oxygenierung →
+  SpO₂ 94–98 %, Normokapnie, Ursache erkennen und behandeln, 12-Kanal-EKG,
+  hämodynamische Stabilisierung) und klarem **Re-Arrest**-Weg zurück in die CPR
+- **Metronom** 100 / 110 / 120 pro Minute (Standard 110), ein-/ausschaltbar,
+  mit optischem Puls
+- **Ereignis-Protokoll** im Hintergrund: jeder Schritt mit Zeitstempel
+- Dunkles, kontrastreiches Einsatz-Design mit großen Touchflächen;
+  Bildschirm bleibt im Einsatz wach
 
 ## Technik
 
-- Eine einzige, in sich geschlossene `index.html` (inline CSS/JS, keine externen Abhängigkeiten)
-- Klar getrennte Ebenen im Code: Logik-Kern (Status/Datum/Wiederholung/Erinnerungen,
-  DOM-frei und testbar) → Datenschicht (versioniertes Schema im localStorage unter
-  `n2l_`-Schlüsseln) → Oberfläche → native Module
-- Das Datenschema ist versioniert (aktuell 2). Einträge aus Schema 1 mit einer
-  einzelnen Kategorie werden beim Laden automatisch auf das Kategorien-Array
-  umgestellt – die Migration steckt in `Core.normalisieren()`, durch die jeder
-  Eintrag beim Speichern und Einlesen läuft
-- `npm run sync` kopiert die Web-Dateien nach `www/` (Quelle für die Capacitor-App)
+- Eine einzige, in sich geschlossene `index.html` (inline CSS/JS, keine
+  externen Abhängigkeiten)
+- Klar getrennte Ebenen im Code: Konfiguration (alle medizinischen Konstanten
+  an einer Stelle) → Rechenkern (Zustandsmaschine und Statusableitung,
+  DOM-frei und testbar) → Zustand/Persistenz (localStorage unter
+  `cpra_`-Schlüsseln) → Oberfläche → Metronom/Audio → native Module
+- Ein laufender Einsatz wird zeitstempelbasiert gerechnet und fortlaufend
+  gespeichert – nach einem versehentlichen App-Neustart wird er wieder
+  aufgenommen
+- `npm run sync` kopiert die Web-Dateien nach `www/` (Quelle für die
+  Capacitor-App)
 - Service Worker (`sw.js`) wird nur auf `github.io` registriert, nicht in der App
-- Native Brücke mit Feature-Detection (`window.Capacitor`): Kalender-Export läuft im
-  Browser über `a.download`, in der Android-App über Filesystem + Share;
-  Erinnerungen über `@capacitor/local-notifications`
-- Plugins werden ausschließlich über `window.Capacitor.Plugins.<Name>` angesprochen
-  (kein Bundler, daher kein `Capacitor.registerPlugin`)
-- AdMob-/Billing-Module liegen als ruhende Infrastruktur für spätere Versionen bei,
-  sind in V1 aber vollständig deaktiviert und nirgends sichtbar
+- Plugins werden ausschließlich über `window.Capacitor.Plugins.<Name>`
+  angesprochen (kein Bundler, daher kein `Capacitor.registerPlugin`)
+- AdMob-/Billing-Module liegen als ruhende Infrastruktur für spätere
+  Versionen bei, sind in V1 aber vollständig deaktiviert und nirgends
+  sichtbar; auf dem aktiven Einsatz-Screen wird es nie Werbung geben
 
 ## Tests
 
@@ -59,7 +66,11 @@ Playwright-Tests (vorinstalliertes Chromium, kein `playwright install`):
 npx playwright test
 ```
 
+Drei Ebenen: Rechenkern (jede Status- und Zeitgrenze der Leitlinienlogik),
+Smoke/Bedienung (kompletter Einsatzablauf ohne Konsolenfehler) und native
+Funktionen (nachgestellte Capacitor-Umgebung).
+
 ## Web-Version
 
-Die App läuft als Web-Version unter: <https://marqewi.github.io/never2late/>
+Die App läuft als Web-Version unter: <https://marqewi.github.io/CPR/>
 (GitHub Pages: Settings → Pages → Deploy from a branch → `main` / root)

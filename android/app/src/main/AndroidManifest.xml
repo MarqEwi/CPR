@@ -24,9 +24,9 @@
 
         </activity>
 
-        <!-- AdMob-App-ID. In V1 zeigt Never2Late KEINE Werbung; das AdMob-Plugin
+        <!-- AdMob-App-ID. In V1 zeigt CPR Assist KEINE Werbung; das AdMob-Plugin
              ist aber installiert und braucht zwingend diesen Eintrag, sonst
-             stürzt die App beim Start ab. Bis eine echte Never2Late-AdMob-App
+             stürzt die App beim Start ab. Bis eine echte CPR-Assist-AdMob-App
              angelegt wird, steht hier Googles offizielle Test-App-ID. -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
@@ -46,14 +46,11 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Erinnerungen: ab Android 13 muss die App die Berechtigung für
-         Benachrichtigungen zur Laufzeit anfragen (POST_NOTIFICATIONS). -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- Werbe-ID ausdrücklich entfernen.
          Das AdMob-Plugin zieht "play-services-ads" mit, und dieses Google-SDK
          trägt die Berechtigung AD_ID von sich aus in das zusammengeführte
-         Manifest ein. Never2Late benutzt die Werbe-ID aber nicht: Werbung ist
+         Manifest ein. CPR Assist benutzt die Werbe-ID aber nicht: Werbung ist
          in dieser Version über ADS_CONF.ENABLED abgeschaltet, das SDK wird nie
          gestartet. Ohne diese Zeile stünde im fertigen Paket eine Berechtigung,
          die die App nicht nutzt – die Play Console verlangt dann eine Erklärung

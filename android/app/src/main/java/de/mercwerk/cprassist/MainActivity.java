@@ -1,4 +1,4 @@
-package de.mercwerk.never2late;
+package de.mercwerk.cprassist;
 
 import com.getcapacitor.BridgeActivity;
 

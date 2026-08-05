@@ -10,13 +10,13 @@ if (keystorePropsFile.exists()) {
 }
 
 android {
-    namespace = "de.mercwerk.never2late"
+    namespace = "de.mercwerk.cprassist"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "de.mercwerk.never2late"
+        applicationId "de.mercwerk.cprassist"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
+        versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Never2Late</string>
-    <string name="title_activity_main">Never2Late</string>
-    <string name="package_name">de.mercwerk.never2late</string>
-    <string name="custom_url_scheme">de.mercwerk.never2late</string>
+    <string name="app_name">CPR Assist</string>
+    <string name="title_activity_main">CPR Assist</string>
+    <string name="package_name">de.mercwerk.cprassist</string>
+    <string name="custom_url_scheme">de.mercwerk.cprassist</string>
 </resources>
