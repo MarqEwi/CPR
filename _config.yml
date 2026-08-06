@@ -1,0 +1,16 @@
+# GitHub Pages soll nur die Web-Version ausliefern, nicht das ganze Repo.
+# Ohne diese Liste schleust Pages alle rund 3700 Dateien (Android-Projekt,
+# Tests, Store-Grafiken) durch den Build – das hat das Deployment schon
+# einmal in einen Timeout laufen lassen.
+exclude:
+  - android/
+  - www/
+  - tests/
+  - scripts/
+  - docs/
+  - patches/
+  - node_modules/
+  - package.json
+  - package-lock.json
+  - playwright.config.mjs
+  - README.md
