@@ -1205,9 +1205,16 @@ const Metronom = {
   },
   planen(){
     const takt = 60 / this.bpm();
-    while (this.naechster < Audio_.ctx.currentTime + 0.12){
+    const jetzt = Audio_.ctx.currentTime;
+    /* Rückstand aufholen? Nein. Wurde der Planer gedrosselt (App im
+       Hintergrund, Gerät im Stromsparmodus), lägen alle verpassten Klicks
+       in der Vergangenheit – WebAudio spielt die sofort und gleichzeitig
+       ab, was als Knall statt als Takt ankommt. Stattdessen den Takt ab
+       jetzt neu ansetzen. */
+    if (this.naechster < jetzt) this.naechster = jetzt + 0.02;
+    while (this.naechster < jetzt + 0.12){
       Audio_.ton(1050, 32, this.naechster, 0.32);
-      const inMs = Math.max(0, (this.naechster - Audio_.ctx.currentTime) * 1000);
+      const inMs = Math.max(0, (this.naechster - jetzt) * 1000);
       setTimeout(() => UI.metronomPuls(), inMs);
       this.naechster += takt;
     }
