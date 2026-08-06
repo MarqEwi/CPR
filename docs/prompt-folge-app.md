@@ -1,8 +1,8 @@
 # Startprompt für die nächste App der Reihe
 
 Dieses Dokument ist zum **Kopieren in einen neuen Thread** gedacht. Es fasst
-alles zusammen, was beim Bau von Never2Late gelernt wurde – vor allem die
-Fehler, die erst spät aufgefallen sind.
+alles zusammen, was beim Bau von Never2Late und CPR Assist gelernt wurde –
+vor allem die Fehler, die erst spät aufgefallen sind.
 
 Der App-Name unten (`SkillLog Med`) ist auszutauschen, wenn eine andere App
 entsteht. Alles ab „TEIL 2" gilt unverändert für jede Folge-App.
@@ -11,11 +11,12 @@ entsteht. Alles ab „TEIL 2" gilt unverändert für jede Folge-App.
 
 # TEIL 1 – Auftrag
 
-Ich baue die fünfte App meiner App-Familie (nach BFT Tool, PFT Tool,
-SGT Rechner und Never2Late). Basis ist ein Klon meiner fertigen App
-**Never2Late** – bitte füge das Repo hinzu und nutze es als Grundlage.
-Never2Late ist die technisch sauberste der bisherigen Apps; alles Wichtige
-steckt dort schon drin.
+Ich baue die sechste App meiner App-Familie (nach BFT Tool, PFT Tool,
+SGT Rechner, Never2Late und CPR Assist). Basis ist ein Klon meiner fertigen
+App **CPR Assist** – bitte füge das Repo hinzu und nutze es als Grundlage.
+CPR Assist ist die technisch sauberste der bisherigen Apps; alles Wichtige
+steckt dort schon drin (Rechenkern getrennt von der Oberfläche, eigenes
+natives Plugin, drei Testebenen).
 
 Die neue App heißt **„SkillLog Med"**.
 

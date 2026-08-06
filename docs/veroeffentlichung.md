@@ -1,23 +1,23 @@
-# Veröffentlichung Schritt für Schritt (Never2Late)
+# Veröffentlichung Schritt für Schritt (CPR Assist)
 
 Einfache Checkliste für alles, was außerhalb des Codes zu tun ist. Reihenfolge
 einhalten – jeder Block ist unabhängig abhakbar.
 
-**Wichtig für diese App:** Never2Late V1 hat **keine Werbung und keine Käufe**.
+**Wichtig für diese App:** CPR Assist V1 hat **keine Werbung und keine Käufe**.
 Die Schritte, die es bei den Fitness-Apps für AdMob und das Kaufprodukt gab,
 entfallen hier komplett. Was du dafür später bräuchtest, steht ganz unten unter
 „Später: Monetarisierung“ – jetzt ist dort nichts zu tun.
 
 ## 1. GitHub Pages aktivieren (Web-Version + Datenschutz-URL)
 
-1. Im Browser das Repo öffnen: `github.com/MarqEwi/never2late`
+1. Im Browser das Repo öffnen: `github.com/MarqEwi/CPR`
 2. Oben auf **Settings** → links auf **Pages**
 3. Bei „Build and deployment“: **Deploy from a branch** wählen,
    Branch **main**, Ordner **/ (root)** → **Save**
 4. Nach 1–2 Minuten ist die App erreichbar unter
-   `https://marqewi.github.io/never2late/`
+   `https://marqewi.github.io/CPR/`
    und die Datenschutzerklärung unter
-   `https://marqewi.github.io/never2late/datenschutz.html`
+   `https://marqewi.github.io/CPR/datenschutz.html`
 
 Die zweite Adresse brauchst du gleich in der Play Console. Ruf sie einmal auf
 und prüf, dass die Seite wirklich erscheint – Google prüft das auch.
@@ -27,7 +27,7 @@ und prüf, dass die Seite wirklich erscheint – Google prüft das auch.
 1. [play.google.com/console](https://play.google.com/console) öffnen →
    **App erstellen**
 2. Ausfüllen:
-   - App-Name: **Never2Late – Ablaufdaten** (24 Zeichen, erlaubt sind 30)
+   - App-Name: **CPR Assist – Reanimation** (24 Zeichen, erlaubt sind 30)
    - Standardsprache: **Deutsch (Deutschland)**
    - App oder Spiel: **App**
    - Kostenlos oder kostenpflichtig: **Kostenlos**
@@ -36,15 +36,15 @@ und prüf, dass die Seite wirklich erscheint – Google prüft das auch.
    - Kurzbeschreibung und vollständige Beschreibung von dort einfügen
    - App-Symbol: `icons/icon-512.png`
    - Feature-Grafik: `docs/store-grafiken/feature-grafik-1024x500.png`
-   - Telefon-Screenshots: die sechs Dateien aus `docs/store-grafiken/`
-     (`screenshot-1…6-1080x1920.png`)
-   - Kategorie: **Produktivität**
+   - Telefon-Screenshots: die sieben Dateien aus `docs/store-grafiken/`
+     (`screenshot-1…7-1080x1920.png`)
+   - Kategorie: **Medizin**
 4. Datenschutz-URL eintragen:
-   `https://marqewi.github.io/never2late/datenschutz.html`
+   `https://marqewi.github.io/CPR/datenschutz.html`
 
 ## 3. Die Formulare unter „Richtlinien → App-Inhalte“
 
-Hier ist Never2Late angenehm schnell abgehakt, weil die App nichts sammelt:
+Hier ist CPR Assist schnell abgehakt, weil die App nichts sammelt:
 
 | Formular | Antwort |
 |---|---|
@@ -95,12 +95,12 @@ Werbe-ID, und die Antwort „keine Datenerhebung" wäre nicht mehr stimmig.
 
    Beim **ersten Mal** klonen:
    ```
-   git clone https://github.com/MarqEwi/never2late.git
-   cd never2late
+   git clone https://github.com/MarqEwi/CPR.git
+   cd CPR
    ```
    Wenn der Ordner schon existiert, stattdessen nur aktualisieren:
    ```
-   cd never2late
+   cd CPR
    git checkout main
    git pull
    ```
@@ -161,7 +161,7 @@ Werbe-ID, und die Antwort „keine Datenerhebung" wäre nicht mehr stimmig.
    einfach bestätigen. Dein Keystore ist dann der Upload-Schlüssel.
 4. Die Datei `app-release.aab` hochladen.
 5. Unter „Versionshinweise“ z. B. eintragen:
-   `Erste Version von Never2Late.`
+   `Erste Version von CPR Assist.`
 6. **Speichern → Release überprüfen → Freigabe starten**.
 
 Der interne Test verlangt mindestens **einen Tester**, sonst lässt sich der
@@ -170,7 +170,7 @@ Release nicht starten. Trag dich unter „Tester“ selbst ein.
 ### 4.5 Bei jedem weiteren Upload
 
 In `android/app/build.gradle` den `versionCode` um 1 erhöhen (steht aktuell auf
-`2`), bei sichtbaren Änderungen zusätzlich den `versionName` anpassen. Danach
+`1`), bei sichtbaren Änderungen zusätzlich den `versionName` anpassen. Danach
 wieder `npm run cap:sync` und neu bauen. Sind mehrere Änderungen noch nicht
 hochgeladen, gehen sie in einem Build raus – dann steigt der `versionCode` nur
 einmal.
@@ -180,25 +180,66 @@ einmal.
 Im internen Test den **Einladungslink** öffnen (Reiter „Tester“), auf dem Handy
 mit demselben Google-Konto annehmen und die App installieren. Dann durchgehen:
 
-- App startet ohne Absturz
-- Einführung erscheint, danach fragt die App nach der Erlaubnis für
-  **Benachrichtigungen** → **Zulassen** tippen
-- Einen Testeintrag anlegen mit einem Datum in **2 Tagen** und einer Erinnerung
-  **1 Tag vorher** – am nächsten Morgen um 9 Uhr muss die Benachrichtigung
-  kommen
-- Bei einem Eintrag **„In Kalender“** antippen: das Teilen-Menü öffnet sich und
-  die Kalender-App übernimmt den Termin
-- **Einstellungen → Daten sichern**: das Teilen-Menü öffnet sich, Datei z. B. in
-  Google Drive ablegen; danach **Daten wiederherstellen** mit derselben Datei
-- Zurück-Taste: schließt erst offene Fenster, geht dann eine Ebene zurück und
-  verlangt auf der Startseite zweimaliges Drücken zum Verlassen
-- Handy neu starten und prüfen, dass die Erinnerung trotzdem noch kommt (das
-  Plugin stellt geplante Erinnerungen nach einem Neustart wieder her)
+Die Liste ist bewusst eine Reihenfolge: einmal komplett durchspielen, als wäre
+es ein echter Einsatz.
+
+**Start**
+- App startet ohne Absturz, Kurzeinführung erscheint einmalig
+- **Reanimation starten** → der Ring zählt sichtbar von 2:00 herunter
+
+**Zyklus und Analyse**
+- Bei 0:10 wird der Ring gelb, ein kurzer Ton kommt
+- Bei 0:00 wechselt die Anzeige auf **Analyse** (rot) mit den beiden
+  Erinnerungen „Rhythmus prüfen" und „Helfer wechseln"
+- **CPR fortsetzen** startet sichtbar Zyklus 2
+
+**Metronom**
+- Knopf oben rechts antippen → **110/min** wählen: der Klick ist hörbar und der
+  Punkt blinkt im Takt. Kurz mitzählen: 110 Klicks in einer Minute sind knapp
+  zwei pro Sekunde
+- Auf **120** wechseln – der Takt wird hörbar schneller – und wieder **Aus**
+
+**Rhythmus, Schock, Medikamente**
+- **Rhythmus → VF/pVT**: die Auswahl steht danach unter dem Knopf
+- **Schock** kurz antippen: es passiert nichts (Schutz gegen Fehlauslösung).
+  Dann gedrückt halten, bis sich der Knopf füllt → Zähler steht auf 1, das
+  Handy vibriert kurz, ein neuer Zyklus beginnt
+- Zwei weitere Schocks: nach dem dritten meldet **Adrenalin** „fällig" und
+  **Amiodaron** „300 mg fällig"
+- **1 mg gegeben** antippen → Status springt auf „zu früh", die Uhr läuft.
+  Sofort noch einmal antippen: die App verweigert die zweite Gabe (Schutz
+  gegen Doppeltipp)
+
+**Dokumentation**
+- **Maßnahme dokumentieren → i.v.-Zugang**: das Fenster schließt sich sofort,
+  die Maßnahme steht mit Uhrzeit auf der Taste
+- **4H / HITS**: eine Ursache auf „geprüft", eine auf „Verdacht" stellen, eine
+  Notiz eintippen. Fenster schließen, wieder öffnen – alles muss noch da sein
+
+**Bildschirm (der wichtigste Punkt am Gerät)**
+- Handy zwei bis drei Minuten unberührt liegen lassen, während der Einsatz
+  läuft: der Bildschirm darf **weder dunkler werden noch sperren**
+- In den **Einstellungen** den Schalter „Bildschirm anlassen" ausschalten →
+  jetzt darf das Handy wieder wie gewohnt abdunkeln. Danach wieder einschalten
+
+**ROSC und zurück**
+- **ROSC → bestätigen**: die Post-ROSC-Liste erscheint, zwei Punkte abhaken
+- **Re-Arrest** gedrückt halten: zurück in Zyklus 1, der Rhythmus steht auf
+  „unklar", die Adrenalin-Uhr läuft weiter (springt nicht auf „keine Gabe")
+
+**Robustheit**
+- App über die Zurück-Taste verlassen wollen: bei laufendem Einsatz erscheint
+  nur ein Hinweis, die App schließt sich **nicht**
+- App über den App-Umschalter beenden und neu starten: der Einsatz läuft weiter
+  und die Zeiten stimmen (nicht bei null angefangen)
+- **Einsatz beenden** über die Einstellungen: Zusammenfassung erscheint mit
+  Dauer, Schocks, Medikamenten und Maßnahmen
 
 **Wenn etwas nicht geht:** In den Einstellungen **5× auf die Versionsnummer
-tippen**. Darunter erscheinen dann Statuszeilen für Erinnerungen, Export,
-Werbung und Käufe. Schick mir den Text dieser Zeilen – daraus lässt sich meist
-sofort erkennen, woran es liegt.
+tippen**. Darunter erscheinen dann Statuszeilen für Einsatz, Ton, Bildschirm,
+Werbung und Käufe. Besonders die Zeile „Bildschirm-Status" ist aussagekräftig:
+Dort muss „nativ aktiv" stehen. Schick mir den Text dieser Zeilen – daraus
+lässt sich meist sofort erkennen, woran es liegt.
 
 ## 6. In die Produktion veröffentlichen
 
@@ -225,7 +266,7 @@ bereit und ist über je einen Schalter abgeschaltet. Wenn du das später
 aktivieren willst, sind das die Schritte – **erst dann**, nicht jetzt:
 
 1. **AdMob:** auf [admob.google.com](https://admob.google.com) im selben Konto
-   eine neue App **Never2Late** anlegen. Die App-ID (`ca-app-pub-…~…`) ersetzt
+   eine neue App **CPR Assist** anlegen. Die App-ID (`ca-app-pub-…~…`) ersetzt
    im `android/app/src/main/AndroidManifest.xml` die dort eingetragene
    Google-Test-App-ID. **Dieser Eintrag darf nie leer sein – fehlt er, stürzt
    die App beim Start ab.** Dann einen Banner-Block anlegen und dessen ID

@@ -1,32 +1,38 @@
-# Play-Store-Texte – Never2Late
+# Play-Store-Texte – CPR Assist
 
-Vierte App im MERCwerk-Konto, aber die erste außerhalb des Fitness-Themas.
-Die Texte sind deshalb komplett neu geschrieben: anderer Einstieg, andere
-Gliederung, andere Bildsprache. „Wiederholter Inhalt“ ist bei mehreren Apps
-desselben Kontos das größte Ablehnungsrisiko – hier hilft, dass Never2Late
-inhaltlich nichts mit BFT, PFT oder SGT zu tun hat. **Nichts aus den anderen
-Store-Einträgen übernehmen.**
+Fünfte App im MERCwerk-Konto und die erste für den beruflichen Einsatz in der
+Notfallmedizin. Aufbau und Tonfall sind deshalb bewusst anders als bei den
+Fitness-Apps und bei Never2Late: sachlich, fachlich, ohne Werbesprache.
+„Wiederholter Inhalt“ ist bei mehreren Apps desselben Kontos das größte
+Ablehnungsrisiko – **nichts aus den anderen Store-Einträgen übernehmen.**
+
+Zweite Besonderheit: Bei allem, was nach Medizin klingt, schaut das
+Play-Review genauer hin. Der Text muss deshalb an prominenter Stelle sagen,
+**was die App nicht ist**: kein Medizinprodukt, keine Diagnose, keine
+Therapieentscheidung, kein Ersatz für Ausbildung. Diese Sätze gehören in die
+Kurzbeschreibung *und* in den ersten Absatz der Vollbeschreibung – nicht ans
+Ende.
 
 ## App-Name (max. 30 Zeichen)
 
 ```
-Never2Late – Ablaufdaten
+CPR Assist – Reanimation
 ```
 
-(24 Zeichen. Der Launcher-Name unter dem Icon bleibt kurz „Never2Late“.)
+(24 Zeichen. Der Launcher-Name unter dem Icon bleibt kurz „CPR Assist“.)
 
 Alternative, falls der Name schon belegt ist:
 
 ```
-Never2Late: Fristen im Blick
+CPR Assist: ALS-Begleiter
 ```
 
-(28 Zeichen)
+(24 Zeichen)
 
 ## Kurzbeschreibung (max. 80 Zeichen)
 
 ```
-Ausweis, Karte, TÜV, Vertrag: Ablaufdaten erfassen und rechtzeitig erinnern.
+Zyklen, Medikamente und Protokoll im ALS – Merkhilfe, kein Ersatz fürs Team.
 ```
 
 (75 Zeichen)
@@ -34,46 +40,43 @@ Ausweis, Karte, TÜV, Vertrag: Ablaufdaten erfassen und rechtzeitig erinnern.
 ## Vollständige Beschreibung (max. 4000 Zeichen)
 
 ```
-Der Personalausweis ist seit vier Monaten abgelaufen. Die Bankkarte gilt nur noch bis nächsten Monat. Der berufliche Nachweis wäre im Frühjahr fällig gewesen. Solche Dinge fallen fast nie rechtzeitig auf – sondern genau dann, wenn man sie braucht.
+Im Kreislaufstillstand macht nicht das Fachwissen die Arbeit schwer, sondern die Gleichzeitigkeit: Der Zyklus läuft, jemand fragt nach der letzten Adrenalin-Gabe, die Schockzahl stimmt nicht mehr mit der Erinnerung überein, und hinterher fehlen die Zeiten fürs Protokoll.
 
-Never2Late sammelt alles, was ein Ablauf- oder Fälligkeitsdatum hat, an einem Ort und meldet sich, bevor es knapp wird.
+CPR Assist übernimmt genau diesen Teil. Die App strukturiert den Ablauf nach den Reanimationsleitlinien 2025 (GRC/ERC) für Erwachsene und schreibt jeden Schritt mit Zeitstempel mit.
 
-SO FUNKTIONIERT ES
-Eintrag anlegen: Titel, Kategorie, Datum – fertig. Optional dazu eine Nummer, eine Notiz und eigene Erinnerungen. Das Dashboard zeigt danach immer zuerst, was als Nächstes zählt: abgelaufen, bald fällig, alles andere.
+WICHTIG – WAS DIESE APP NICHT IST
+CPR Assist ist eine kognitive Unterstützung und ein Ereignis-Protokoll für geschultes Personal. Die App stellt keine Diagnose, trifft keine Therapieentscheidung, gibt keine patientenspezifischen Empfehlungen und ersetzt weder Ausbildung noch klinisches Urteil. Verantwortlich für jede Maßnahme bleibt das behandelnde Team. Es gibt keinen Kindermodus: Die App bildet ausschließlich Erwachsenen-ALS ab.
 
-ACHT KATEGORIEN FÜR DEN ALLTAG – UND EIGENE DAZU
-• Ausweise – Personalausweis, Reisepass, Aufenthaltstitel
-• Karten – EC- und Kreditkarte, Gesundheitskarte, Mitgliedsausweise
-• Beruflich – Zertifikate, Lizenzen, Fortbildungen, jährliche Nachweise
-• Fahrzeug – Führerschein, Hauptuntersuchung, Zulassung
-• Gesundheit – Impfungen und medizinische Nachweise
-• Reisen – Visa und Reisedokumente
-• Verträge – Versicherungen, Garantien, Abos, Kündigungsfristen
-• Sonstiges – alles Übrige mit Frist
+DER ZYKLUS IM MITTELPUNKT
+Ein großer Ring zählt die zwei Minuten herunter. Die letzten zehn Sekunden warnen sichtbar, danach wechselt die App klar erkennbar in das Analysefenster und erinnert an beides, woran unter Stress am ehesten niemand denkt: Rhythmus prüfen und die Person an den Thoraxkompressionen wechseln. Nach Analyse oder Schock führt ein breiter Knopf sofort zurück in die Kompressionen.
 
-Fehlt etwas? Leg dir eigene Kategorien an – mit eigenem Namen und einem Symbol deiner Wahl, zum Beispiel Haustier, Wohnung oder Studium.
+MEDIKAMENTE ALS STATUS, NICHT ALS ZAHLENKOLONNE
+Adrenalin zeigt nicht nur die verstrichene Zeit, sondern was sie bedeutet: zu früh, jetzt fällig, überfällig. Bei nicht schockbarem Rhythmus meldet die App die Gabe so früh wie möglich, bei VF/pVT nach dem dritten Schock, danach im Abstand von drei bis fünf Minuten.
 
-Und weil sich nicht alles in eine Schublade sortieren lässt, darf ein Eintrag zu mehreren Kategorien gehören: Der Reisepass steht unter Ausweise und unter Reisen und taucht in beiden Filtern auf.
+Amiodaron ist bewusst kein Wiederhol-Countdown, sondern ein Dosisstatus: 300 mg nach dem dritten Schock, die Folgegabe von 150 mg nach dem fünften – jeweils mit Zeitstempel und nur dann, wenn der Rhythmus es hergibt.
 
-ERINNERUNGEN, DIE NICHT NERVEN
-Jeder Eintrag bekommt automatisch drei Erinnerungen: drei Monate, eine Woche und einen Tag vorher. Genug Vorlauf für einen Behördentermin, und trotzdem noch eine letzte Erinnerung kurz davor. Du kannst die Zeitpunkte je Eintrag ändern, weitere ergänzen oder alle abschalten. Die Meldungen sind kurz und sagen genau, worum es geht – zum Beispiel „Personalausweis läuft in 7 Tagen ab“.
+VIER TASTEN, KEINE SUCHE
+Rhythmus, Schock, ROSC und 4H/HITS liegen als große, beschriftete Flächen nebeneinander. Der Schock-Knopf wird kurz gehalten statt getippt – gegen eine versehentliche Auslösung, ohne den Ablauf zu bremsen. Jeder Schock erhöht den Zähler, wird protokolliert und führt unmittelbar in den nächsten Zyklus.
 
-WIEDERKEHRENDE FRISTEN
-Manche Termine kommen jedes Jahr wieder: der jährliche Nachweis, die Vorsorgeuntersuchung, die Prüfung. Stell den Eintrag einmal auf monatlich, halbjährlich oder jährlich. Ein Tipp auf „Erledigt“ setzt den nächsten Termin – auf denselben Kalendertag, auch wenn ein Zyklus einmal ausgefallen ist. Bis dahin bleibt ein überfälliger Nachweis sichtbar überfällig; er verschwindet nicht einfach.
+REVERSIBLE URSACHEN, STRUKTURIERT
+Hinter 4H/HITS liegt keine Abhakliste, sondern ein Arbeitsstand: Jede der acht Ursachen hat drei Zustände – offen, geprüft beziehungsweise unwahrscheinlich, verdächtig beziehungsweise behandelt. Dazu je ein kurzer Hinweis, woran man die Ursache erkennt, und ein Notizfeld. So sieht das Team auf einen Blick, was noch offen ist.
 
-ERNEUERN STATT NEU ANLEGEN
-Neuer Ausweis in der Hand? „Erneuert“ tippen, neues Datum wählen – der Eintrag läuft weiter, mit allen Erinnerungen. Was du nicht mehr brauchst, wandert ins Archiv: aus der Liste verschwunden, aber jederzeit wieder auffindbar.
+MASSNAHMEN IN EINEM TIPP
+Zugang, Atemweg, Intubation, Kapnographie, mechanische Reanimationshilfe: antippen genügt, die Maßnahme steht mit Uhrzeit im Protokoll. Keine Rückfrage, kein Formular.
 
-SCHNELL WIEDERFINDEN
-Suche nach Titel oder Nummer, Filter nach Status und Kategorie, sortiert nach Dringlichkeit. Die Liste zeigt immer zuerst, was drängt.
+NACH ROSC GEHT ES WEITER
+ROSC beendet den Einsatz nicht, sondern führt in einen eigenen Modus mit den Punkten der Postreanimations-Behandlung: Atemweg und Beatmung, Oxygenierung mit Ziel-SpO2 94 bis 98 Prozent, Normokapnie, Ursachensuche, 12-Kanal-EKG, Kreislaufstabilisierung und Temperaturkontrolle. Kommt es zum erneuten Stillstand, führt ein Knopf zurück in die Reanimation – die Adrenalin-Uhr läuft dabei korrekt weiter.
 
-OPTIONAL IN DEN KALENDER
-Einzelne Termine lassen sich als Kalendereintrag übergeben – inklusive Wiederholung und Erinnerungen. Die App braucht dafür keinen Zugriff auf deinen Kalender und funktioniert auch komplett ohne.
+METRONOM
+Optionaler Taktgeber mit 100, 110 oder 120 Kompressionen pro Minute, Standard 110. Er sitzt klein in der Ecke und ist mit einem Tipp umgestellt oder abgeschaltet. Als Unterstützung gedacht, nicht als Qualitätskontrolle.
 
-DEINE DATEN BLEIBEN BEI DIR
-Kein Konto, keine Anmeldung, kein Server, keine Cloud. Alles wird ausschließlich auf deinem Gerät gespeichert. Es gibt keine Werbung, keine Käufe und keine Datenweitergabe. Über die Sicherungsfunktion legst du bei Bedarf selbst eine Datei an – du entscheidest, wo sie liegt.
+FÜR DEN EINSATZ GEBAUT
+Sehr dunkle Oberfläche mit hohem Kontrast, große Schaltflächen, große Zahlen, keine Spielereien. Der Bildschirm bleibt während des Einsatzes an und sperrt nicht. Ein versehentlich geschlossener oder abgestürzter Einsatz wird beim nächsten Start weitergeführt, weil alle Zeiten als Zeitstempel gespeichert sind.
 
-Hell und dunkel, ohne Registrierung, sofort nutzbar. Alle Angaben ohne Gewähr: maßgeblich bleiben die Daten auf deinen Dokumenten.
+KEINE PATIENTENDATEN, KEIN KONTO
+Die App erfasst weder Namen noch andere Angaben zu Patientinnen und Patienten. Protokoll und Einstellungen bleiben ausschließlich auf dem Gerät. Kein Konto, kein Server, keine Cloud, kein Tracking, keine Werbung, keine Käufe.
+
+Alle Angaben ohne Gewähr. Maßgeblich sind die geltenden Leitlinien und die Entscheidung des behandelnden Teams.
 ```
 
 ## Grafiken
@@ -92,9 +95,27 @@ node scripts/screenshots.mjs
 node scripts/store-grafiken.mjs
 ```
 
+Die Überschriften der Store-Screenshots stehen in `scripts/store-grafiken.mjs`
+und sind bewusst anders formuliert als die Zwischenüberschriften im Text oben.
+
+## Kategorie und Einstufung
+
+| Feld | Antwort |
+|---|---|
+| Kategorie | **Medizin** |
+| Tags | Notfallmedizin, Referenz, Dokumentation |
+| Zielgruppe | **18 und älter**, „Für Kinder gedacht“: **Nein** |
+| Inhaltseinstufung | Fragebogen ohne Besonderheiten; keine Gewalt, keine Nutzerkommunikation |
+
+„Medizin“ ist die ehrliche Kategorie – „Gesundheit und Fitness“ wäre
+irreführend, weil die App kein Verbraucherprodukt ist. Bei der
+Inhaltseinstufung fragt Google nach medizinischen bzw. Gesundheitsangaben:
+Dort angeben, dass die App **Referenz- und Dokumentationsfunktionen für
+Fachpersonal** bietet und keine Diagnose oder Behandlung durchführt.
+
 ## Data Safety – die Antworten in Kurzform
 
-Never2Late erhebt **keine** Daten. Das macht das Formular kurz:
+CPR Assist erhebt **keine** Daten. Das macht das Formular kurz:
 
 | Frage | Antwort |
 |---|---|
@@ -103,18 +124,21 @@ Never2Late erhebt **keine** Daten. Das macht das Formular kurz:
 | Können Nutzer die Löschung beantragen? | entfällt – gelöscht wird in der App bzw. durch Deinstallation |
 | Enthält die App Werbung? | **Nein** |
 | Enthält die App In-App-Käufe? | **Nein** |
-| Zielgruppe | Nicht speziell für Kinder |
+| Gesundheits-App? | **Nein** – keine Studie, keine Gesundheitsdaten, keine Patientendaten |
 
-Wichtig: Die Berechtigung für **Benachrichtigungen** (POST_NOTIFICATIONS) ist
-*keine* Datenerhebung. Die Erinnerungen werden vollständig auf dem Gerät
-berechnet und geplant. In der Data-Safety-Erklärung ändert sich dadurch nichts.
-
-Kategorie: **Produktivität**. Die Kategorie „Gesundheit und Fitness“ passt
-nicht und sollte auch nicht gewählt werden, obwohl es eine Kategorie
-„Gesundheit“ *innerhalb* der App gibt.
+Dass der Bildschirm im Einsatz anbleibt, macht das mitgelieferte Plugin
+`BildschirmWach` über `FLAG_KEEP_SCREEN_ON`. Dafür ist **keine Berechtigung**
+nötig; die App fordert außer Internet keine an. An der
+Datensicherheits-Erklärung ändert das nichts.
 
 ## Was in V1 bewusst fehlt
 
 Keine Werbung, keine Premium-Version, kein In-App-Produkt, keine Limits.
-Die Module dafür liegen im Code vorbereitet, sind aber abgeschaltet – siehe
-`docs/veroeffentlichung.md`, Abschnitt „Später: Monetarisierung“.
+Ebenfalls noch nicht enthalten: sichtbare Ereignis-Timeline und Export des
+Protokolls (die Daten dafür werden bereits mitgeschrieben), Sprachumschaltung
+und konfigurierbare Zeitfenster. Die Module für Werbung und Kauf liegen im
+Code vorbereitet, sind aber abgeschaltet – siehe `docs/veroeffentlichung.md`,
+Abschnitt „Später: Monetarisierung“.
+
+**Grundsatz für später:** Auf dem aktiven Einsatz-Screen wird es nie Werbung
+geben. Ein Banner käme höchstens auf die Bereit-Ansicht.

@@ -65,7 +65,7 @@
     font-variant-numeric:tabular-nums}
   .spacer{flex:1}
   .iconbtn{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius-xs);
-    color:var(--text);width:42px;height:42px;cursor:pointer;display:grid;place-items:center;
+    color:var(--text);width:44px;height:44px;cursor:pointer;display:grid;place-items:center;
     padding:0;transition:background .14s, border-color .14s}
   .iconbtn:hover{background:var(--bg3);border-color:var(--line-stark)}
   .iconbtn:active{transform:scale(.95)}
@@ -151,10 +151,14 @@
     padding:7px 13px;font-size:.83rem;font-weight:640}
   .analysechips .ic{color:var(--bad);width:17px;height:17px}
   /* ---------- Medikamentenkarten ---------- */
-  .medgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 10px}
-  @media(max-width:355px){.medgrid{grid-template-columns:1fr}}
+  /* minmax(0,1fr) statt 1fr: sonst zwingt ein langes Wort wie "Amiodaron"
+     die Spalte breiter als das Raster – auf 360-px-Geräten läuft der
+     Bildschirm sonst seitlich über. */
+  .medgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin:4px 0 10px}
+  @media(max-width:355px){.medgrid{grid-template-columns:minmax(0,1fr)}}
   .medcard{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);
-    padding:12px 13px;display:flex;flex-direction:column;gap:6px}
+    padding:12px 13px;display:flex;flex-direction:column;gap:6px;
+    min-width:0;overflow-wrap:anywhere}
   .medcard .kopf{display:flex;align-items:center;justify-content:space-between;gap:8px}
   .medcard .kopf b{font-size:.92rem;font-weight:700;letter-spacing:-.01em}
   .medcard .wert{font-size:1.42rem;font-weight:720;letter-spacing:-.02em;line-height:1.15;
@@ -188,7 +192,7 @@
   .metrobtn{display:inline-flex;align-items:center;gap:7px;flex:none;
     background:var(--bg2);border:1px solid var(--line);border-radius:999px;
     color:var(--text2);font:inherit;font-size:.82rem;font-weight:700;
-    padding:8px 13px;min-height:42px;cursor:pointer;font-variant-numeric:tabular-nums;
+    padding:8px 13px;min-height:44px;cursor:pointer;font-variant-numeric:tabular-nums;
     transition:background .13s, border-color .13s, color .13s}
   .metrobtn:hover{background:var(--bg3)}
   .metrobtn:active{transform:scale(.97)}
