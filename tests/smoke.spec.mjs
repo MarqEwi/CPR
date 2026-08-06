@@ -46,11 +46,14 @@ test("Einsatz starten: aktiver Screen, Ring läuft, nur cpra_-Schlüssel", async
 
   await expect(page.locator("#ring-zeit")).toContainText(/^[12]:\d\d$/);
   await expect(page.locator("#ring-status")).toContainText("Zyklus 1");
-  await expect(page.locator("#head-sub")).toContainText("Aktiver Einsatz");
-  await expect(page.locator("#btn-cpr")).toContainText("Zyklus neu starten");
+  /* Im Einsatz ersetzt die eigene Kopfzeile die Titelleiste. */
+  await expect(page.locator("header.app")).toBeHidden();
+  await expect(page.locator("#aktivkopf")).toBeVisible();
+  await expect(page.locator("#gesamtzeile")).toContainText("Gesamt");
+  await expect(page.locator("#btn-cpr")).toContainText("Zyklus");
 
   /* Metronom: kleiner Knopf in der Ecke, standardmäßig aus, Standard 110 */
-  await expect(page.locator("#metro-label")).toHaveText("Metronom aus");
+  await expect(page.locator("#metro-label")).toHaveText("aus");
   const bpm = await page.evaluate(() => window.CPRA.Einst.werte.metronomBpm);
   expect(bpm).toBe(110);
 

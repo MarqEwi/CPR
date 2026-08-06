@@ -110,9 +110,9 @@
     45%{box-shadow:0 0 0 7px rgba(63,191,174,.22)}
   }
   /* ---------- Status-Pillen ---------- */
-  .pill{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:750;
-    padding:3px 10px;border-radius:999px;white-space:nowrap;line-height:1.5;
-    border:1px solid transparent;letter-spacing:.05em;text-transform:uppercase}
+  .pill{display:inline-flex;align-items:center;gap:5px;font-size:.61rem;font-weight:750;
+    padding:3px 7px;border-radius:999px;white-space:nowrap;line-height:1.5;flex:none;
+    border:1px solid transparent;letter-spacing:.02em;text-transform:uppercase}
   .pill.p-neutral{background:var(--bg3);color:var(--text2);border-color:var(--line-stark)}
   .pill.p-ok{background:var(--ok-soft);color:var(--ok);border-color:var(--ok-rand)}
   .pill.p-accent{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-rand)}
@@ -131,7 +131,7 @@
   .startliste b{color:var(--text);font-weight:640}
   #btn-start{min-height:72px;font-size:1.22rem;margin-top:6px}
   /* ---------- CPR-Ring ---------- */
-  .ringwrap{position:relative;width:min(74vw,290px);margin:6px auto 2px}
+  .ringwrap{position:relative;width:min(64vw,250px);margin:2px auto}
   .ringwrap svg{display:block;width:100%;height:auto;transform:rotate(-90deg)}
   .ring-bg{fill:none;stroke:var(--bg3);stroke-width:13}
   .ring-fg{fill:none;stroke:var(--accent);stroke-width:13;stroke-linecap:round;
@@ -140,73 +140,90 @@
   .phase-analyse .ring-fg{stroke:var(--bad)}
   .ringmitte{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
     justify-content:center;text-align:center;gap:2px;padding:0 26px}
-  #ring-zeit{font-size:3.45rem;font-weight:750;letter-spacing:-.035em;line-height:1.05;
+  #ring-zeit{font-size:3rem;font-weight:750;letter-spacing:-.035em;line-height:1.05;
     font-variant-numeric:tabular-nums}
   .phase-warn #ring-zeit{color:var(--warn)}
-  .phase-analyse #ring-zeit{color:var(--bad);font-size:2.5rem}
-  #ring-status{font-size:.84rem;color:var(--text2);font-weight:600;line-height:1.35}
+  .phase-analyse #ring-zeit{color:var(--bad);font-size:2rem}
+  #ring-status{font-size:.8rem;color:var(--text2);font-weight:600;line-height:1.35}
   .phase-analyse #ring-status{color:var(--text)}
   #ring-hinweis{font-size:.76rem;color:var(--text3);font-variant-numeric:tabular-nums}
   .gesamtzeile{text-align:center;font-size:.8rem;color:var(--text3);margin:2px 0 10px;
     font-variant-numeric:tabular-nums}
-  /* Analyse-Erinnerungen: Rhythmus prüfen + Helfer wechseln */
-  .analysechips{display:none;justify-content:center;gap:8px;margin:0 0 10px;flex-wrap:wrap}
-  .phase-analyse .analysechips{display:flex}
-  .analysechips span{display:inline-flex;align-items:center;gap:7px;background:var(--bad-soft);
-    border:1px solid var(--bad-rand);color:var(--text);border-radius:999px;
-    padding:7px 13px;font-size:.83rem;font-weight:640}
-  .analysechips .ic{color:var(--bad);width:17px;height:17px}
   /* ---------- Medikamentenkarten ---------- */
   /* minmax(0,1fr) statt 1fr: sonst zwingt ein langes Wort wie "Amiodaron"
      die Spalte breiter als das Raster – auf 360-px-Geräten läuft der
      Bildschirm sonst seitlich über. */
-  .medgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin:4px 0 10px}
+  .medgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin:4px 0 8px}
   @media(max-width:355px){.medgrid{grid-template-columns:minmax(0,1fr)}}
-  .medcard{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);
-    padding:12px 13px;display:flex;flex-direction:column;gap:6px;
-    min-width:0;overflow-wrap:anywhere}
-  .medcard .kopf{display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .medcard .kopf b{font-size:.92rem;font-weight:700;letter-spacing:-.01em}
-  .medcard .wert{font-size:1.42rem;font-weight:720;letter-spacing:-.02em;line-height:1.15;
-    font-variant-numeric:tabular-nums}
-  .medcard .wert.klein{font-size:1.05rem;font-weight:640}
-  .medcard .sub{font-size:.755rem;color:var(--text2);line-height:1.4;min-height:2.1em;
-    font-variant-numeric:tabular-nums}
+  /* Feste Zeilenhöhen statt mitwachsender Inhalte: Sonst springt die Karte
+     bei jedem Statuswechsel in der Höhe und das Raster verrutscht. */
+  .medcard{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius-s);
+    padding:9px 11px;display:flex;flex-direction:column;gap:4px;
+    min-width:0;overflow:hidden}
+  .medcard .kopf{display:flex;align-items:center;justify-content:space-between;gap:6px;
+    min-height:22px}
+  .medcard .kopf b{font-size:.81rem;font-weight:700;letter-spacing:-.015em;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .medcard .wert{font-size:1.2rem;font-weight:720;letter-spacing:-.02em;line-height:1.2;
+    font-variant-numeric:tabular-nums;height:1.45em;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .medcard .wert.klein{font-size:.92rem;font-weight:660}
+  .medcard .sub{font-size:.7rem;color:var(--text2);line-height:1.35;
+    height:2.7em;overflow:hidden;font-variant-numeric:tabular-nums}
   .medcard.m-warn{border-color:var(--warn-rand)}
   .medcard.m-warn .wert{color:var(--warn)}
   .medcard.m-bad{border-color:var(--bad-rand)}
   .medcard.m-bad .wert{color:var(--bad)}
   .medbtn{margin-top:auto;width:100%;background:var(--bg3);border:1px solid var(--line-stark);
-    color:var(--text);font:inherit;font-weight:700;font-size:.9rem;border-radius:var(--radius-xs);
-    padding:12px 8px;min-height:48px;cursor:pointer;
+    color:var(--text);font:inherit;font-weight:700;font-size:.83rem;border-radius:var(--radius-xs);
+    padding:10px 6px;min-height:44px;cursor:pointer;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;
     transition:background .14s, border-color .14s, color .14s}
   .medbtn:hover{background:var(--bg4)}
   .medbtn:active{transform:scale(.98)}
   .medbtn:disabled{opacity:.4;cursor:not-allowed}
   .m-warn .medbtn{background:var(--warn);border-color:var(--warn);color:#231a05}
   .m-bad .medbtn{background:var(--bad);border-color:var(--bad);color:#2a0805}
-  /* ---------- Kopfzeile des Einsatzes: Kennzahlen + Metronom ----------
-     Das Metronom sitzt bewusst klein in der oberen rechten Ecke: es ist
-     eine Hilfe, kein Hauptbedienelement. Ein Tipp öffnet die Auswahl. */
-  .aktivkopf{display:flex;align-items:center;gap:10px;margin:2px 0 0}
+  /* ---------- Kopfzeile des Einsatzes ----------
+     Im Einsatz ersetzt diese schmale Leiste die Titelleiste: Sie bleibt beim
+     Scrollen stehen und trägt alles, was jederzeit erreichbar sein muss –
+     Kennzahlen, den Zyklus-Knopf, das Metronom und die Einstellungen. */
+  .aktivkopf{position:sticky;top:0;z-index:28;
+    display:flex;align-items:center;gap:8px;
+    margin:0 -16px 6px;padding:8px 16px;
+    padding-top:calc(8px + env(safe-area-inset-top));
+    background:color-mix(in srgb, var(--bg) 94%, transparent);
+    backdrop-filter:saturate(140%) blur(12px);
+    -webkit-backdrop-filter:saturate(140%) blur(12px);
+    border-bottom:1px solid transparent;transition:border-color .2s}
+  body.gescrollt .aktivkopf{border-bottom-color:var(--line)}
   /* Zwei bewusst gesetzte Zeilen statt eines zufälligen Umbruchs. */
-  .aktivkopf .kennzahlen{flex:1;min-width:0;font-size:.79rem;color:var(--text3);
-    font-variant-numeric:tabular-nums;line-height:1.35}
-  .aktivkopf .kennzahlen b{display:block;font-size:.88rem;font-weight:660;color:var(--text2)}
+  .aktivkopf .kennzahlen{flex:1;min-width:0;font-size:.71rem;color:var(--text3);
+    font-variant-numeric:tabular-nums;line-height:1.3}
+  .aktivkopf .kennzahlen b{display:block;font-size:.86rem;font-weight:680;color:var(--text2)}
   .aktivkopf .kennzahlen span{display:block;white-space:nowrap;overflow:hidden;
     text-overflow:ellipsis}
-  .metrobtn{display:inline-flex;align-items:center;gap:7px;flex:none;
+  /* Gemeinsame Form für die drei Knöpfe rechts in der Kopfzeile. */
+  .kopfbtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:none;
     background:var(--bg2);border:1px solid var(--line);border-radius:999px;
-    color:var(--text2);font:inherit;font-size:.82rem;font-weight:700;
-    padding:8px 13px;min-height:44px;cursor:pointer;font-variant-numeric:tabular-nums;
+    color:var(--text2);font:inherit;font-size:.8rem;font-weight:700;
+    padding:8px 12px;min-height:44px;cursor:pointer;font-variant-numeric:tabular-nums;
     transition:background .13s, border-color .13s, color .13s}
-  .metrobtn:hover{background:var(--bg3)}
-  .metrobtn:active{transform:scale(.97)}
+  .kopfbtn:hover{background:var(--bg3)}
+  .kopfbtn:active{transform:scale(.97)}
+  .kopfbtn.nur-icon{width:44px;padding:0}
+  .kopfbtn .ic{width:19px;height:19px}
+  /* Zyklus-Knopf: im Analysefenster tritt er deutlich hervor – dort ist die
+     Rückkehr in die Kompressionen die wichtigste Aktion überhaupt. */
+  #btn-cpr.dran{background:var(--accent);border-color:var(--accent);color:var(--accent-text);
+    animation:betonung 1.6s ease-in-out infinite}
   .metrobtn .puls{width:9px;height:9px;border-radius:50%;background:var(--line-stark);flex:none;
     transition:background .05s, box-shadow .05s}
   .metrobtn.an{color:var(--accent);border-color:var(--accent-rand);background:var(--accent-soft)}
   .metrobtn.an .puls{background:var(--accent)}
   .metrobtn .puls.schlag{box-shadow:0 0 0 5px var(--accent-soft)}
+  /* Im Einsatz trägt die Kopfzeile alles – die Titelleiste entfällt. */
+  body.im-einsatz header.app{display:none}
   /* Auswahl im Dialog: aus / 100 / 110 / 120 als große Zeilen */
   .metrowahl{display:grid;gap:9px}
   .metrowahl button{display:flex;align-items:center;gap:13px;background:var(--bg3);
@@ -228,16 +245,17 @@
   .switch input:checked + .track{background:var(--accent);border-color:var(--accent)}
   .switch input:checked + .track::after{transform:translateX(20px);background:var(--accent-text)}
   /* ---------- Aktionsraster ---------- */
-  .aktionsgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 10px}
+  .aktionsgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 8px}
   .aktion{position:relative;overflow:hidden;background:var(--bg2);border:1px solid var(--line-stark);
-    border-radius:var(--radius-s);min-height:72px;padding:10px 8px;cursor:pointer;font:inherit;
+    border-radius:var(--radius-s);min-height:64px;padding:8px 6px;cursor:pointer;font:inherit;
     color:var(--text);display:flex;flex-direction:column;align-items:center;justify-content:center;
-    gap:5px;font-weight:700;font-size:1.0rem;letter-spacing:-.008em;
+    gap:3px;font-weight:700;font-size:.92rem;letter-spacing:-.008em;
     transition:background .13s, border-color .13s}
   .aktion:hover{background:var(--bg3)}
   .aktion:active{transform:scale(.985)}
-  .aktion .ic{width:23px;height:23px}
-  .aktion .unter{font-size:.68rem;color:var(--text2);font-weight:550;letter-spacing:0}
+  .aktion .ic{width:20px;height:20px}
+  .aktion .unter{font-size:.65rem;color:var(--text2);font-weight:550;letter-spacing:0;
+    max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .aktion.a-rhythmus .ic{color:var(--accent)}
   .aktion.a-schock .ic{color:var(--warn)}
   .aktion.a-rosc .ic{color:var(--ok)}
@@ -250,6 +268,10 @@
   .aktion.breit .ic{color:var(--text2);width:21px;height:21px}
   .aktion.breit .unter{margin-left:auto;text-align:right;min-width:0;
     overflow:hidden;text-overflow:ellipsis}
+  /* Kein echter Beenden-Knopf, nur ein Wegweiser – deshalb zurückhaltend. */
+  .aktion.gedaempft{border-style:dashed;border-color:var(--line);color:var(--text2);
+    min-height:52px;font-size:.88rem}
+  .aktion.gedaempft .ic{color:var(--text3)}
   /* Schnellauswahl der Maßnahmen: eine Liste, ein Tipp, fertig. */
   .massnahmenwahl{display:grid;gap:8px}
   .massnahmenwahl button{display:flex;align-items:center;gap:12px;background:var(--bg3);
@@ -364,6 +386,28 @@
     padding:7px 9px;border-radius:9px;line-height:1.5}
   .ver{text-align:center;color:var(--text3);font-size:.775rem;margin-top:18px;cursor:default;
     user-select:none;letter-spacing:.02em}
+  /* Gespeicherte Einsätze */
+  .archivliste{list-style:none;margin:0;padding:0;border:1px solid var(--line);
+    border-radius:var(--radius-s);overflow:hidden}
+  .archivliste:empty{display:none}
+  .archivliste li{border-bottom:1px solid var(--line)}
+  .archivliste li:last-child{border-bottom:none}
+  .archivliste button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+    background:var(--bg2);border:none;padding:12px 14px;font:inherit;color:var(--text);
+    cursor:pointer;min-height:56px;transition:background .13s}
+  .archivliste button:hover{background:var(--bg3)}
+  .archivliste .wann{flex:1;min-width:0}
+  .archivliste .wann b{display:block;font-size:.92rem;font-weight:660;letter-spacing:-.01em}
+  .archivliste .wann span{display:block;font-size:.75rem;color:var(--text2);
+    font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .archivliste .pfeil{color:var(--text3);flex:none}
+  .verlauf{list-style:none;margin:0;padding:0;font-size:.82rem;
+    max-height:46dvh;overflow-y:auto}
+  .verlauf li{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);
+    line-height:1.4}
+  .verlauf li:last-child{border-bottom:none}
+  .verlauf .zeit{flex:none;color:var(--text2);font-variant-numeric:tabular-nums;
+    min-width:4.2em;font-weight:640}
   /* Zusammenfassung im Beenden-Dialog */
   .zusammen{display:grid;grid-template-columns:auto 1fr;gap:7px 16px;margin:10px 0 4px;
     font-size:.9rem}
@@ -414,6 +458,24 @@
 
 <main>
 
+  <!-- ============ Kopfzeile im Einsatz (ersetzt die Titelleiste) ============
+       Bleibt beim Scrollen stehen und trägt alles, was jederzeit erreichbar
+       sein muss. Außerhalb eines Einsatzes ist sie ausgeblendet. -->
+  <div class="aktivkopf" id="aktivkopf" style="display:none">
+    <div class="kennzahlen" id="gesamtzeile"><b>Gesamt 0:00</b><span>noch keine Ereignisse</span></div>
+    <button class="kopfbtn" id="btn-cpr" title="Zyklus starten oder neu beginnen">
+      <svg class="ic" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+      <span id="cpr-label">Zyklus</span>
+    </button>
+    <button class="kopfbtn metrobtn" id="btn-metronom" aria-label="Metronom einstellen">
+      <span class="puls" id="metro-puls" aria-hidden="true"></span>
+      <span id="metro-label">aus</span>
+    </button>
+    <button class="kopfbtn nur-icon" id="btn-settings-einsatz" aria-label="Einstellungen">
+      <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 008 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H2a2 2 0 110-4h.09A1.65 1.65 0 004.6 8a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 3.68 1.65 1.65 0 0010 2.17V2a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 8v0a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    </button>
+  </div>
+
   <!-- ======================= Bereit / Start ======================= -->
   <section class="view active" id="view-bereit">
     <div class="hinweisbox" style="margin-top:8px">
@@ -442,14 +504,6 @@
   <!-- ======================= Aktiver Einsatz ======================= -->
   <section class="view" id="view-aktiv">
 
-    <div class="aktivkopf">
-      <div class="kennzahlen" id="gesamtzeile"><b>Gesamt 0:00</b><span>noch keine Ereignisse</span></div>
-      <button class="metrobtn" id="btn-metronom" aria-label="Metronom einstellen">
-        <span class="puls" id="metro-puls" aria-hidden="true"></span>
-        <span id="metro-label">Metronom aus</span>
-      </button>
-    </div>
-
     <div class="ringwrap">
       <svg viewBox="0 0 220 220" aria-hidden="true">
         <circle class="ring-bg" cx="110" cy="110" r="96"/>
@@ -461,11 +515,6 @@
         <div id="ring-hinweis"></div>
       </div>
     </div>
-    <div class="analysechips">
-      <span><svg class="ic" viewBox="0 0 24 24"><path d="M2 12H7.2C7.6 9.8 9.2 9.8 9.6 12H10.6L11.1 13.4L12.1 5L13.1 16.6L13.8 12H15.2C15.8 8.9 17.8 8.9 18.4 12H22"/></svg> Rhythmus prüfen</span>
-      <span><svg class="ic" viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M21 3l-7 7"/><path d="M8 21H3v-5"/><path d="M3 21l7-7"/></svg> Helfer wechseln</span>
-    </div>
-
     <div class="medgrid">
       <div class="medcard" id="card-adrenalin">
         <div class="kopf"><b>Adrenalin</b><span class="pill p-neutral" id="adr-pill">–</span></div>
@@ -511,7 +560,13 @@
       <span class="unter" id="massnahme-unter"></span>
     </button>
 
-    <button class="btn block" id="btn-cpr">CPR fortsetzen</button>
+    <!-- Beendet den Einsatz bewusst NICHT: Ein Fehlgriff hier wäre mitten in
+         der Reanimation fatal. Der Knopf erklärt nur den Weg. -->
+    <button class="aktion breit gedaempft" id="btn-ende-hinweis">
+      <svg class="ic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>
+      Einsatz beenden
+      <span class="unter">über Einstellungen</span>
+    </button>
 
   </section>
 
@@ -680,6 +735,32 @@
   </div>
 </div>
 
+<!-- ======================= Dialog: Gespeicherte Einsätze ======================= -->
+<div class="modal-back" id="modal-archiv">
+  <div class="modal">
+    <button class="modal-x" data-close="modal-archiv" aria-label="Schließen">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <h3 class="mt"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M5 9v10a1 1 0 001 1h12a1 1 0 001-1V9"/><path d="M10 13h4"/></svg> Gespeicherte Einsätze</h3>
+    <p class="frage" id="archiv-hinweis">Nur auf diesem Gerät, ohne Patientendaten.
+      Der jüngste Einsatz steht oben.</p>
+    <ul class="archivliste" id="archiv-liste"></ul>
+    <div id="archiv-detail" style="display:none">
+      <button class="btn secondary" id="archiv-zurueck" style="margin-bottom:12px">
+        <svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> Zur Liste
+      </button>
+      <dl class="zusammen" id="archiv-zusammen"></dl>
+      <h3 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.09em;
+                 color:var(--text2);margin:16px 0 6px">Verlauf</h3>
+      <ol class="verlauf" id="archiv-verlauf"></ol>
+    </div>
+    <div class="btn-row">
+      <button class="btn danger" id="archiv-loeschen" style="flex:1">Alle löschen</button>
+      <button class="btn secondary" data-close="modal-archiv">Schließen</button>
+    </div>
+  </div>
+</div>
+
 <!-- ======================= Dialog: Einstellungen ======================= -->
 <div class="modal-back" id="modal-settings">
   <div class="modal">
@@ -704,6 +785,11 @@
     <button class="settings-row gefahr" id="s-ende" style="display:none">
       <svg class="ic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>
       <span class="t"><b>Einsatz beenden</b><span>stoppt alle Timer, Protokoll bleibt gespeichert</span></span>
+    </button>
+
+    <button class="settings-row" id="s-archiv">
+      <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M5 9v10a1 1 0 001 1h12a1 1 0 001-1V9"/><path d="M10 13h4"/></svg>
+      <span class="t"><b>Gespeicherte Einsätze</b><span id="s-archiv-sub">noch keine</span></span>
     </button>
 
     <button class="settings-row" id="s-onboarding">
@@ -1073,6 +1159,8 @@ const Einst = {
 const Einsatz = {
   KEY: "cpra_einsatz",
   LETZTER_KEY: "cpra_letzter_einsatz",
+  ARCHIV_KEY: "cpra_archiv",
+  ARCHIV_MAX: 20,          /* mehr braucht niemand auf dem Handy */
   e: null,
 
   aktiv(){ return !!this.e; },
@@ -1104,9 +1192,24 @@ const Einsatz = {
     if (!this.e) return;
     Kern.beenden(this.e, now);
     store(this.LETZTER_KEY, this.e);
+    this.archivieren(this.e);
     localStorage.removeItem(this.KEY);
     this.e = null;
-  }
+  },
+
+  /* ---- Archiv beendeter Einsätze ----
+     Bleibt bewusst auf dem Gerät und ohne Patientenbezug. Der jüngste
+     Einsatz steht vorn; alte fallen hinten heraus. */
+  archiv(){
+    const roh = load(this.ARCHIV_KEY, []);
+    return Array.isArray(roh) ? roh : [];
+  },
+  archivieren(e){
+    const liste = this.archiv();
+    liste.unshift(e);
+    store(this.ARCHIV_KEY, liste.slice(0, this.ARCHIV_MAX));
+  },
+  archivLoeschen(){ localStorage.removeItem(this.ARCHIV_KEY); }
 };
 
 /* =========================================================================
@@ -1445,6 +1548,14 @@ document.querySelectorAll(".modal-back").forEach(m =>
 function zeige(name){
   ["bereit", "aktiv", "rosc"].forEach(v =>
     $("view-" + v).classList.toggle("active", v === name));
+  /* Im Einsatz trägt die eigene Kopfzeile alles Nötige – die Titelleiste
+     mit Logo und Namen entfällt dort und macht Platz für den Ring. */
+  const imEinsatz = name !== "bereit";
+  document.body.classList.toggle("im-einsatz", imEinsatz);
+  $("aktivkopf").style.display = imEinsatz ? "" : "none";
+  /* Der Zyklus-Knopf gehört zur laufenden Reanimation, nicht in den
+     Post-ROSC-Modus – dort führt der Weg zurück über „Re-Arrest". */
+  $("btn-cpr").style.display = name === "aktiv" ? "" : "none";
 }
 function ansichtNachPhase(){
   if (!Einsatz.aktiv()) return zeige("bereit");
@@ -1509,7 +1620,7 @@ function renderRing(now){
     fg.style.strokeDashoffset = 0;
     $("ring-zeit").textContent = "Analyse";
     $("ring-status").textContent = "Rhythmus prüfen · Helfer wechseln";
-    $("ring-hinweis").textContent = "Unterbrechung " + Kern.fmtUhr(now - e.analyseStart) + " – kurz halten";
+    $("ring-hinweis").textContent = "Pause " + Kern.fmtUhr(now - e.analyseStart);
   } else {
     fg.style.strokeDasharray = RING_UMFANG;
     fg.style.strokeDashoffset = RING_UMFANG * (1 - zyk.anteil);
@@ -1517,17 +1628,21 @@ function renderRing(now){
     $("ring-status").textContent = zyk.warnung ? "Analyse gleich – Wechsel vorbereiten" : "Zyklus " + e.zyklusNr;
     $("ring-hinweis").textContent = e.rhythmus ? "Rhythmus: " + Kern.RHYTHMEN[e.rhythmus].kurz : "";
   }
+}
+
+/* ---------- Rendering: Kennzahlen in der Kopfzeile ---------- */
+function renderKennzahlen(now){
+  const e = Einsatz.e;
   const zaehler = [];
   if (e.schocks.length) zaehler.push(e.schocks.length + "× Schock");
   if (e.adrenalin.length) zaehler.push(e.adrenalin.length + "× Adrenalin");
   /* Amiodaron steht prominent in der eigenen Karte – hier würde es die
      Zeile nur abschneiden. */
-  $("gesamtzeile").innerHTML = "";
   const b = document.createElement("b"), s = document.createElement("span");
-  b.textContent = "Gesamt " + Kern.fmtUhr(now - e.startZeit);
+  b.textContent = (e.phase === "rosc" ? "Post-ROSC " : "Gesamt ")
+    + Kern.fmtUhr(now - e.startZeit);
   s.textContent = zaehler.length ? zaehler.join(" · ") : "noch keine Ereignisse";
-  $("gesamtzeile").appendChild(b);
-  $("gesamtzeile").appendChild(s);
+  $("gesamtzeile").replaceChildren(b, s);
 }
 
 /* ---------- Rendering: Medikamente ---------- */
@@ -1601,18 +1716,16 @@ function renderAktionen(){
   const lm = letzte && KONF.MASSNAHMEN.find(x => x.id === letzte.id);
   $("massnahme-unter").textContent = lm ? lm.name + " · " + Kern.fmtUhrzeit(letzte.t) : "";
 
+  /* Im Analysefenster ist die Rückkehr in die Kompressionen die wichtigste
+     Aktion – der kleine Knopf oben tritt dann deutlich hervor. */
   const inAnalyse = e.phase === "analyse";
   $("btn-rhythmus").classList.toggle("hervor", inAnalyse);
   const cpr = $("btn-cpr");
-  if (inAnalyse){
-    cpr.textContent = "CPR fortsetzen – Zyklus " + (e.zyklusNr + 1);
-    cpr.classList.add("betont");
-    cpr.classList.remove("secondary");
-  } else {
-    cpr.textContent = "Zyklus neu starten";
-    cpr.classList.remove("betont");
-    cpr.classList.add("secondary");
-  }
+  cpr.classList.toggle("dran", inAnalyse);
+  $("cpr-label").textContent = inAnalyse ? "CPR" : "Zyklus";
+  cpr.title = inAnalyse
+    ? "CPR fortsetzen – Zyklus " + (e.zyklusNr + 1)
+    : "Laufenden Zyklus neu starten";
 }
 
 /* ---------- Rendering: Post-ROSC ---------- */
@@ -1703,6 +1816,10 @@ function massnahmenOeffnen(){
 
 /* ---------- Rendering: Einstellungen & Metronom ---------- */
 function renderSettings(){
+  const anzahl = Einsatz.archiv().length;
+  $("s-archiv-sub").textContent = anzahl
+    ? anzahl + (anzahl === 1 ? " Einsatz" : " Einsätze") + " auf diesem Gerät"
+    : "noch keine";
   $("s-bildschirm").checked = Einst.werte.bildschirmAn;
   $("s-ton").checked = Einst.werte.ton;
   $("s-vibration").checked = Einst.werte.vibration;
@@ -1712,7 +1829,7 @@ const UI = {
   metronomAnzeigen(){
     const an = Metronom.an;
     $("btn-metronom").classList.toggle("an", an);
-    $("metro-label").textContent = an ? Metronom.bpm() + "/min" : "Metronom aus";
+    $("metro-label").textContent = an ? String(Metronom.bpm()) : "aus";
     /* Im Dialog ist "Aus" die aktive Zeile, solange nichts läuft. */
     document.querySelectorAll("#metro-wahl button").forEach(b => {
       const bpm = Number(b.dataset.bpm);
@@ -1734,6 +1851,7 @@ function vollRender(){
   renderKopf(now);
   renderSettings();
   if (Einsatz.aktiv()){
+    renderKennzahlen(now);
     if (Einsatz.e.phase === "rosc") renderRosc(now);
     else { renderRing(now); renderMedikamente(now); renderAktionen(); }
   }
@@ -1778,6 +1896,7 @@ function tick(){
   } else {
     renderRosc(now);
   }
+  renderKennzahlen(now);
 }
 setInterval(tick, 200);
 
@@ -1935,6 +2054,8 @@ function endeOeffnen(){
   openModal("modal-ende");
 }
 $("btn-ende").addEventListener("click", endeOeffnen);
+$("btn-ende-hinweis").addEventListener("click", () =>
+  toast("Zum Beenden: Einstellungen (Zahnrad oben) → „Einsatz beenden“", 3600));
 $("s-ende").addEventListener("click", () => { closeModal("modal-settings"); endeOeffnen(); });
 $("ende-ok").addEventListener("click", () => {
   Einsatz.beenden(Date.now());
@@ -1967,7 +2088,8 @@ document.querySelectorAll("#metro-wahl button").forEach(b =>
   }));
 
 /* ---- Einstellungen ---- */
-$("btn-settings").addEventListener("click", () => { renderSettings(); openModal("modal-settings"); });
+[ "btn-settings", "btn-settings-einsatz" ].forEach(id =>
+  $(id).addEventListener("click", () => { renderSettings(); openModal("modal-settings"); }));
 $("s-bildschirm").addEventListener("change", () => {
   Einst.set("bildschirmAn", $("s-bildschirm").checked);
   WakeLock.anwenden();                       /* sofort wirksam, auch mitten im Einsatz */
@@ -1977,6 +2099,96 @@ $("s-bildschirm").addEventListener("change", () => {
 });
 $("s-ton").addEventListener("change", () => Einst.set("ton", $("s-ton").checked));
 $("s-vibration").addEventListener("change", () => Einst.set("vibration", $("s-vibration").checked));
+
+/* ---------- Gespeicherte Einsätze ---------- */
+function fmtEinsatzDatum(t){
+  const d = new Date(t);
+  return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" })
+       + " · " + Kern.fmtUhrzeit(t);
+}
+/* Kurzfassung eines archivierten Einsatzes für die Liste. */
+function archivKurz(e){
+  const ende = e.ereignisse[e.ereignisse.length - 1];
+  const teile = ["Dauer " + Kern.fmtUhr((ende ? ende.t : e.startZeit) - e.startZeit)];
+  if (e.schocks.length) teile.push(e.schocks.length + "× Schock");
+  if (e.adrenalin.length) teile.push(e.adrenalin.length + "× Adrenalin");
+  if (e.roscZeit || e.reArrests) teile.push("ROSC");
+  return teile.join(" · ");
+}
+function renderArchivListe(){
+  const liste = Einsatz.archiv();
+  const ul = $("archiv-liste");
+  ul.innerHTML = "";
+  $("archiv-detail").style.display = "none";
+  $("archiv-loeschen").style.display = liste.length ? "" : "none";
+  $("archiv-hinweis").textContent = liste.length
+    ? "Nur auf diesem Gerät, ohne Patientendaten. Der jüngste Einsatz steht oben."
+    : "Noch keine beendeten Einsätze. Sobald du einen Einsatz beendest, wird er hier abgelegt.";
+  liste.forEach((e, i) => {
+    const li = document.createElement("li");
+    const b = document.createElement("button");
+    b.type = "button";
+    b.innerHTML = '<span class="wann"><b></b><span></span></span>'
+      + '<svg class="ic pfeil" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+      + 'stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+      + '<path d="M9 6l6 6-6 6"/></svg>';
+    b.querySelector("b").textContent = fmtEinsatzDatum(e.startZeit);
+    b.querySelector(".wann span").textContent = archivKurz(e);
+    b.addEventListener("click", () => renderArchivDetail(i));
+    li.appendChild(b);
+    ul.appendChild(li);
+  });
+}
+function renderArchivDetail(i){
+  const e = Einsatz.archiv()[i];
+  if (!e) return;
+  const ende = e.ereignisse[e.ereignisse.length - 1];
+  const zeilen = [
+    ["Beginn", fmtEinsatzDatum(e.startZeit)],
+    ["Dauer", Kern.fmtUhr((ende ? ende.t : e.startZeit) - e.startZeit)],
+    ["Zyklen", String(e.zyklusNr)],
+    ["Schocks", String(e.schocks.length)],
+    ["Adrenalin", e.adrenalin.length ? e.adrenalin.length + "× 1 mg" : "–"],
+    ["Amiodaron", e.amiodaron.length ? e.amiodaron.map(d => d.mg + " mg").join(" + ") : "–"],
+    ["Maßnahmen", (e.massnahmen || []).length
+      ? KONF.MASSNAHMEN.filter(m => Kern.massnahmeZeit(e, m.id) != null).map(m => m.name).join(", ")
+      : "–"],
+    ["ROSC", e.roscZeit ? "ja" : (e.reArrests ? "ja, Re-Arrest" : "–")]
+  ];
+  const dl = $("archiv-zusammen");
+  dl.innerHTML = "";
+  zeilen.forEach(([k, v]) => {
+    const dt = document.createElement("dt"), dd = document.createElement("dd");
+    dt.textContent = k; dd.textContent = v;
+    dl.appendChild(dt); dl.appendChild(dd);
+  });
+  const ol = $("archiv-verlauf");
+  ol.innerHTML = "";
+  e.ereignisse.forEach(ev => {
+    const li = document.createElement("li");
+    const z = document.createElement("span"), t = document.createElement("span");
+    z.className = "zeit";
+    z.textContent = Kern.fmtUhr(ev.t - e.startZeit);
+    t.textContent = ev.info;
+    li.appendChild(z); li.appendChild(t);
+    ol.appendChild(li);
+  });
+  $("archiv-liste").innerHTML = "";
+  $("archiv-hinweis").textContent = "Einsatz vom " + fmtEinsatzDatum(e.startZeit);
+  $("archiv-detail").style.display = "";
+}
+$("s-archiv").addEventListener("click", () => {
+  closeModal("modal-settings");
+  renderArchivListe();
+  openModal("modal-archiv");
+});
+$("archiv-zurueck").addEventListener("click", renderArchivListe);
+$("archiv-loeschen").addEventListener("click", () => {
+  Einsatz.archivLoeschen();
+  renderArchivListe();
+  renderSettings();
+  toast("Gespeicherte Einsätze gelöscht");
+});
 
 /* ---------- Diagnose: 5 Tipps auf die Versionsnummer ---------- */
 let dbgTaps = 0;
@@ -2074,7 +2286,9 @@ if (Bridge.isNative()){
 
 /* ---------- Kopfleiste beim Scrollen absetzen ---------- */
 window.addEventListener("scroll", () => {
-  document.querySelector("header.app").classList.toggle("gescrollt", window.scrollY > 4);
+  const gescrollt = window.scrollY > 4;
+  document.querySelector("header.app").classList.toggle("gescrollt", gescrollt);
+  document.body.classList.toggle("gescrollt", gescrollt);
 }, { passive: true });
 
 /* ---------- Service Worker: nur im Web, nie in der App ---------- */

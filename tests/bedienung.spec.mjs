@@ -57,12 +57,17 @@ test("kompletter Einsatz: Zyklus → Analyse → Schocks → Medikamente", async
   await page.clock.runFor(125000);
   await expect(page.locator("#view-aktiv")).toHaveClass(/phase-analyse/);
   await expect(page.locator("#ring-zeit")).toHaveText("Analyse");
-  await expect(page.locator("#btn-cpr")).toContainText("CPR fortsetzen – Zyklus 5");
+  /* Der Zyklus-Knopf oben tritt im Analysefenster hervor */
+  await expect(page.locator("#btn-cpr")).toHaveClass(/dran/);
+  await expect(page.locator("#cpr-label")).toHaveText("CPR");
+  await expect(page.locator("#ring-status")).toContainText("Rhythmus prüfen");
+  await expect(page.locator("#ring-status")).toContainText("Helfer wechseln");
   await page.clock.runFor(60000);
   await expect(page.locator("#adr-pill")).toHaveText("fällig");
 
   /* CPR fortsetzen beendet das Analysefenster */
   await page.click("#btn-cpr");
+  await expect(page.locator("#btn-cpr")).not.toHaveClass(/dran/);
   await expect(page.locator("#view-aktiv")).not.toHaveClass(/phase-analyse/);
   await expect(page.locator("#ring-status")).toContainText("Zyklus 5");
 
@@ -122,7 +127,7 @@ test("ROSC → Post-ROSC-Checkliste → Re-Arrest → Einsatz beenden", async ({
   await expect(page.locator("#modal-rosc")).toHaveClass(/open/);
   await page.click("#rosc-ok");
   await expect(page.locator("#view-rosc")).toHaveClass(/active/);
-  await expect(page.locator("#head-sub")).toContainText("Post-ROSC");
+  await expect(page.locator("#gesamtzeile")).toContainText("Post-ROSC");
   await expect(page.locator("#rosc-liste li")).toHaveCount(6);
   await expect(page.locator("#rosc-liste")).toContainText("SpO₂ messbar: Ziel 94–98");
 
@@ -139,12 +144,14 @@ test("ROSC → Post-ROSC-Checkliste → Re-Arrest → Einsatz beenden", async ({
   /* Wieder ROSC, dann beenden – mit Zusammenfassung */
   await page.click("#btn-rosc");
   await page.click("#rosc-ok");
-  await page.click("#btn-ende");
+  await page.click("#btn-settings-einsatz");
+  await page.click("#s-ende");
   await expect(page.locator("#modal-ende")).toHaveClass(/open/);
   await expect(page.locator("#ende-zusammen")).toContainText("ROSC");
   await page.click("#ende-ok");
 
   await expect(page.locator("#view-bereit")).toHaveClass(/active/);
+  await expect(page.locator("header.app")).toBeVisible();   // Titelleiste ist zurück
   await expect(page.locator("#head-sub")).toContainText("Bereit");
   const speicher = await page.evaluate(() => ({
     aktiv: localStorage.getItem("cpra_einsatz"),
@@ -215,7 +222,7 @@ test("Metronom: kleiner Eckknopf öffnet die Auswahl, 110 als Standard", async (
   await einsatzStarten(page);
 
   const knopf = page.locator("#btn-metronom");
-  await expect(knopf).toHaveText("Metronom aus");
+  await expect(knopf).toHaveText("aus");
   await expect(knopf).not.toHaveClass(/an/);
 
   /* Auswahl öffnen: "Aus" ist markiert, solange nichts läuft */
@@ -226,7 +233,7 @@ test("Metronom: kleiner Eckknopf öffnet die Auswahl, 110 als Standard", async (
   /* 110 wählen: Dialog schließt, Knopf zeigt die Frequenz */
   await page.click('#metro-wahl button[data-bpm="110"]');
   await expect(page.locator("#modal-metronom")).not.toHaveClass(/open/);
-  await expect(knopf).toHaveText("110/min");
+  await expect(knopf).toHaveText("110");
   await expect(knopf).toHaveClass(/an/);
   expect(await page.evaluate(() => window.CPRA.Metronom.an)).toBe(true);
 
@@ -234,15 +241,80 @@ test("Metronom: kleiner Eckknopf öffnet die Auswahl, 110 als Standard", async (
   await knopf.click();
   await expect(page.locator('#metro-wahl button[data-bpm="110"]')).toHaveClass(/active/);
   await page.click('#metro-wahl button[data-bpm="120"]');
-  await expect(knopf).toHaveText("120/min");
+  await expect(knopf).toHaveText("120");
   expect(await page.evaluate(() => window.CPRA.Einst.werte.metronomBpm)).toBe(120);
 
   /* Abschalten über dieselbe Auswahl */
   await knopf.click();
   await page.click('#metro-wahl button[data-bpm="0"]');
-  await expect(knopf).toHaveText("Metronom aus");
+  await expect(knopf).toHaveText("aus");
   await expect(knopf).not.toHaveClass(/an/);
   expect(await page.evaluate(() => window.CPRA.Metronom.an)).toBe(false);
   /* Die zuletzt gewählte Frequenz bleibt für das nächste Einschalten erhalten */
   expect(await page.evaluate(() => window.CPRA.Einst.werte.metronomBpm)).toBe(120);
+});
+
+test("Einsatz beenden: der Knopf unten erklärt nur den Weg", async ({ page }) => {
+  await appOeffnen(page);
+  await einsatzStarten(page);
+
+  /* Der Knopf ganz unten darf den Einsatz NICHT beenden. */
+  await page.click("#btn-ende-hinweis");
+  await expect(page.locator("#toast")).toContainText("Einstellungen");
+  await expect(page.locator("#view-aktiv")).toHaveClass(/active/);
+  expect(await page.evaluate(() => !!window.CPRA.Einsatz.e)).toBe(true);
+
+  /* Der echte Weg führt über die Einstellungen. */
+  await page.click("#btn-settings-einsatz");
+  await page.click("#s-ende");
+  await expect(page.locator("#modal-ende")).toHaveClass(/open/);
+  await page.click("#ende-ok");
+  await expect(page.locator("#view-bereit")).toHaveClass(/active/);
+});
+
+test("Gespeicherte Einsätze: Liste, Verlauf und Löschen", async ({ page }) => {
+  await appOeffnen(page);
+
+  /* Ohne Einsätze: leerer Zustand */
+  await page.click("#btn-settings");
+  await expect(page.locator("#s-archiv-sub")).toHaveText("noch keine");
+  await page.click("#s-archiv");
+  await expect(page.locator("#modal-archiv")).toHaveClass(/open/);
+  await expect(page.locator("#archiv-hinweis")).toContainText("Noch keine beendeten Einsätze");
+  await expect(page.locator("#archiv-liste li")).toHaveCount(0);
+  await page.locator("#modal-archiv [data-close]").last().click();
+
+  /* Einen Einsatz durchspielen und beenden */
+  await einsatzStarten(page);
+  await page.click("#btn-rhythmus");
+  await page.click('[data-rhythmus="schockbar"]');
+  await halten(page, "#btn-schock", false);
+  await page.click("#btn-adrenalin");
+  await page.click("#btn-settings-einsatz");
+  await page.click("#s-ende");
+  await page.click("#ende-ok");
+
+  /* Jetzt steht er im Archiv */
+  await page.click("#btn-settings");
+  await expect(page.locator("#s-archiv-sub")).toContainText("1 Einsatz");
+  await page.click("#s-archiv");
+  const zeilen = page.locator("#archiv-liste li");
+  await expect(zeilen).toHaveCount(1);
+  await expect(zeilen.first()).toContainText("1× Schock");
+  await expect(zeilen.first()).toContainText("1× Adrenalin");
+
+  /* Detail mit Verlauf öffnen */
+  await zeilen.first().locator("button").click();
+  await expect(page.locator("#archiv-zusammen")).toContainText("Schocks");
+  const verlauf = page.locator("#archiv-verlauf li");
+  expect(await verlauf.count()).toBeGreaterThan(3);
+  await expect(page.locator("#archiv-verlauf")).toContainText("Adrenalin 1 mg");
+  await expect(page.locator("#archiv-verlauf")).toContainText("Einsatz beendet");
+
+  /* Zurück zur Liste, dann alles löschen */
+  await page.click("#archiv-zurueck");
+  await expect(zeilen).toHaveCount(1);
+  await page.click("#archiv-loeschen");
+  await expect(page.locator("#archiv-liste li")).toHaveCount(0);
+  expect(await page.evaluate(() => localStorage.getItem("cpra_archiv"))).toBe(null);
 });

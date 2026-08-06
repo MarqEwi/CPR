@@ -23,7 +23,7 @@ test("startet in der App-Umgebung ohne Konsolenfehler und registriert Listener",
 
 test("Zurück-Taste: schließt erst Dialoge, beendet nie einen laufenden Einsatz", async ({ page }) => {
   /* Offener Dialog: Zurück schließt ihn nur */
-  await page.click("#btn-settings");
+  await page.click("#btn-settings");   // ohne Einsatz: Titelleiste ist sichtbar
   await expect(page.locator("#modal-settings")).toHaveClass(/open/);
   await page.evaluate(() => window.__listener.backButton());
   await expect(page.locator("#modal-settings")).not.toHaveClass(/open/);
@@ -76,8 +76,9 @@ test("Bildschirm anlassen: der Schalter in den Einstellungen wirkt sofort", asyn
   await einsatzStarten(page);
   await expect.poll(rufe).toEqual(["BildschirmWach.an"]);
 
-  /* Mitten im Einsatz abschalten: Bildschirm wird sofort freigegeben */
-  await page.click("#btn-settings");
+  /* Mitten im Einsatz abschalten: Bildschirm wird sofort freigegeben.
+     Das Zahnrad sitzt im Einsatz in der Kopfzeile, nicht in der Titelleiste. */
+  await page.click("#btn-settings-einsatz");
   await expect(page.locator("#s-bildschirm")).toBeChecked();
   await page.locator("#modal-settings .switchrow", { hasText: "Bildschirm anlassen" })
     .locator(".switch").click();
