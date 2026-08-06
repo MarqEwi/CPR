@@ -233,6 +233,26 @@
   .aktion.a-rosc .ic{color:var(--ok)}
   .aktion.a-ursachen .ic{color:var(--text2)}
   .aktion.hervor{border-color:var(--accent-rand);background:var(--accent-soft)}
+  /* Volle Breite, flacher: Dokumentation ist wichtig, aber nachrangig
+     gegenüber Rhythmus, Schock und der Rückkehr in die CPR. */
+  .aktion.breit{width:100%;min-height:58px;flex-direction:row;gap:10px;margin:0 0 10px;
+    font-size:.94rem;white-space:nowrap;padding:10px 14px}
+  .aktion.breit .ic{color:var(--text2);width:21px;height:21px}
+  .aktion.breit .unter{margin-left:auto;text-align:right;min-width:0;
+    overflow:hidden;text-overflow:ellipsis}
+  /* Schnellauswahl der Maßnahmen: eine Liste, ein Tipp, fertig. */
+  .massnahmenwahl{display:grid;gap:8px}
+  .massnahmenwahl button{display:flex;align-items:center;gap:12px;background:var(--bg3);
+    border:1px solid var(--line-stark);border-radius:var(--radius-s);padding:13px 15px;
+    font:inherit;color:var(--text);cursor:pointer;text-align:left;min-height:58px;
+    font-weight:660;font-size:1rem;letter-spacing:-.012em;
+    transition:background .13s, border-color .13s}
+  .massnahmenwahl button:hover{background:var(--bg4)}
+  .massnahmenwahl button:active{transform:scale(.99)}
+  .massnahmenwahl button.erfasst{border-color:var(--ok-rand)}
+  .massnahmenwahl .zeit{margin-left:auto;font-size:.8rem;font-weight:600;color:var(--ok);
+    font-variant-numeric:tabular-nums;display:inline-flex;align-items:center;gap:6px}
+  .massnahmenwahl .zeit .ic{width:16px;height:16px}
   /* Halten-gegen-Fehlauslösung: der Fortschritt füllt den Knopf von links. */
   .aktion .haltefuellung, .btn .haltefuellung{position:absolute;left:0;top:0;bottom:0;width:0%;
     background:var(--warn-soft);pointer-events:none;border-radius:inherit}
@@ -474,6 +494,12 @@
       </button>
     </div>
 
+    <button class="aktion breit" id="btn-massnahme">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/><path d="M12 11v6M9 14h6"/></svg>
+      Maßnahme dokumentieren
+      <span class="unter" id="massnahme-unter"></span>
+    </button>
+
     <button class="btn block" id="btn-cpr">CPR fortsetzen</button>
 
   </section>
@@ -520,7 +546,10 @@
     </button>
     <div class="btn-row">
       <button class="btn secondary" id="btn-rosc-ursachen" style="flex:1">4H / HITS</button>
-      <button class="btn secondary" id="btn-ende" style="flex:1">Einsatz beenden</button>
+      <button class="btn secondary" id="btn-rosc-massnahme" style="flex:1">Maßnahme</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn secondary block" id="btn-ende">Einsatz beenden</button>
     </div>
   </section>
 
@@ -552,6 +581,19 @@
         <span><b>Unklar</b><span>beim nächsten Fenster erneut prüfen</span></span>
       </button>
     </div>
+  </div>
+</div>
+
+<!-- ======================= Dialog: Maßnahme dokumentieren ======================= -->
+<div class="modal-back" id="modal-massnahme">
+  <div class="modal">
+    <button class="modal-x" data-close="modal-massnahme" aria-label="Schließen">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <h3 class="mt"><svg class="ic" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/><path d="M12 11v6M9 14h6"/></svg> Maßnahme dokumentieren</h3>
+    <p class="frage">Ein Tipp genügt – die Maßnahme wird mit Zeitstempel
+      protokolliert und dieses Fenster schließt sich.</p>
+    <div class="massnahmenwahl" id="massnahmen-wahl"></div>
   </div>
 </div>
 
@@ -759,7 +801,19 @@ const KONF = {
   ],
 
   /* Post-ROSC-Erinnerungen: Schlüssel der Checkliste (Texte im HTML). */
-  POST_ROSC: ["atemweg", "oxygen", "ekg", "ursache", "kreislauf", "temperatur"]
+  POST_ROSC: ["atemweg", "oxygen", "ekg", "ursache", "kreislauf", "temperatur"],
+
+  /* Maßnahmen für die Dokumentation. Bewusst kurz gehalten: ein Tipp
+     protokolliert die Maßnahme mit Zeitstempel – keine Rückfrage, kein
+     Formular, kein Untermenü. */
+  MASSNAHMEN: [
+    { id: "ivzugang",     name: "i.v.-Zugang" },
+    { id: "iozugang",     name: "i.o.-Zugang" },
+    { id: "sga",          name: "Supraglottischer Atemweg" },
+    { id: "intubation",   name: "Intubation" },
+    { id: "kapnographie", name: "Kapnographie" },
+    { id: "mechanisch",   name: "Mechanische Reanimationshilfe" }
+  ]
 };
 
 /* =========================================================================
@@ -787,6 +841,7 @@ const Kern = {
       amiodaron: [],             /* { mg: 300|150, t } */
       roscZeit: null,
       reArrests: 0,
+      massnahmen: [],            /* { id, t } – Dokumentation, mehrfach möglich */
       ursachen,
       ursachenNotiz: "",
       postRosc,
@@ -919,6 +974,22 @@ const Kern = {
     this.ereignis(e, now, "rearrest", "Re-Arrest " + e.reArrests + " – CPR wieder aufgenommen");
   },
 
+  /* ---------------- Maßnahmen ----------------
+     Reine Dokumentation ohne Auswirkung auf die Zustandsmaschine. Eine
+     Maßnahme darf mehrfach vorkommen (z. B. zweiter Zugang); angezeigt
+     wird jeweils der letzte Zeitstempel. */
+  massnahme(e, now, id){
+    const m = KONF.MASSNAHMEN.find(x => x.id === id);
+    if (!m) return;
+    e.massnahmen.push({ id, t: now });
+    this.ereignis(e, now, "massnahme", m.name);
+  },
+  massnahmeZeit(e, id){
+    let letzte = null;
+    e.massnahmen.forEach(m => { if (m.id === id && (letzte == null || m.t > letzte)) letzte = m.t; });
+    return letzte;
+  },
+
   ursacheSetzen(e, now, id, zustand){
     if (!(id in e.ursachen)) return;
     e.ursachen[id] = zustand;
@@ -999,6 +1070,9 @@ const Einsatz = {
       localStorage.removeItem(this.KEY);
       return false;
     }
+    /* Felder, die es in einer früheren Fassung noch nicht gab, ergänzen –
+       ein laufender Einsatz soll ein App-Update überstehen. */
+    if (!Array.isArray(roh.massnahmen)) roh.massnahmen = [];
     this.e = roh;
     return true;
   },
@@ -1462,6 +1536,11 @@ function renderAktionen(){
     ? Kern.RHYTHMEN[e.rhythmus].label : "noch nicht bestimmt";
   const offen = KONF.URSACHEN.filter(u => e.ursachen[u.id] === 0).length;
   $("ursachen-unter").textContent = offen ? offen + " offen" : "alle bearbeitet";
+  /* Auf der Taste steht die zuletzt dokumentierte Maßnahme – so ist ohne
+     Öffnen sichtbar, was schon erfasst wurde. */
+  const letzte = e.massnahmen[e.massnahmen.length - 1];
+  const lm = letzte && KONF.MASSNAHMEN.find(x => x.id === letzte.id);
+  $("massnahme-unter").textContent = lm ? lm.name + " · " + Kern.fmtUhrzeit(letzte.t) : "";
 
   const inAnalyse = e.phase === "analyse";
   $("btn-rhythmus").classList.toggle("hervor", inAnalyse);
@@ -1524,6 +1603,44 @@ $("ursachen-notiz").addEventListener("change", () => {
   Einsatz.e.ursachenNotiz = $("ursachen-notiz").value.slice(0, 600);
   Einsatz.speichern();
 });
+
+/* ---------- Rendering: Maßnahmen-Schnellauswahl ---------- */
+function renderMassnahmen(){
+  const e = Einsatz.e;
+  const box = $("massnahmen-wahl");
+  box.innerHTML = "";
+  KONF.MASSNAHMEN.forEach(m => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.dataset.massnahme = m.id;
+    b.textContent = m.name;
+    const zeit = e ? Kern.massnahmeZeit(e, m.id) : null;
+    if (zeit != null){
+      b.classList.add("erfasst");
+      const span = document.createElement("span");
+      span.className = "zeit";
+      span.innerHTML = '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+        + 'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'
+        + '<path d="M5 12l5 5L20 7"/></svg>';
+      span.appendChild(document.createTextNode(Kern.fmtUhrzeit(zeit)));
+      b.appendChild(span);
+    }
+    b.addEventListener("click", () => {
+      if (!Einsatz.aktiv()) return;
+      Kern.massnahme(Einsatz.e, Date.now(), m.id);
+      Einsatz.speichern();
+      closeModal("modal-massnahme");
+      vollRender();
+      toast(m.name + " protokolliert");
+    });
+    box.appendChild(b);
+  });
+}
+function massnahmenOeffnen(){
+  if (!Einsatz.aktiv()) return;
+  renderMassnahmen();
+  openModal("modal-massnahme");
+}
 
 /* ---------- Rendering: Einstellungen & Metronom ---------- */
 function renderSettings(){
@@ -1729,6 +1846,10 @@ function ursachenOeffnen(){
 $("btn-ursachen").addEventListener("click", ursachenOeffnen);
 $("btn-rosc-ursachen").addEventListener("click", ursachenOeffnen);
 
+/* ---- Maßnahmen dokumentieren ---- */
+$("btn-massnahme").addEventListener("click", massnahmenOeffnen);
+$("btn-rosc-massnahme").addEventListener("click", massnahmenOeffnen);
+
 /* ---- Einsatz beenden ---- */
 function endeOeffnen(){
   if (!Einsatz.aktiv()) return;
@@ -1740,6 +1861,9 @@ function endeOeffnen(){
     ["Schocks", String(e.schocks.length)],
     ["Adrenalin", e.adrenalin.length + "× 1 mg"],
     ["Amiodaron", e.amiodaron.length ? e.amiodaron.map(d => d.mg + " mg").join(" + ") : "–"],
+    ["Maßnahmen", e.massnahmen.length
+      ? KONF.MASSNAHMEN.filter(m => Kern.massnahmeZeit(e, m.id) != null).map(m => m.name).join(", ")
+      : "–"],
     ["ROSC", e.phase === "rosc" ? "ja" : (e.reArrests ? "ja, Re-Arrest" : "–")]
   ];
   dl.innerHTML = "";

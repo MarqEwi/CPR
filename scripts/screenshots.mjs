@@ -104,6 +104,21 @@ await schuss("07-metronom", { aufbau: einsatzAktiv, schritte: async p => {
   await p.click("#btn-metronom");
 } });
 
+await schuss("08-massnahmen", { aufbau: jetzt => {
+  const { Kern } = window.CPRA;
+  const t0 = jetzt - 7 * 60000;
+  const e = Kern.neuerEinsatz(t0);
+  Kern.rhythmusSetzen(e, t0 + 110000, "nichtschockbar");
+  Kern.adrenalinGabe(e, t0 + 120000);
+  Kern.massnahme(e, t0 + 95000, "ivzugang");
+  Kern.massnahme(e, t0 + 240000, "sga");
+  e.zyklusNr = 4;
+  e.zyklusStart = jetzt - 40000;
+  localStorage.setItem("cpra_einsatz", JSON.stringify(e));
+}, schritte: async p => {
+  await p.click("#btn-massnahme");
+} });
+
 await schuss("06-rosc", { aufbau: jetzt => {
   const { Kern } = window.CPRA;
   const t0 = jetzt - 14 * 60000;

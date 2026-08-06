@@ -155,6 +155,61 @@ test("ROSC → Post-ROSC-Checkliste → Re-Arrest → Einsatz beenden", async ({
   expect(speicher.letzter.ereignisse.map(x => x.typ)).toContain("ende");
 });
 
+test("Maßnahmen: ein Tipp dokumentiert, Fenster schließt sofort", async ({ page }) => {
+  await appOeffnen(page);
+  await einsatzStarten(page);
+
+  const taste = page.locator("#btn-massnahme");
+  await expect(taste).toContainText("Maßnahme dokumentieren");
+  await expect(page.locator("#massnahme-unter")).toHaveText("");
+
+  /* Schnellauswahl: nur die Liste, keine Rückfrage */
+  await taste.click();
+  await expect(page.locator("#modal-massnahme")).toHaveClass(/open/);
+  const zeilen = page.locator("#massnahmen-wahl button");
+  await expect(zeilen).toHaveCount(6);
+  await expect(zeilen.nth(0)).toContainText("i.v.-Zugang");
+  await expect(zeilen.nth(3)).toContainText("Intubation");
+
+  /* Ein Tipp: protokolliert, Fenster zu, Taste zeigt die Maßnahme */
+  await page.click('#massnahmen-wahl button[data-massnahme="ivzugang"]');
+  await expect(page.locator("#modal-massnahme")).not.toHaveClass(/open/);
+  await expect(page.locator("#massnahme-unter")).toContainText("i.v.-Zugang · ");
+
+  /* Zweite Maßnahme; bereits erfasste zeigen ihre Uhrzeit */
+  await taste.click();
+  await expect(zeilen.nth(0)).toHaveClass(/erfasst/);
+  await expect(zeilen.nth(0)).toContainText(/\d\d:\d\d/);
+  await page.click('#massnahmen-wahl button[data-massnahme="intubation"]');
+  await expect(page.locator("#massnahme-unter")).toContainText("Intubation · ");
+
+  const e = await page.evaluate(() => window.CPRA.Einsatz.e);
+  expect(e.massnahmen.map(m => m.id)).toEqual(["ivzugang", "intubation"]);
+  expect(e.ereignisse.filter(x => x.typ === "massnahme")).toHaveLength(2);
+
+  /* Im Beenden-Dialog stehen sie in der Zusammenfassung */
+  await page.click("#btn-rosc");
+  await page.click("#rosc-ok");
+  await page.click("#btn-ende");
+  await expect(page.locator("#ende-zusammen")).toContainText("i.v.-Zugang, Intubation");
+});
+
+test("Maßnahmen sind auch im Post-ROSC-Modus dokumentierbar", async ({ page }) => {
+  await appOeffnen(page);
+  await einsatzStarten(page);
+  await page.click("#btn-rosc");
+  await page.click("#rosc-ok");
+
+  await page.click("#btn-rosc-massnahme");
+  await expect(page.locator("#modal-massnahme")).toHaveClass(/open/);
+  await page.click('#massnahmen-wahl button[data-massnahme="kapnographie"]');
+  await expect(page.locator("#modal-massnahme")).not.toHaveClass(/open/);
+
+  const ids = await page.evaluate(() => window.CPRA.Einsatz.e.massnahmen.map(m => m.id));
+  expect(ids).toEqual(["kapnographie"]);
+  await expect(page.locator("#view-rosc")).toHaveClass(/active/);
+});
+
 test("Metronom: kleiner Eckknopf öffnet die Auswahl, 110 als Standard", async ({ page }) => {
   await appOeffnen(page);
   await einsatzStarten(page);

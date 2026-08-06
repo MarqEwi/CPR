@@ -187,6 +187,32 @@ test("Re-Arrest: die Adrenalin-Uhr läuft über den ROSC hinweg weiter", async (
   expect(r.seitMs).toBe(270000);
 });
 
+test("Maßnahmen: reine Dokumentation, mehrfach möglich, letzte Zeit zählt", async ({ page }) => {
+  const r = await page.evaluate(T => {
+    const { Kern } = window.CPRA;
+    const e = Kern.neuerEinsatz(T);
+    const vorher = { phase: e.phase, zyklus: e.zyklusNr };
+    Kern.massnahme(e, T + 40000, "ivzugang");
+    Kern.massnahme(e, T + 95000, "intubation");
+    Kern.massnahme(e, T + 300000, "ivzugang");     /* zweiter Zugang */
+    Kern.massnahme(e, T + 400000, "gibtsnicht");   /* unbekannt: ignorieren */
+    return {
+      vorher, nachher: { phase: e.phase, zyklus: e.zyklusNr },
+      anzahl: e.massnahmen.length,
+      iv: Kern.massnahmeZeit(e, "ivzugang") - T,
+      intubation: Kern.massnahmeZeit(e, "intubation") - T,
+      sga: Kern.massnahmeZeit(e, "sga"),
+      protokoll: e.ereignisse.filter(x => x.typ === "massnahme").map(x => x.info)
+    };
+  }, T);
+  expect(r.nachher).toEqual(r.vorher);              // ändert die Zustandsmaschine nicht
+  expect(r.anzahl).toBe(3);                         // die unbekannte wurde verworfen
+  expect(r.iv).toBe(300000);                        // jüngster Zeitstempel gewinnt
+  expect(r.intubation).toBe(95000);
+  expect(r.sga).toBe(null);
+  expect(r.protokoll).toEqual(["i.v.-Zugang", "Intubation", "i.v.-Zugang"]);
+});
+
 test("Uhr-Formate: fmtUhr, fmtRest (aufgerundet) und Stundenformat", async ({ page }) => {
   const r = await page.evaluate(() => {
     const { Kern } = window.CPRA;
