@@ -35,8 +35,9 @@ Post-ROSC – und protokolliert jedes Ereignis mit Zeitstempel.
 - **Metronom** 100 / 110 / 120 pro Minute (Standard 110), ein-/ausschaltbar,
   mit optischem Puls
 - **Ereignis-Protokoll** im Hintergrund: jeder Schritt mit Zeitstempel
-- Dunkles, kontrastreiches Einsatz-Design mit großen Touchflächen;
-  Bildschirm bleibt im Einsatz wach
+- **Bildschirm bleibt im Einsatz an** – weder Abdunkeln noch automatisches
+  Sperren; in den Einstellungen abschaltbar
+- Dunkles, kontrastreiches Einsatz-Design mit großen Touchflächen
 
 ## Technik
 
@@ -54,6 +55,10 @@ Post-ROSC – und protokolliert jedes Ereignis mit Zeitstempel.
 - Service Worker (`sw.js`) wird nur auf `github.io` registriert, nicht in der App
 - Plugins werden ausschließlich über `window.Capacitor.Plugins.<Name>`
   angesprochen (kein Bundler, daher kein `Capacitor.registerPlugin`)
+- Der Bildschirm wird zweigleisig wachgehalten: nativ über das mitgelieferte
+  Plugin `BildschirmWach` (`FLAG_KEEP_SCREEN_ON`, der verlässliche Weg in der
+  App, ohne zusätzliche Berechtigung) und zusätzlich über die
+  Screen-Wake-Lock-API, die die Web-Version trägt
 - AdMob-/Billing-Module liegen als ruhende Infrastruktur für spätere
   Versionen bei, sind in V1 aber vollständig deaktiviert und nirgends
   sichtbar; auf dem aktiven Einsatz-Screen wird es nie Werbung geben

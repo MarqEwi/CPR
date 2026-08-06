@@ -23,6 +23,11 @@ export function capacitorMock(){
       App: {
         addListener: (ev, cb) => { (window.__listener ||= {})[ev] = cb; return { remove(){} }; },
         exitApp: () => merke("App.exitApp")
+      },
+      /* Eigenes Plugin: hält den Bildschirm an (FLAG_KEEP_SCREEN_ON). */
+      BildschirmWach: {
+        an:  async () => { merke("BildschirmWach.an"); return {}; },
+        aus: async () => { merke("BildschirmWach.aus"); return {}; }
       }
     }
   };

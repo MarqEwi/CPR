@@ -63,9 +63,18 @@ Hier ist Never2Late angenehm schnell abgehakt, weil die App nichts sammelt:
 die erforderlichen Nutzerdatentypen?“ antwortest du **Nein**. Danach ist das
 Formular fertig. Alles bleibt auf dem Gerät, es gibt keinen Server.
 
-Die Berechtigung für **Benachrichtigungen** ist dabei keine Datenerhebung – die
-Erinnerungen werden komplett auf dem Handy berechnet. An der
-Datensicherheits-Erklärung ändert sie also nichts.
+**Gesundheits-Apps:** Die Frage nach „Gesundheits-Apps" zielt auf klinische
+Studien, Gesundheitsforschung und den Umgang mit Gesundheitsdaten. CPR Assist
+erhebt keine Patientendaten und führt keine Studie durch – die Antwort ist
+also Nein. In der Store-Beschreibung muss aber unmissverständlich stehen, dass
+die App eine **Merkhilfe und Dokumentation für geschultes Personal** ist und
+keine ärztliche Entscheidung ersetzt (siehe `docs/store-texte.md`).
+
+**Bildschirm anlassen:** Dass der Bildschirm während eines Einsatzes nicht
+abdunkelt, macht die App über das mitgelieferte Plugin `BildschirmWach`
+(`FLAG_KEEP_SCREEN_ON` am Fenster). Dafür braucht Android **keine**
+Berechtigung – im Manifest steht deshalb bewusst kein `WAKE_LOCK`. An der
+Datensicherheits-Erklärung ändert sich dadurch nichts.
 
 **Zur Werbe-ID:** Das AdMob-Plugin zieht `play-services-ads` mit, und dieses
 Google-SDK trägt die Berechtigung `AD_ID` von sich aus ins Manifest ein – auch

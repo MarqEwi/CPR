@@ -678,6 +678,10 @@
     <h3 class="mt"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg> Einstellungen</h3>
 
     <div class="switchrow">
+      <div class="txt"><b>Bildschirm anlassen</b><span>Während des Einsatzes nicht abdunkeln und nicht sperren</span></div>
+      <label class="switch"><input type="checkbox" id="s-bildschirm" checked><span class="track"></span></label>
+    </div>
+    <div class="switchrow">
       <div class="txt"><b>Hinweistöne</b><span>Analyse fällig, Adrenalin fällig</span></div>
       <label class="switch"><input type="checkbox" id="s-ton" checked><span class="track"></span></label>
     </div>
@@ -1036,12 +1040,13 @@ function load(key, fallback){
 
 const Einst = {
   KEY: "cpra_einstellungen",
-  werte: { ton: true, vibration: true, metronomBpm: KONF.BPM_STANDARD },
+  werte: { ton: true, vibration: true, bildschirmAn: true, metronomBpm: KONF.BPM_STANDARD },
   laden(){
     const roh = load(this.KEY, {});
     if (roh && typeof roh === "object"){
       if (typeof roh.ton === "boolean") this.werte.ton = roh.ton;
       if (typeof roh.vibration === "boolean") this.werte.vibration = roh.vibration;
+      if (typeof roh.bildschirmAn === "boolean") this.werte.bildschirmAn = roh.bildschirmAn;
       if (KONF.BPM_PRESETS.indexOf(roh.metronomBpm) >= 0) this.werte.metronomBpm = roh.metronomBpm;
     }
   },
@@ -1109,12 +1114,22 @@ const Bridge = {
   }
 };
 
-/* Bildschirm wach halten, solange ein Einsatz läuft. Die Screen-Wake-Lock-API
-   funktioniert im Browser und in der Android-WebView; das System gibt die
-   Sperre beim Verlassen der App selbst frei, deshalb wird sie bei jeder
-   Rückkehr neu angefordert. Kein stiller Fehlschlag: Stand in der Diagnose. */
+/* Bildschirm wach halten, solange ein Einsatz läuft – bewusst auf zwei
+   Wegen gleichzeitig:
+
+   1. Nativ (Android): das eigene Plugin "BildschirmWach" setzt
+      FLAG_KEEP_SCREEN_ON am Fenster. Das ist der verlässliche Weg in der
+      App; solange die App im Vordergrund ist, dunkelt Android weder ab
+      noch sperrt es automatisch.
+   2. Screen-Wake-Lock-API: trägt die Web-Version und ist in der WebView
+      eine zusätzliche Absicherung. Sie ist dort aber nicht garantiert
+      vorhanden – deshalb ist sie nicht der alleinige Weg.
+
+   Beide werden bei jeder Rückkehr in die App neu gesetzt, weil das System
+   sie beim Verlassen freigibt. Kein stiller Fehlschlag: jeder Schritt
+   landet in der Diagnosezeile. */
 const WakeLock = {
-  sperre: null, statusLog: [],
+  sperre: null, nativAn: false, statusLog: [],
   log(msg, isErr){
     (isErr ? console.warn : console.log)("[WakeLock] " + msg);
     this.statusLog.push(msg);
@@ -1122,22 +1137,48 @@ const WakeLock = {
     const el = $("wakelock-status");
     if (el) el.textContent = "Bildschirm-Status: " + this.statusLog.join(" → ");
   },
+  gewuenscht(){ return Einst.werte.bildschirmAn !== false; },
+
   async an(){
+    if (!this.gewuenscht()){ this.log("in den Einstellungen abgeschaltet"); return; }
+    /* Nativ */
+    const p = Bridge.plugin("BildschirmWach");
+    if (p && !this.nativAn){
+      try { await p.an(); this.nativAn = true; this.log("nativ aktiv"); }
+      catch(e){ this.log("nativ fehlgeschlagen: " + (e && e.message ? e.message : e), true); }
+    } else if (!p && Bridge.isNative()){
+      this.log("Plugin BildschirmWach fehlt", true);
+    }
+    /* Web-API zusätzlich */
     if (this.sperre) return;
-    if (!("wakeLock" in navigator)){ this.log("API nicht verfügbar"); return; }
+    if (!("wakeLock" in navigator)){ this.log("Wake-Lock-API nicht verfügbar"); return; }
     try {
       this.sperre = await navigator.wakeLock.request("screen");
-      this.sperre.addEventListener("release", () => { this.sperre = null; this.log("freigegeben"); });
-      this.log("aktiv");
-    } catch(e){ this.log("abgelehnt: " + (e && e.message ? e.message : e), true); }
+      this.sperre.addEventListener("release", () => { this.sperre = null; this.log("Wake Lock freigegeben"); });
+      this.log("Wake Lock aktiv");
+    } catch(e){ this.log("Wake Lock abgelehnt: " + (e && e.message ? e.message : e), true); }
   },
+
   async aus(){
-    if (!this.sperre) return;
-    try { await this.sperre.release(); } catch(e){}
-    this.sperre = null;
+    const p = Bridge.plugin("BildschirmWach");
+    if (p && this.nativAn){
+      try { await p.aus(); } catch(e){}
+      this.nativAn = false;
+      this.log("nativ freigegeben");
+    }
+    if (this.sperre){
+      try { await this.sperre.release(); } catch(e){}
+      this.sperre = null;
+    }
   },
+
   /* Beim Zurückkehren in die App neu anfordern, falls ein Einsatz läuft. */
-  auffrischen(){ if (Einsatz.aktiv()) this.an(); }
+  auffrischen(){ if (Einsatz.aktiv()) this.an(); },
+
+  /* Nach dem Umlegen des Schalters sofort anwenden. */
+  anwenden(){
+    if (Einsatz.aktiv() && this.gewuenscht()) this.an(); else this.aus();
+  }
 };
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") WakeLock.auffrischen();
@@ -1651,6 +1692,7 @@ function massnahmenOeffnen(){
 
 /* ---------- Rendering: Einstellungen & Metronom ---------- */
 function renderSettings(){
+  $("s-bildschirm").checked = Einst.werte.bildschirmAn;
   $("s-ton").checked = Einst.werte.ton;
   $("s-vibration").checked = Einst.werte.vibration;
   $("s-ende").style.display = Einsatz.aktiv() ? "" : "none";
@@ -1915,6 +1957,13 @@ document.querySelectorAll("#metro-wahl button").forEach(b =>
 
 /* ---- Einstellungen ---- */
 $("btn-settings").addEventListener("click", () => { renderSettings(); openModal("modal-settings"); });
+$("s-bildschirm").addEventListener("change", () => {
+  Einst.set("bildschirmAn", $("s-bildschirm").checked);
+  WakeLock.anwenden();                       /* sofort wirksam, auch mitten im Einsatz */
+  toast($("s-bildschirm").checked
+    ? "Bildschirm bleibt während des Einsatzes an"
+    : "Bildschirm darf sich wieder abschalten");
+});
 $("s-ton").addEventListener("change", () => Einst.set("ton", $("s-ton").checked));
 $("s-vibration").addEventListener("change", () => Einst.set("vibration", $("s-vibration").checked));
 

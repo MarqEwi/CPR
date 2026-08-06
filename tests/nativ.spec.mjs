@@ -52,6 +52,51 @@ test("Zurück-Taste: schließt erst Dialoge, beendet nie einen laufenden Einsatz
   expect(nachZweitem).toBe(1);
 });
 
+test("Bildschirm anlassen: natives Plugin wird beim Einsatz gerufen und am Ende freigegeben", async ({ page }) => {
+  const rufe = async () => page.evaluate(() =>
+    window.__calls.filter(c => c.name.startsWith("BildschirmWach")).map(c => c.name));
+
+  expect(await rufe()).toEqual([]);            // ohne Einsatz kein Zugriff
+
+  await einsatzStarten(page);
+  await expect.poll(rufe).toEqual(["BildschirmWach.an"]);
+
+  /* Einsatz beenden gibt den Bildschirm wieder frei */
+  await page.click("#btn-rosc");
+  await page.click("#rosc-ok");
+  await page.click("#btn-ende");
+  await page.click("#ende-ok");
+  await expect.poll(rufe).toEqual(["BildschirmWach.an", "BildschirmWach.aus"]);
+});
+
+test("Bildschirm anlassen: der Schalter in den Einstellungen wirkt sofort", async ({ page }) => {
+  const rufe = async () => page.evaluate(() =>
+    window.__calls.filter(c => c.name.startsWith("BildschirmWach")).map(c => c.name));
+
+  await einsatzStarten(page);
+  await expect.poll(rufe).toEqual(["BildschirmWach.an"]);
+
+  /* Mitten im Einsatz abschalten: Bildschirm wird sofort freigegeben */
+  await page.click("#btn-settings");
+  await expect(page.locator("#s-bildschirm")).toBeChecked();
+  await page.locator("#modal-settings .switchrow", { hasText: "Bildschirm anlassen" })
+    .locator(".switch").click();
+  await expect.poll(rufe).toEqual(["BildschirmWach.an", "BildschirmWach.aus"]);
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.bildschirmAn)).toBe(false);
+
+  /* Wieder einschalten: sofort wieder aktiv */
+  await page.locator("#modal-settings .switchrow", { hasText: "Bildschirm anlassen" })
+    .locator(".switch").click();
+  await expect.poll(rufe).toEqual(
+    ["BildschirmWach.an", "BildschirmWach.aus", "BildschirmWach.an"]);
+
+  /* Die Einstellung überlebt einen Neustart und gilt auch dann */
+  await page.reload();
+  await page.waitForFunction(() => !!window.CPRA);
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.bildschirmAn)).toBe(true);
+  await expect.poll(rufe).toContain("BildschirmWach.an");
+});
+
 test("appStateChange: Rückkehr in die App fordert den WakeLock neu an", async ({ page }) => {
   await einsatzStarten(page);
   /* Die Wake-Lock-API existiert in der Testumgebung; entscheidend ist,
