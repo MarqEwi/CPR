@@ -1,0 +1,57 @@
+# Veröffentlicht die Web-Version auf GitHub Pages.
+#
+# Warum ein eigener Ablauf statt "Deploy from a branch": Der eingebaute
+# Automatismus schleust das gesamte Repository durch den Build – rund 3700
+# Dateien, davon fast alles Android-Projekt, Tests und Store-Grafiken. Zwei
+# Läufe sind daran in Zeitüberschreitungen gelaufen. Hier wird stattdessen
+# ein winziges Paket aus genau den Dateien gebaut, die die Web-Version
+# braucht.
+#
+# Voraussetzung: In den Repo-Einstellungen unter Pages muss als Quelle
+# "GitHub Actions" eingestellt sein (nicht "Deploy from a branch").
+name: Web-Version veröffentlichen
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:        # erlaubt das Auslösen von Hand
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Laufende Veröffentlichungen nicht abbrechen – sonst überholt ein neuer
+# Push eine Auslieferung, die schon fast fertig ist.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  paket-bauen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Nur die Web-Dateien einsammeln
+        run: |
+          mkdir -p site/icons
+          cp index.html datenschutz.html manifest.webmanifest sw.js site/
+          cp icons/icon-192.png icons/icon-512.png icons/icon-maskable-512.png site/icons/
+          echo "Inhalt des Pakets:"
+          find site -type f | sort
+          du -sh site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  veroeffentlichen:
+    needs: paket-bauen
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
