@@ -318,3 +318,74 @@ test("Gespeicherte Einsätze: Liste, Verlauf und Löschen", async ({ page }) => 
   await expect(page.locator("#archiv-liste li")).toHaveCount(0);
   expect(await page.evaluate(() => localStorage.getItem("cpra_archiv"))).toBe(null);
 });
+
+test("Startseite: Metronom, Hinweistöne und Sofortstart vorwählen", async ({ page }) => {
+  await appOeffnen(page);
+
+  /* Standard: Metronom aus, 110 vorgewählt, Töne an, kein Sofortstart */
+  await expect(page.locator("#vw-metro")).not.toBeChecked();
+  await expect(page.locator("#vw-metro-sub")).toContainText("aus");
+  await expect(page.locator('#vw-bpm button[data-bpm="110"]')).toHaveClass(/active/);
+  await expect(page.locator("#vw-bpm")).not.toHaveClass(/an/);   // gesperrt solange aus
+  await expect(page.locator("#vw-ton")).toBeChecked();
+  await expect(page.locator("#vw-autostart")).not.toBeChecked();
+
+  /* Metronom vorwählen und Tempo auf 120 */
+  await page.locator("#view-bereit .switchrow", { hasText: "Metronom" }).locator(".switch").click();
+  await expect(page.locator("#vw-bpm")).toHaveClass(/an/);
+  await expect(page.locator("#vw-metro-sub")).toContainText("110 pro Minute");
+  await page.click('#vw-bpm button[data-bpm="120"]');
+  await expect(page.locator("#vw-metro-sub")).toContainText("120 pro Minute");
+
+  /* Hinweistöne abwählen – der Einstellungsdialog zeigt denselben Stand */
+  await page.locator("#view-bereit .switchrow", { hasText: "Hinweistöne" }).locator(".switch").click();
+  await expect(page.locator("#vw-ton")).not.toBeChecked();
+  await page.click("#btn-settings");
+  await expect(page.locator("#s-ton")).not.toBeChecked();
+  await page.locator("#modal-settings .modal-x").click();
+
+  /* Der Einsatz startet mit laufendem Metronom */
+  await einsatzStarten(page);
+  await expect(page.locator("#btn-metronom")).toHaveClass(/an/);
+  await expect(page.locator("#metro-label")).toHaveText("120");
+  const w = await page.evaluate(() => window.CPRA.Einst.werte);
+  expect(w.metronomAn).toBe(true);
+  expect(w.metronomBpm).toBe(120);
+  expect(w.ton).toBe(false);
+});
+
+test("Sofortstart: die App beginnt beim Öffnen ohne weiteren Tipp", async ({ page }) => {
+  await appOeffnen(page);
+  /* Ohne Sofortstart landet die App auf der Startseite */
+  await page.reload();
+  await page.waitForFunction(() => !!window.CPRA);
+  await expect(page.locator("#view-bereit")).toHaveClass(/active/);
+
+  /* Sofortstart einschalten */
+  await page.locator("#view-bereit .switchrow", { hasText: "Beim Öffnen sofort starten" })
+    .locator(".switch").click();
+  await expect(page.locator("#vw-autostart")).toBeChecked();
+
+  /* Nach dem Neustart läuft die CPR sofort */
+  await page.reload();
+  await page.waitForFunction(() => !!window.CPRA);
+  await expect(page.locator("#view-aktiv")).toHaveClass(/active/);
+  await expect(page.locator("#ring-status")).toContainText("Zyklus 1");
+  expect(await page.evaluate(() => !!window.CPRA.Einsatz.e)).toBe(true);
+
+  /* Ein laufender Einsatz wird wiederhergestellt statt neu gestartet */
+  const start1 = await page.evaluate(() => window.CPRA.Einsatz.e.startZeit);
+  await page.reload();
+  await page.waitForFunction(() => !!window.CPRA);
+  const start2 = await page.evaluate(() => window.CPRA.Einsatz.e.startZeit);
+  expect(start2).toBe(start1);
+
+  /* Nach dem Beenden startet der nächste Aufruf wieder sofort */
+  await page.click("#btn-settings-einsatz");
+  await page.click("#s-ende");
+  await page.click("#ende-ok");
+  await expect(page.locator("#view-bereit")).toHaveClass(/active/);
+  await page.reload();
+  await page.waitForFunction(() => !!window.CPRA);
+  await expect(page.locator("#view-aktiv")).toHaveClass(/active/);
+});

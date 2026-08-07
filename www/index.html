@@ -130,6 +130,19 @@
   .startliste .ic{color:var(--accent);width:20px;height:20px;margin-top:2px}
   .startliste b{color:var(--text);font-weight:640}
   #btn-start{min-height:72px;font-size:1.22rem;margin-top:6px}
+  /* Vorwahl auf der Startseite: gilt für den nächsten Einsatz. */
+  .vorwahl{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);
+    padding:4px 14px 12px;margin:14px 0 12px}
+  .vorwahl .switchrow{padding:11px 0}
+  .vorwahl .bpmchips{display:flex;gap:7px;margin:0 0 4px;
+    opacity:.4;pointer-events:none;transition:opacity .18s}
+  .vorwahl .bpmchips.an{opacity:1;pointer-events:auto}
+  .vorwahl .bpmchips button{flex:1;background:var(--bg3);border:1px solid var(--line-stark);
+    color:var(--text2);border-radius:var(--radius-xs);min-height:44px;padding:8px;
+    font:inherit;font-size:.9rem;font-weight:700;cursor:pointer;
+    font-variant-numeric:tabular-nums;transition:background .13s, color .13s, border-color .13s}
+  .vorwahl .bpmchips button.active{background:var(--accent);border-color:var(--accent);
+    color:var(--accent-text)}
   /* ---------- CPR-Ring ---------- */
   .ringwrap{position:relative;width:min(64vw,250px);margin:2px auto}
   .ringwrap svg{display:block;width:100%;height:auto;transform:rotate(-90deg)}
@@ -492,6 +505,34 @@
       <li><svg class="ic" viewBox="0 0 24 24"><path d="M2 12H7.2C7.6 9.8 9.2 9.8 9.6 12H10.6L11.1 13.4L12.1 5L13.1 16.6L13.8 12H15.2C15.8 8.9 17.8 8.9 18.4 12H22"/></svg>
         <div><b>Rhythmus, Schocks, ROSC, 4H/HITS</b> – jede Aktion einen Tipp entfernt, alles mit Zeitstempel</div></li>
     </ul>
+    <!-- Vorwahl: gilt für den nächsten Einsatz und wird gespeichert. -->
+    <div class="vorwahl">
+      <div class="switchrow">
+        <div class="txt"><b>Metronom</b><span id="vw-metro-sub">aus · Ziel 100–120/min</span></div>
+        <label class="switch" aria-label="Metronom für den Einsatz vorwählen">
+          <input type="checkbox" id="vw-metro"><span class="track"></span>
+        </label>
+      </div>
+      <div class="bpmchips" id="vw-bpm">
+        <button type="button" data-bpm="100">100</button>
+        <button type="button" data-bpm="110">110</button>
+        <button type="button" data-bpm="120">120</button>
+      </div>
+      <div class="switchrow">
+        <div class="txt"><b>Hinweistöne</b><span>Analyse fällig, Adrenalin fällig</span></div>
+        <label class="switch" aria-label="Hinweistöne">
+          <input type="checkbox" id="vw-ton"><span class="track"></span>
+        </label>
+      </div>
+      <div class="switchrow">
+        <div class="txt"><b>Beim Öffnen sofort starten</b>
+          <span>Die App beginnt die CPR ohne weiteren Tipp</span></div>
+        <label class="switch" aria-label="Beim Öffnen sofort starten">
+          <input type="checkbox" id="vw-autostart"><span class="track"></span>
+        </label>
+      </div>
+    </div>
+
     <button class="btn block" id="btn-start">
       <svg class="ic" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
       Reanimation starten
@@ -1137,13 +1178,16 @@ function load(key, fallback){
 
 const Einst = {
   KEY: "cpra_einstellungen",
-  werte: { ton: true, vibration: true, bildschirmAn: true, metronomBpm: KONF.BPM_STANDARD },
+  werte: { ton: true, vibration: true, bildschirmAn: true,
+           metronomAn: false, metronomBpm: KONF.BPM_STANDARD, autostart: false },
   laden(){
     const roh = load(this.KEY, {});
     if (roh && typeof roh === "object"){
       if (typeof roh.ton === "boolean") this.werte.ton = roh.ton;
       if (typeof roh.vibration === "boolean") this.werte.vibration = roh.vibration;
       if (typeof roh.bildschirmAn === "boolean") this.werte.bildschirmAn = roh.bildschirmAn;
+      if (typeof roh.metronomAn === "boolean") this.werte.metronomAn = roh.metronomAn;
+      if (typeof roh.autostart === "boolean") this.werte.autostart = roh.autostart;
       if (KONF.BPM_PRESETS.indexOf(roh.metronomBpm) >= 0) this.werte.metronomBpm = roh.metronomBpm;
     }
   },
@@ -1814,6 +1858,19 @@ function massnahmenOeffnen(){
   openModal("modal-massnahme");
 }
 
+/* ---------- Rendering: Vorwahl auf der Startseite ---------- */
+function renderVorwahl(){
+  const w = Einst.werte;
+  $("vw-metro").checked = w.metronomAn;
+  $("vw-ton").checked = w.ton;
+  $("vw-autostart").checked = w.autostart;
+  $("vw-metro-sub").textContent = w.metronomAn
+    ? w.metronomBpm + " pro Minute" : "aus · Ziel 100–120/min";
+  $("vw-bpm").classList.toggle("an", w.metronomAn);
+  document.querySelectorAll("#vw-bpm button").forEach(b =>
+    b.classList.toggle("active", Number(b.dataset.bpm) === w.metronomBpm));
+}
+
 /* ---------- Rendering: Einstellungen & Metronom ---------- */
 function renderSettings(){
   const anzahl = Einsatz.archiv().length;
@@ -1849,6 +1906,7 @@ function vollRender(){
   const now = Date.now();
   ansichtNachPhase();
   renderKopf(now);
+  renderVorwahl();
   renderSettings();
   if (Einsatz.aktiv()){
     renderKennzahlen(now);
@@ -1904,15 +1962,58 @@ setInterval(tick, 200);
    AKTIONEN
    ========================================================================= */
 
-/* ---- Einsatz starten ---- */
-$("btn-start").addEventListener("click", () => {
-  Audio_.init();                     /* Nutzergeste: Audio jetzt freischalten */
+/* Startet das Metronom, wenn es vorgewählt ist. Ohne vorherige Nutzergeste
+   bleibt der AudioContext gesperrt (Autostart!) – dann wird beim ersten
+   Tippen nachgezogen, statt still nichts zu tun. */
+function metronomNachWunsch(){
+  if (!Einst.werte.metronomAn || Metronom.an) return;
+  Metronom.start();
+  if (Metronom.an) return;
+  Audio_.log("Metronom wartet auf die erste Berührung");
+  const nachziehen = () => {
+    document.removeEventListener("pointerdown", nachziehen);
+    if (Einsatz.aktiv() && Einst.werte.metronomAn && !Metronom.an) Metronom.start();
+  };
+  document.addEventListener("pointerdown", nachziehen, { once: true });
+}
+
+/* Gemeinsamer Weg in den Einsatz – von der Schaltfläche und vom Autostart. */
+function einsatzBeginnen(){
   Einsatz.starten(Date.now());
   Merker.warnGemeldet = false; Merker.analyseGemeldet = false; Merker.adrCode = null;
   WakeLock.an();
   if (Ads.ENABLED) Ads.sync();
   vollRender();
+  metronomNachWunsch();
+}
+
+/* ---- Einsatz starten ---- */
+$("btn-start").addEventListener("click", () => {
+  Audio_.init();                     /* Nutzergeste: Audio jetzt freischalten */
+  einsatzBeginnen();
   toast("Einsatz läuft – Zyklus 1");
+});
+
+/* ---- Vorwahl auf der Startseite ---- */
+$("vw-metro").addEventListener("change", () => {
+  Einst.set("metronomAn", $("vw-metro").checked);
+  renderVorwahl();
+});
+document.querySelectorAll("#vw-bpm button").forEach(b =>
+  b.addEventListener("click", () => {
+    Einst.set("metronomBpm", Number(b.dataset.bpm));
+    renderVorwahl();
+    UI.metronomAnzeigen();
+  }));
+$("vw-ton").addEventListener("change", () => {
+  Einst.set("ton", $("vw-ton").checked);
+  renderSettings();
+});
+$("vw-autostart").addEventListener("change", () => {
+  const an = $("vw-autostart").checked;
+  Einst.set("autostart", an);
+  toast(an ? "Beim nächsten Öffnen startet die CPR sofort"
+           : "Die App startet wieder auf dieser Seite", 3200);
 });
 
 /* ---- CPR fortsetzen / Zyklus neu ---- */
@@ -2077,14 +2178,17 @@ document.querySelectorAll("#metro-wahl button").forEach(b =>
     const bpm = Number(b.dataset.bpm);
     if (bpm){
       Einst.set("metronomBpm", bpm);
+      Einst.set("metronomAn", true);
       /* Läuft es schon, übernimmt der nächste geplante Klick die neue
          Frequenz von selbst – sonst hier starten. */
       if (!Metronom.an) Metronom.start(); else UI.metronomAnzeigen();
     } else {
+      Einst.set("metronomAn", false);
       Metronom.stop();
     }
     closeModal("modal-metronom");
     UI.metronomAnzeigen();
+    renderVorwahl();
   }));
 
 /* ---- Einstellungen ---- */
@@ -2097,7 +2201,10 @@ $("s-bildschirm").addEventListener("change", () => {
     ? "Bildschirm bleibt während des Einsatzes an"
     : "Bildschirm darf sich wieder abschalten");
 });
-$("s-ton").addEventListener("change", () => Einst.set("ton", $("s-ton").checked));
+$("s-ton").addEventListener("change", () => {
+  Einst.set("ton", $("s-ton").checked);
+  renderVorwahl();
+});
 $("s-vibration").addEventListener("change", () => Einst.set("vibration", $("s-vibration").checked));
 
 /* ---------- Gespeicherte Einsätze ---------- */
@@ -2305,10 +2412,16 @@ const wiederAufgenommen = Einsatz.laden();
 vollRender();
 if (wiederAufgenommen){
   WakeLock.an();
+  metronomNachWunsch();
   toast("Laufender Einsatz wiederhergestellt", 3200);
 } else if (!load(OB_KEY, false)){
   obShow(0);
   openModal("modal-onboarding");
+} else if (Einst.werte.autostart){
+  /* Vorgewählt: Die App beginnt ohne weiteren Tipp. Wer sie versehentlich
+     geöffnet hat, beendet den Einsatz über die Einstellungen. */
+  einsatzBeginnen();
+  toast("Sofortstart – Zyklus 1 läuft. Beenden über die Einstellungen.", 4000);
 }
 
 if (Bridge.isNative()){
