@@ -525,9 +525,10 @@
         </label>
       </div>
       <div class="switchrow">
-        <div class="txt"><b>Beim Öffnen sofort starten</b>
-          <span>Die App beginnt die CPR ohne weiteren Tipp</span></div>
-        <label class="switch" aria-label="Beim Öffnen sofort starten">
+        <div class="txt"><b>Immer mit laufender CPR öffnen</b>
+          <span id="vw-autostart-sub">Ab dann startet der Zyklus bei jedem Öffnen sofort –
+            diese Startseite erscheint nicht mehr</span></div>
+        <label class="switch" aria-label="Immer mit laufender CPR öffnen">
           <input type="checkbox" id="vw-autostart"><span class="track"></span>
         </label>
       </div>
@@ -817,6 +818,11 @@
     <div class="switchrow">
       <div class="txt"><b>Hinweistöne</b><span>Analyse fällig, Adrenalin fällig</span></div>
       <label class="switch"><input type="checkbox" id="s-ton" checked><span class="track"></span></label>
+    </div>
+    <div class="switchrow">
+      <div class="txt"><b>Immer mit laufender CPR öffnen</b>
+        <span>Der Zyklus startet bei jedem Öffnen sofort, ohne Startseite</span></div>
+      <label class="switch"><input type="checkbox" id="s-autostart"><span class="track"></span></label>
     </div>
     <div class="switchrow">
       <div class="txt"><b>Vibration</b><span>zusätzlich zu den Hinweistönen</span></div>
@@ -1879,6 +1885,7 @@ function renderSettings(){
     : "noch keine";
   $("s-bildschirm").checked = Einst.werte.bildschirmAn;
   $("s-ton").checked = Einst.werte.ton;
+  $("s-autostart").checked = Einst.werte.autostart;
   $("s-vibration").checked = Einst.werte.vibration;
   $("s-ende").style.display = Einsatz.aktiv() ? "" : "none";
 }
@@ -2009,12 +2016,16 @@ $("vw-ton").addEventListener("change", () => {
   Einst.set("ton", $("vw-ton").checked);
   renderSettings();
 });
-$("vw-autostart").addEventListener("change", () => {
-  const an = $("vw-autostart").checked;
+function autostartUmschalten(an){
   Einst.set("autostart", an);
-  toast(an ? "Beim nächsten Öffnen startet die CPR sofort"
-           : "Die App startet wieder auf dieser Seite", 3200);
-});
+  renderVorwahl();
+  renderSettings();
+  toast(an
+    ? "Ab jetzt öffnet die App immer mit laufender CPR. Abschalten in den Einstellungen."
+    : "Die App öffnet wieder mit der Startseite.", 4200);
+}
+$("vw-autostart").addEventListener("change", () => autostartUmschalten($("vw-autostart").checked));
+$("s-autostart").addEventListener("change", () => autostartUmschalten($("s-autostart").checked));
 
 /* ---- CPR fortsetzen / Zyklus neu ---- */
 $("btn-cpr").addEventListener("click", () => {
@@ -2421,7 +2432,7 @@ if (wiederAufgenommen){
   /* Vorgewählt: Die App beginnt ohne weiteren Tipp. Wer sie versehentlich
      geöffnet hat, beendet den Einsatz über die Einstellungen. */
   einsatzBeginnen();
-  toast("Sofortstart – Zyklus 1 läuft. Beenden über die Einstellungen.", 4000);
+  toast("Zyklus 1 läuft. Beenden und Startseite: Einstellungen (Zahnrad oben).", 4600);
 }
 
 if (Bridge.isNative()){

@@ -362,7 +362,7 @@ test("Sofortstart: die App beginnt beim Öffnen ohne weiteren Tipp", async ({ pa
   await expect(page.locator("#view-bereit")).toHaveClass(/active/);
 
   /* Sofortstart einschalten */
-  await page.locator("#view-bereit .switchrow", { hasText: "Beim Öffnen sofort starten" })
+  await page.locator("#view-bereit .switchrow", { hasText: "Immer mit laufender CPR öffnen" })
     .locator(".switch").click();
   await expect(page.locator("#vw-autostart")).toBeChecked();
 
@@ -388,4 +388,32 @@ test("Sofortstart: die App beginnt beim Öffnen ohne weiteren Tipp", async ({ pa
   await page.reload();
   await page.waitForFunction(() => !!window.CPRA);
   await expect(page.locator("#view-aktiv")).toHaveClass(/active/);
+});
+
+test("Sofortstart ist auch in den Einstellungen abschaltbar", async ({ page }) => {
+  await appOeffnen(page);
+  /* Einschalten auf der Startseite */
+  await page.locator("#view-bereit .switchrow", { hasText: "Immer mit laufender CPR öffnen" })
+    .locator(".switch").click();
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.autostart)).toBe(true);
+
+  /* Neu öffnen: die Startseite erscheint nicht mehr … */
+  await page.reload();
+  await page.waitForFunction(() => !!window.CPRA);
+  await expect(page.locator("#view-aktiv")).toHaveClass(/active/);
+
+  /* … also muss der Schalter in den Einstellungen erreichbar sein */
+  await page.click("#btn-settings-einsatz");
+  await expect(page.locator("#s-autostart")).toBeChecked();
+  await page.locator("#modal-settings .switchrow", { hasText: "Immer mit laufender CPR öffnen" })
+    .locator(".switch").click();
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.autostart)).toBe(false);
+
+  /* Einsatz beenden, neu öffnen: wieder die Startseite */
+  await page.click("#s-ende");
+  await page.click("#ende-ok");
+  await page.reload();
+  await page.waitForFunction(() => !!window.CPRA);
+  await expect(page.locator("#view-bereit")).toHaveClass(/active/);
+  await expect(page.locator("#vw-autostart")).not.toBeChecked();
 });
