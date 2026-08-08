@@ -456,6 +456,7 @@ test("Startseite nennt Werbefreiheit, Premium und Spende", async ({ page }) => {
   await appOeffnen(page);
   const box = page.locator("#spendenbox");
   await expect(box).toContainText("frei von Werbung");
+  await expect(box).toContainText("wichtigsten Funktionen für die Reanimation");
   await expect(box).toContainText("Premium");
   await expect(box.locator('a[href="https://www.mercwerk.de"]').first()).toBeVisible();
 
@@ -463,7 +464,7 @@ test("Startseite nennt Werbefreiheit, Premium und Spende", async ({ page }) => {
   await page.click("#btn-premium");
   await expect(page.locator("#modal-premium")).toHaveClass(/open/);
   await expect(page.locator("#modal-premium")).toContainText("Eigene Hinweistöne");
-  await expect(page.locator("#modal-premium")).toContainText("Eigenes Metronom-Tempo");
+  await expect(page.locator("#modal-premium")).toContainText("Eigene Metronom-Tempi");
   await expect(page.locator("#modal-premium")).toContainText("Eigene Felder");
   await expect(page.locator("#premium-kaufen")).toBeVisible();
 });
@@ -500,36 +501,108 @@ test("Hinweistöne: Probehören immer, Umstellen erst mit Premium", async ({ pag
   await expect(page.locator("#tone-liste li").nth(2)).toHaveClass(/aktiv/);
 });
 
-test("Metronom-Regler: schieben frei, übernehmen erst mit Premium", async ({ page }) => {
+test("Metronom-Regler: schieben frei, speichern erst mit Premium", async ({ page }) => {
   await appOeffnen(page);
   await einsatzStarten(page);
   await page.click("#btn-metronom");
   await expect(page.locator("#regler-box")).toHaveClass(/gesperrt/);
-  await expect(page.locator("#regler-uebernehmen")).toContainText("Premium");
+  await expect(page.locator("#regler-speichern")).toContainText("Premium");
 
   /* Schieben zeigt den Wert, ändert aber nichts */
   await page.locator("#bpm-regler").fill("117");
   await expect(page.locator("#regler-wert")).toHaveText("117/min");
-  await page.click("#regler-uebernehmen");
+  await page.click("#regler-speichern");
   await expect(page.locator("#modal-premium")).toHaveClass(/open/);
   expect(await page.evaluate(() => window.CPRA.Einst.werte.metronomBpm)).toBe(110);
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.tempi)).toEqual([]);
   await page.locator("#modal-premium .modal-x").click();
+});
 
-  /* Mit Premium wird der Wert übernommen und das Metronom läuft damit */
+test("Eigene Tempi: anlegen, wählen, umbenennen, löschen", async ({ page }) => {
+  await appOeffnen(page);
   await premiumFreischalten(page);
+  await einsatzStarten(page);
+
+  const dlg = page.locator("#modal-metronom");
+  const zeilen = page.locator("#tempi-liste li");
+
+  /* Anlegen: Regler auf 117, Name, speichern. Der Dialog bleibt offen –
+     man soll die neue Zeile in der Liste sehen. */
   await page.click("#btn-metronom");
-  await expect(page.locator("#regler-box")).not.toHaveClass(/gesperrt/);
+  await expect(page.locator("#regler-titel")).toHaveText("Eigenes Tempo anlegen");
   await page.locator("#bpm-regler").fill("117");
-  await page.click("#regler-uebernehmen");
-  await expect(page.locator("#modal-metronom")).not.toHaveClass(/open/);
-  expect(await page.evaluate(() => window.CPRA.Einst.werte.metronomBpm)).toBe(117);
+  await page.fill("#tempo-name", "Team-Standard");
+  await page.click("#regler-speichern");
+  await expect(dlg).toHaveClass(/open/);
+  await expect(zeilen).toHaveCount(1);
+  await expect(zeilen.first()).toContainText("Team-Standard");
+  await expect(zeilen.first()).toContainText("117/min");
+  await expect(zeilen.first()).toHaveClass(/aktiv/);
+  /* Das gespeicherte Tempo gilt sofort */
   await expect(page.locator("#metro-label")).toHaveText("117");
   expect(await page.evaluate(() => window.CPRA.Metronom.an)).toBe(true);
+  let w = await page.evaluate(() => window.CPRA.Einst.werte);
+  expect(w.tempi).toHaveLength(1);
+  expect(w.tempi[0]).toMatchObject({ name: "Team-Standard", bpm: 117 });
+  expect(w.metronomBpm).toBe(117);
 
-  /* Der eigene Wert überlebt einen Neustart */
+  /* Ein zweites Tempo ohne Namen: der Wert dient als Name */
+  await page.locator("#bpm-regler").fill("104");
+  await page.click("#regler-speichern");
+  await expect(zeilen).toHaveCount(2);
+  w = await page.evaluate(() => window.CPRA.Einst.werte);
+  expect(w.tempi[1].name).toBe("104 pro Minute");
+  expect(w.metronomBpm).toBe(104);
+  await expect(zeilen.nth(1)).toHaveClass(/aktiv/);
+
+  /* Auswählen mit einem Tipp – danach schließt der Dialog */
+  await zeilen.nth(0).locator(".waehl").click();
+  await expect(dlg).not.toHaveClass(/open/);
+  await expect(page.locator("#metro-label")).toHaveText("117");
+
+  /* Eine feste Stufe hebt die Markierung des eigenen Tempos auf */
+  await page.click("#btn-metronom");
+  await expect(zeilen.nth(0)).toHaveClass(/aktiv/);
+  await page.click('#metro-wahl button[data-bpm="120"]');
+  await page.click("#btn-metronom");
+  await expect(zeilen.nth(0)).not.toHaveClass(/aktiv/);
+  await expect(page.locator('#metro-wahl button[data-bpm="120"]')).toHaveClass(/active/);
+
+  /* Umbenennen: Formular wechselt in den Bearbeiten-Modus */
+  await zeilen.nth(0).locator(".umbenennen").click();
+  await expect(page.locator("#regler-titel")).toHaveText("Tempo bearbeiten");
+  await expect(page.locator("#tempo-name")).toHaveValue("Team-Standard");
+  await expect(page.locator("#regler-abbrechen")).toBeVisible();
+  await page.fill("#tempo-name", "Schnell");
+  await page.locator("#bpm-regler").fill("119");
+  await page.click("#regler-speichern");
+  await expect(zeilen).toHaveCount(2);                   // kein neues angelegt
+  await expect(zeilen.nth(0)).toContainText("Schnell");
+  w = await page.evaluate(() => window.CPRA.Einst.werte);
+  expect(w.tempi[0]).toMatchObject({ name: "Schnell", bpm: 119 });
+
+  /* Abbrechen verwirft die Bearbeitung */
+  await zeilen.nth(0).locator(".umbenennen").click();
+  await page.fill("#tempo-name", "Verworfen");
+  await page.click("#regler-abbrechen");
+  await expect(page.locator("#regler-titel")).toHaveText("Eigenes Tempo anlegen");
+  await expect(page.locator("#tempo-name")).toHaveValue("");
+  w = await page.evaluate(() => window.CPRA.Einst.werte);
+  expect(w.tempi[0].name).toBe("Schnell");
+
+  /* Löschen */
+  await zeilen.nth(1).locator(".weg").click();
+  await expect(zeilen).toHaveCount(1);
+  w = await page.evaluate(() => window.CPRA.Einst.werte);
+  expect(w.tempi).toHaveLength(1);
+  expect(w.tempi[0].name).toBe("Schnell");
+
+  /* Die eigenen Tempi überleben einen Neustart */
   await page.reload();
   await page.waitForFunction(() => !!window.CPRA);
-  expect(await page.evaluate(() => window.CPRA.Einst.werte.metronomBpm)).toBe(117);
+  w = await page.evaluate(() => window.CPRA.Einst.werte);
+  expect(w.tempi).toHaveLength(1);
+  expect(w.tempi[0]).toMatchObject({ name: "Schnell", bpm: 119 });
 });
 
 test("Eigene Felder: nur mit Premium, dann als Karte mit Timer im Einsatz", async ({ page }) => {

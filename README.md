@@ -11,7 +11,7 @@ Post-ROSC – und protokolliert jedes Ereignis mit Zeitstempel.
 > Team. Alle Daten bleiben **lokal auf dem Gerät** – kein Konto, kein Server,
 > keine Cloud, kein Tracking. **Werbung gibt es nicht** – auch nicht später.
 > Es gibt einen freiwilligen Einmalkauf („Premium“) für Komfortfunktionen;
-> alles Notwendige bleibt kostenlos.
+> die **wichtigsten Funktionen für die Reanimation bleiben kostenfrei**.
 
 ## Funktionen (V1)
 
@@ -37,9 +37,10 @@ Post-ROSC – und protokolliert jedes Ereignis mit Zeitstempel.
   mit optischem Puls
 - **Ereignis-Protokoll** im Hintergrund: jeder Schritt mit Zeitstempel
 - **Premium (einmaliger Kauf, freiwillig):** eigene Hinweistöne (vier
-  Klangvarianten, Probehören immer möglich), frei einstellbares
-  Metronom-Tempo im Zielbereich 100–120/min, eigene Felder mit Timer
-  (z. B. BGA alle 10 min). Alles für die Reanimation selbst bleibt kostenlos
+  Klangvarianten, Probehören immer möglich), eigene benannte Metronom-Tempi
+  im Zielbereich 100–120/min (speichern, umbenennen, löschen, mit einem Tipp
+  wählen), eigene Felder mit Timer (z. B. BGA alle 10 min). Die wichtigsten
+  Funktionen für die Reanimation bleiben kostenfrei
 - **Bildschirm bleibt im Einsatz an** – weder Abdunkeln noch automatisches
   Sperren; in den Einstellungen abschaltbar
 - Dunkles, kontrastreiches Einsatz-Design mit großen Touchflächen

@@ -200,6 +200,25 @@
   .reglerbox.gesperrt input[type=range]::-webkit-slider-thumb{background:var(--text3)}
   .reglerbox.gesperrt input[type=range]::-moz-range-thumb{background:var(--text3)}
   .reglerbox.gesperrt .reglerwert{color:var(--text2)}
+  /* Eigene Tempi */
+  .tempiliste{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px}
+  .tempiliste:empty{display:none}
+  .tempiliste li{display:flex;align-items:center;gap:8px;background:var(--bg3);
+    border:1px solid var(--line-stark);border-radius:var(--radius-s);padding:4px 8px 4px 4px}
+  .tempiliste li.aktiv{border-color:var(--accent);background:var(--accent-soft)}
+  .tempiliste .waehl{flex:1;min-width:0;display:flex;align-items:baseline;gap:9px;
+    background:none;border:none;color:var(--text);font:inherit;text-align:left;
+    padding:11px 8px;cursor:pointer;min-height:48px}
+  .tempiliste .waehl b{font-size:.95rem;font-weight:680;letter-spacing:-.01em;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tempiliste .waehl span{font-size:.82rem;color:var(--text2);flex:none;
+    font-variant-numeric:tabular-nums}
+  .tempiliste li.aktiv .waehl span{color:var(--accent);font-weight:700}
+  .tempiliste .klein-btn{flex:none;background:none;border:none;color:var(--text2);
+    cursor:pointer;padding:10px;border-radius:9px;line-height:0}
+  .tempiliste .klein-btn:hover{color:var(--text);background:var(--bg4)}
+  .tempiliste .weg:hover{color:var(--bad);background:var(--bad-soft)}
+  .tempiliste .ic{width:18px;height:18px}
   /* Klangvarianten */
   .toneliste{list-style:none;margin:0;padding:0;display:grid;gap:9px}
   .toneliste li{display:flex;align-items:center;gap:10px;background:var(--bg3);
@@ -650,8 +669,10 @@
       <p class="klein">Wenn du die Entwicklung unterstützen willst: mit der
         <b>Premium-Version</b> als einmaligem Kauf oder mit einer Spende über
         <a href="https://www.mercwerk.de" target="_blank" rel="noopener">www.mercwerk.de</a>.
-        Beides ist freiwillig – alle Funktionen für die Reanimation selbst
-        bleiben dauerhaft kostenlos.</p>
+        Beides ist freiwillig. <b>Die wichtigsten Funktionen für die Reanimation
+        bleiben kostenfrei</b> – Zyklen, Rhythmus, Schocks, Medikamenten-Status,
+        4H/HITS, Post-ROSC, Metronom und Protokoll. Premium ergänzt nur
+        Komfort.</p>
       <div class="btn-row">
         <button class="btn secondary" id="btn-premium" style="flex:1">
           <svg class="ic" viewBox="0 0 24 24"><path d="M12 3l2.4 5.5 6 .5-4.5 4 1.4 5.8L12 15.9 6.7 18.8 8.1 13 3.6 9l6-.5z"/></svg>
@@ -851,20 +872,28 @@
         <svg class="ic mark" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></button>
     </div>
 
-    <!-- Eigenes Tempo: Premium. Sichtbar auch ohne Kauf, damit klar ist,
+    <!-- Eigene Tempi: Premium. Sichtbar auch ohne Kauf, damit klar ist,
          was Premium bringt – bedienen lässt es sich dann aber nicht. -->
+    <ul class="tempiliste" id="tempi-liste"></ul>
+
     <div class="reglerbox" id="regler-box">
       <div class="reglerkopf">
-        <b>Eigenes Tempo</b>
+        <b id="regler-titel">Eigenes Tempo anlegen</b>
         <span class="premium-marke" id="regler-marke">Premium</span>
         <span class="reglerwert" id="regler-wert">110/min</span>
       </div>
       <input type="range" id="bpm-regler" min="100" max="120" step="1" value="110"
              aria-label="Eigenes Metronom-Tempo">
       <div class="reglerskala"><span>100</span><span>110</span><span>120</span></div>
+      <label class="field" for="tempo-name" style="margin-top:10px">Name</label>
+      <input type="text" id="tempo-name" maxlength="20" placeholder="z. B. Team-Standard"
+             autocomplete="off">
       <div class="btn-row" style="margin:10px 0 0">
-        <button class="btn" id="regler-uebernehmen" style="flex:1">Tempo übernehmen</button>
+        <button class="btn" id="regler-speichern" style="flex:1">Tempo speichern</button>
+        <button class="btn secondary" id="regler-abbrechen" style="display:none">Abbrechen</button>
       </div>
+      <p class="frage klein" id="regler-hinweis" style="margin:8px 0 0">Speichern übernimmt
+        das Tempo gleich – später wählst du es hier mit einem Tipp.</p>
     </div>
   </div>
 </div>
@@ -972,16 +1001,17 @@
       <svg class="ic" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
     <h3 class="mt"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l2.4 5.5 6 .5-4.5 4 1.4 5.8L12 15.9 6.7 18.8 8.1 13 3.6 9l6-.5z"/></svg> Premium</h3>
-    <p class="frage" id="premium-text">Ein einmaliger Kauf, kein Abo. Alles, was für
-      die Reanimation nötig ist, bleibt kostenlos – Premium ergänzt nur
-      Komfort und unterstützt die Weiterentwicklung.</p>
+    <p class="frage" id="premium-text">Ein einmaliger Kauf, kein Abo.
+      <b>Die wichtigsten Funktionen für die Reanimation bleiben kostenfrei</b> –
+      Premium ergänzt Komfort und unterstützt die Weiterentwicklung.</p>
     <ul class="premiumliste">
       <li><svg class="ic" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19 5a9 9 0 010 14"/></svg>
         <div><b>Eigene Hinweistöne</b> – vier Klangvarianten, damit die Signale
         zur Umgebung passen. Probehören ist immer möglich.</div></li>
       <li><svg class="ic" viewBox="0 0 24 24"><path d="M4 12h16"/><circle cx="14" cy="12" r="3"/></svg>
-        <div><b>Eigenes Metronom-Tempo</b> – frei einstellbar im Zielbereich
-        100–120 pro Minute, statt der drei festen Stufen.</div></li>
+        <div><b>Eigene Metronom-Tempi</b> – frei einstellbar im Zielbereich
+        100–120 pro Minute, benennen und speichern, danach mit einem Tipp
+        wählbar.</div></li>
       <li><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 9v6M9 12h6"/></svg>
         <div><b>Eigene Felder mit Timer</b> – z. B. BGA, Temperatur oder
         Beatmungskontrolle, mit eigenem Intervall und Fälligkeits-Anzeige.</div></li>
@@ -993,7 +1023,8 @@
     </div>
     <p class="frage klein">Kein Interesse an Premium? Eine Spende über
       <a href="https://www.mercwerk.de" target="_blank" rel="noopener" style="color:var(--accent)">www.mercwerk.de</a>
-      hilft genauso – und die App bleibt so oder so vollständig nutzbar.</p>
+      hilft genauso – und die App bleibt auch ohne beides für den Einsatz
+      vollständig nutzbar.</p>
   </div>
 </div>
 
@@ -1472,6 +1503,8 @@ const Einst = {
   werte: { ton: true, vibration: true, bildschirmAn: true,
            metronomAn: false, metronomBpm: KONF.BPM_STANDARD, autostart: false,
            tonVariante: "klar",   /* Premium: Klang der Hinweistöne */
+           tempi: [],             /* Premium: eigene Tempi [{id,name,bpm}] */
+           tempoId: null,         /* welches eigene Tempo gerade gewählt ist */
            felder: [] },          /* Premium: eigene Felder [{id,name,intervallMin}] */
   laden(){
     const roh = load(this.KEY, {});
@@ -1483,6 +1516,9 @@ const Einst = {
       if (typeof roh.autostart === "boolean") this.werte.autostart = roh.autostart;
       if (KONF.TOENE.some(t => t.id === roh.tonVariante)) this.werte.tonVariante = roh.tonVariante;
       if (Array.isArray(roh.felder)) this.werte.felder = roh.felder.slice(0, 8);
+      if (Array.isArray(roh.tempi)) this.werte.tempi = roh.tempi.slice(0, 8);
+      if (typeof roh.tempoId === "string" || roh.tempoId === null)
+        this.werte.tempoId = roh.tempoId;
       if (Number.isFinite(roh.metronomBpm)
           && roh.metronomBpm >= KONF.BPM_MIN && roh.metronomBpm <= KONF.BPM_MAX)
         this.werte.metronomBpm = Math.round(roh.metronomBpm);
@@ -2271,11 +2307,14 @@ const UI = {
     $("btn-metronom").classList.toggle("an", an);
     $("metro-label").textContent = an ? String(Metronom.bpm()) : "aus";
     /* Im Dialog ist "Aus" die aktive Zeile, solange nichts läuft. */
+    const eigenes = !!Einst.werte.tempoId;
     document.querySelectorAll("#metro-wahl button").forEach(b => {
       const bpm = Number(b.dataset.bpm);
-      b.classList.toggle("active", an ? bpm === Einst.werte.metronomBpm : bpm === 0);
+      b.classList.toggle("active",
+        an ? (!eigenes && bpm === Einst.werte.metronomBpm) : bpm === 0);
     });
     if ($("regler-box")) renderRegler();
+    if ($("tempi-liste")) renderTempi();
   },
   metronomPuls(){
     const p = $("metro-puls");
@@ -2560,7 +2599,8 @@ $("ende-ok").addEventListener("click", () => {
 /* ---- Metronom: kleiner Knopf in der Ecke, Auswahl im Dialog ---- */
 $("btn-metronom").addEventListener("click", () => {
   UI.metronomAnzeigen();
-  renderRegler();
+  tempoAbbrechen();          /* frisches Formular bei jedem Öffnen */
+  renderTempi();
   openModal("modal-metronom");
 });
 document.querySelectorAll("#metro-wahl button").forEach(b =>
@@ -2568,6 +2608,7 @@ document.querySelectorAll("#metro-wahl button").forEach(b =>
     const bpm = Number(b.dataset.bpm);
     if (bpm){
       Einst.set("metronomBpm", bpm);
+      Einst.set("tempoId", null);      /* feste Stufe gewählt */
       Einst.set("metronomAn", true);
       /* Läuft es schon, übernimmt der nächste geplante Klick die neue
          Frequenz von selbst – sonst hier starten. */
@@ -2680,32 +2721,124 @@ $("feld-anlegen").addEventListener("click", () => {
   toast(name + " angelegt – erscheint im Einsatz");
 });
 
-/* ---------- Eigenes Metronom-Tempo (Premium) ---------- */
+/* ---------- Eigene Tempi (Premium) ----------
+   Der Regler legt benannte Tempi an, die danach mit einem Tipp wählbar sind.
+   Bearbeiten und Anlegen teilen dasselbe Formular – `tempoBearbeitet` hält
+   fest, was gerade gemeint ist. */
+let tempoBearbeitet = null;
+
+function renderTempi(){
+  const ul = $("tempi-liste");
+  const w = Einst.werte;
+  ul.innerHTML = "";
+  (w.tempi || []).forEach(t => {
+    const aktiv = Metronom.an && w.tempoId === t.id;
+    const li = document.createElement("li");
+    if (aktiv) li.className = "aktiv";
+    li.dataset.tempo = t.id;
+    li.innerHTML =
+      '<button class="waehl" type="button"><b></b><span></span></button>'
+      + '<button class="klein-btn umbenennen" type="button" aria-label="Umbenennen">'
+      + '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" '
+      + 'stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/>'
+      + '<path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button>'
+      + '<button class="klein-btn weg" type="button" aria-label="Löschen">'
+      + '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" '
+      + 'stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V5h6v2"/>'
+      + '<path d="M6 7l1 13h10l1-13"/></svg></button>';
+    li.querySelector("b").textContent = t.name;
+    li.querySelector(".waehl span").textContent = t.bpm + "/min";
+    li.querySelector(".waehl").addEventListener("click", () => {
+      if (!premiumTor()) return;
+      Einst.set("metronomBpm", t.bpm);
+      Einst.set("tempoId", t.id);
+      Einst.set("metronomAn", true);
+      if (!Metronom.an) Metronom.start();
+      closeModal("modal-metronom");
+      UI.metronomAnzeigen();
+      renderVorwahl();
+      toast(t.name + " – " + t.bpm + " pro Minute");
+    });
+    li.querySelector(".umbenennen").addEventListener("click", () => {
+      if (!premiumTor()) return;
+      tempoBearbeitet = t.id;
+      $("bpm-regler").value = String(t.bpm);
+      $("tempo-name").value = t.name;
+      renderRegler();
+      $("tempo-name").focus();
+    });
+    li.querySelector(".weg").addEventListener("click", () => {
+      if (!premiumTor()) return;
+      Einst.set("tempi", (Einst.werte.tempi || []).filter(x => x.id !== t.id));
+      if (Einst.werte.tempoId === t.id) Einst.set("tempoId", null);
+      if (tempoBearbeitet === t.id) tempoAbbrechen();
+      renderTempi();
+      UI.metronomAnzeigen();
+      toast(t.name + " gelöscht");
+    });
+    ul.appendChild(li);
+  });
+}
+
 function renderRegler(){
   const premium = Edition.isPremium();
-  const box = $("regler-box");
-  box.classList.toggle("gesperrt", !premium);
+  const bearbeitet = (Einst.werte.tempi || []).find(t => t.id === tempoBearbeitet);
+  $("regler-box").classList.toggle("gesperrt", !premium);
   $("regler-marke").style.display = premium ? "none" : "";
-  $("bpm-regler").value = String(Einst.werte.metronomBpm);
   $("regler-wert").textContent = $("bpm-regler").value + "/min";
-  $("regler-uebernehmen").textContent = premium
-    ? "Tempo übernehmen" : "Mit Premium freischalten";
+  $("regler-titel").textContent = bearbeitet ? "Tempo bearbeiten" : "Eigenes Tempo anlegen";
+  $("regler-speichern").textContent = !premium ? "Mit Premium freischalten"
+    : bearbeitet ? "Änderung speichern" : "Tempo speichern";
+  $("regler-abbrechen").style.display = bearbeitet ? "" : "none";
+  $("regler-hinweis").textContent = (Einst.werte.tempi || []).length >= 6
+    ? "Sechs eigene Tempi sind das Maximum – lösche eines, um Platz zu machen."
+    : "Speichern übernimmt das Tempo gleich – später wählst du es hier mit einem Tipp.";
 }
+
+function tempoAbbrechen(){
+  tempoBearbeitet = null;
+  $("tempo-name").value = "";
+  $("bpm-regler").value = String(Einst.werte.metronomBpm);
+  renderRegler();
+}
+
+/* Schieben darf jeder – erst das Speichern ist Premium. So hört und sieht
+   man vorher, was man bekäme. */
 $("bpm-regler").addEventListener("input", () => {
-  /* Schieben darf jeder – erst das Übernehmen ist Premium. So hört und
-     sieht man vorher, was man bekäme. */
   $("regler-wert").textContent = $("bpm-regler").value + "/min";
 });
-$("regler-uebernehmen").addEventListener("click", () => {
+$("regler-abbrechen").addEventListener("click", tempoAbbrechen);
+
+$("regler-speichern").addEventListener("click", () => {
   if (!premiumTor()) return;
   const bpm = Math.max(KONF.BPM_MIN, Math.min(KONF.BPM_MAX, Number($("bpm-regler").value)));
+  const liste = (Einst.werte.tempi || []).slice();
+  const vorhanden = liste.find(t => t.id === tempoBearbeitet);
+  const name = $("tempo-name").value.trim().slice(0, 20) || (bpm + " pro Minute");
+
+  if (vorhanden){
+    vorhanden.name = name;
+    vorhanden.bpm = bpm;
+  } else {
+    if (liste.length >= 6){
+      toast("Sechs eigene Tempi sind das Maximum – bitte eines löschen.", 3600);
+      return;
+    }
+    liste.push({ id: "t" + Date.now().toString(36), name, bpm });
+  }
+  const id = vorhanden ? vorhanden.id : liste[liste.length - 1].id;
+  Einst.set("tempi", liste);
   Einst.set("metronomBpm", bpm);
+  Einst.set("tempoId", id);
   Einst.set("metronomAn", true);
   if (!Metronom.an) Metronom.start();
-  closeModal("modal-metronom");
+  tempoBearbeitet = null;
+  $("tempo-name").value = "";
+  renderTempi();
+  renderRegler();
   UI.metronomAnzeigen();
   renderVorwahl();
-  toast(bpm + " pro Minute übernommen");
+  toast(name + " gespeichert – " + bpm + " pro Minute");
 });
 
 /* ---------- Hinweistöne: Klang wählen ---------- */

@@ -134,13 +134,16 @@ Datensicherheits-Erklärung ändert das nichts.
 ## Premium (einmaliger Kauf)
 
 **Keine Werbung, kein Tracking, kein Abo** – daran ändert Premium nichts.
-Alles, was für die Reanimation selbst nötig ist, bleibt kostenlos. Premium
-ergänzt nur Komfort und unterstützt die Weiterentwicklung:
+Die **wichtigsten Funktionen für die Reanimation bleiben kostenfrei**: Zyklen,
+Rhythmusauswahl, Schocks, Medikamenten-Status, 4H/HITS, Post-ROSC, Metronom
+(100/110/120) und Protokoll. Premium ergänzt Komfort und unterstützt die
+Weiterentwicklung:
 
 - **Eigene Hinweistöne** – vier Klangvarianten (Klar, Sanft, Tief, Signal).
   Probehören ist auch ohne Kauf möglich, nur das Umstellen nicht.
-- **Eigenes Metronom-Tempo** – frei wählbar im Zielbereich 100–120 pro
-  Minute statt der drei festen Stufen.
+- **Eigene Metronom-Tempi** – frei wählbar im Zielbereich 100–120 pro
+  Minute, benennen und speichern (bis zu sechs), danach mit einem Tipp
+  auswählbar.
 - **Eigene Felder mit Timer** – z. B. BGA, Temperatur oder
   Beatmungskontrolle, mit eigenem Intervall und Fälligkeits-Anzeige.
 
@@ -148,11 +151,15 @@ Produkt-ID: `premium_unlock` (nicht konsumierbar). Wer nichts kaufen möchte,
 kann die Entwicklung über eine Spende auf www.mercwerk.de unterstützen –
 beides ist ausdrücklich freiwillig und wird in der App genau so beschrieben.
 
+**Wichtig für die Formulierung:** Nicht „alles bleibt kostenlos" schreiben –
+mit Premium stimmt das nicht mehr. Richtig ist: *die wichtigsten Funktionen
+für die Reanimation* bleiben kostenfrei.
+
 Formulierung im Store-Eintrag (Absatz für die Beschreibung):
 
 ```
 WERBEFREI – UND DAS BLEIBT SO
-Keine Anzeigen, kein Tracking, keine Konten. Im Einsatz darf nichts ablenken. Wer die Entwicklung unterstützen will, kann das freiwillig tun: mit der Premium-Version als einmaligem Kauf (eigene Hinweistöne, frei einstellbares Metronom-Tempo, eigene Felder mit Timer) oder mit einer Spende über www.mercwerk.de. Alles, was für die Reanimation selbst nötig ist, bleibt dauerhaft kostenlos.
+Keine Anzeigen, kein Tracking, keine Konten. Im Einsatz darf nichts ablenken. Die wichtigsten Funktionen für die Reanimation bleiben kostenfrei: 2-Minuten-Zyklen, Rhythmusauswahl, Schocks, Adrenalin- und Amiodaron-Status, 4H/HITS, Post-ROSC, Metronom und Protokoll. Wer die Entwicklung unterstützen will, kann das freiwillig tun: mit der Premium-Version als einmaligem Kauf (eigene Hinweistöne, eigene benannte Metronom-Tempi, eigene Felder mit Timer) oder mit einer Spende über www.mercwerk.de.
 ```
 
 ## Was in V1 bewusst fehlt
