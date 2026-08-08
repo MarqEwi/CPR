@@ -42,16 +42,16 @@ Zyklen, Medikamente und Protokoll im ALS – Merkhilfe, kein Ersatz fürs Team.
 ```
 Im Kreislaufstillstand macht nicht das Fachwissen die Arbeit schwer, sondern die Gleichzeitigkeit: Der Zyklus läuft, jemand fragt nach der letzten Adrenalin-Gabe, die Schockzahl stimmt nicht mehr mit der Erinnerung überein, und hinterher fehlen die Zeiten fürs Protokoll.
 
-CPR Assist übernimmt genau diesen Teil. Die App strukturiert den Ablauf nach den Reanimationsleitlinien 2025 (GRC/ERC) für Erwachsene und schreibt jeden Schritt mit Zeitstempel mit.
+CPR Assist übernimmt genau diesen Teil. Die App strukturiert den Ablauf nach den Reanimationsleitlinien 2025 für Erwachsene – wahlweise nach ERC/GRC (ALS) oder nach AHA (ACLS) – und schreibt jeden Schritt mit Zeitstempel mit.
 
 WICHTIG – WAS DIESE APP NICHT IST
-CPR Assist ist eine kognitive Unterstützung und ein Ereignis-Protokoll für geschultes Personal. Die App stellt keine Diagnose, trifft keine Therapieentscheidung, gibt keine patientenspezifischen Empfehlungen und ersetzt weder Ausbildung noch klinisches Urteil. Verantwortlich für jede Maßnahme bleibt das behandelnde Team. Es gibt keinen Kindermodus: Die App bildet ausschließlich Erwachsenen-ALS ab.
+CPR Assist ist eine kognitive Unterstützung und ein Ereignis-Protokoll für geschultes Personal. Die App stellt keine Diagnose, trifft keine Therapieentscheidung, gibt keine patientenspezifischen Empfehlungen und ersetzt weder Ausbildung noch klinisches Urteil. Verantwortlich für jede Maßnahme bleibt das behandelnde Team. Es gibt keinen Kindermodus: Die App bildet ausschließlich die Reanimation Erwachsener ab (ALS bzw. ACLS).
 
 DER ZYKLUS IM MITTELPUNKT
 Ein großer Ring zählt die zwei Minuten herunter. Die letzten zehn Sekunden warnen sichtbar, danach wechselt die App klar erkennbar in das Analysefenster und erinnert an beides, woran unter Stress am ehesten niemand denkt: Rhythmus prüfen und die Person an den Thoraxkompressionen wechseln. Nach Analyse oder Schock führt ein breiter Knopf sofort zurück in die Kompressionen.
 
 MEDIKAMENTE ALS STATUS, NICHT ALS ZAHLENKOLONNE
-Adrenalin zeigt nicht nur die verstrichene Zeit, sondern was sie bedeutet: zu früh, jetzt fällig, überfällig. Bei nicht schockbarem Rhythmus meldet die App die Gabe so früh wie möglich, bei VF/pVT nach dem dritten Schock, danach im Abstand von drei bis fünf Minuten.
+Adrenalin zeigt nicht nur die verstrichene Zeit, sondern was sie bedeutet: zu früh, jetzt fällig, überfällig. Bei nicht schockbarem Rhythmus meldet die App die Gabe so früh wie möglich, bei VF/pVT nach dem dritten Schock (ERC) beziehungsweise nach dem zweiten (ACLS), danach im Abstand von drei bis fünf Minuten.
 
 Amiodaron ist bewusst kein Wiederhol-Countdown, sondern ein Dosisstatus: 300 mg nach dem dritten Schock, die Folgegabe von 150 mg nach dem fünften – jeweils mit Zeitstempel und nur dann, wenn der Rhythmus es hergibt.
 
@@ -59,7 +59,7 @@ VIER TASTEN, KEINE SUCHE
 Rhythmus, Schock, ROSC und 4H/HITS liegen als große, beschriftete Flächen nebeneinander. Der Schock-Knopf wird kurz gehalten statt getippt – gegen eine versehentliche Auslösung, ohne den Ablauf zu bremsen. Jeder Schock erhöht den Zähler, wird protokolliert und führt unmittelbar in den nächsten Zyklus.
 
 REVERSIBLE URSACHEN, STRUKTURIERT
-Hinter 4H/HITS liegt keine Abhakliste, sondern ein Arbeitsstand: Jede der acht Ursachen hat drei Zustände – offen, geprüft beziehungsweise unwahrscheinlich, verdächtig beziehungsweise behandelt. Dazu je ein kurzer Hinweis, woran man die Ursache erkennt, und ein Notizfeld. So sieht das Team auf einen Blick, was noch offen ist.
+Hinter 4H/HITS – im ACLS-Standard 5H/5T – liegt keine Abhakliste, sondern ein Arbeitsstand: Jede Ursache hat drei Zustände – offen, geprüft beziehungsweise unwahrscheinlich, verdächtig beziehungsweise behandelt. Dazu je ein kurzer Hinweis, woran man die Ursache erkennt, und ein Notizfeld. So sieht das Team auf einen Blick, was noch offen ist.
 
 MASSNAHMEN IN EINEM TIPP
 Zugang, Atemweg, Intubation, Kapnographie, mechanische Reanimationshilfe: antippen genügt, die Maßnahme steht mit Uhrzeit im Protokoll. Keine Rückfrage, kein Formular.
@@ -70,11 +70,14 @@ ROSC beendet den Einsatz nicht, sondern führt in einen eigenen Modus mit den Pu
 METRONOM
 Optionaler Taktgeber mit 100, 110 oder 120 Kompressionen pro Minute, Standard 110. Er sitzt klein in der Ecke und ist mit einem Tipp umgestellt oder abgeschaltet. Als Unterstützung gedacht, nicht als Qualitätskontrolle.
 
+ZWEI LEITLINIEN-STANDARDS
+In den Einstellungen lässt sich wählen, nach welcher Fassung die App rechnet: ERC/GRC (Europa, ALS) oder AHA/ACLS (USA). Beide beruhen auf demselben ILCOR-Konsens. Der Wechsel stellt gleichzeitig um, worin sie sich unterscheiden: die erste Adrenalingabe bei VF/pVT (3. gegenüber 2. Schock), die reversiblen Ursachen (4 H's und HITS gegenüber 5 H's und 5 T's), die Zielwerte nach ROSC sowie Lidocain als gleichwertiges Antiarrhythmikum der AHA. Welche Fassung gerade gilt, steht in den Einstellungen und unter „Leitlinien und Quellen“. Diese Wahl ist kostenfrei – nach welcher Leitlinie gearbeitet wird, gehört zum Kern der Reanimation und nicht zum Komfort.
+
 SECHS SPRACHEN
 Deutsch, Englisch, Französisch, Spanisch, Italienisch und Portugiesisch. Beim ersten Start übernimmt die App die Sprache des Geräts, danach ist sie in den Einstellungen jederzeit umstellbar. International gebräuchliche Kurzformen wie VF/pVT, PEA, ROSC oder etCO2 bleiben in jeder Sprache stehen.
 
 QUELLEN OFFENGELEGT
-Unter „Leitlinien und Quellen“ stehen die Grundlagen mit Herausgeber, Stand und Link: ERC Guidelines for Resuscitation 2025, die deutsche Fassung des German Resuscitation Council und der ILCOR-Konsens. Daneben sind alle Zeiten und Schwellen aufgeführt, mit denen die App tatsächlich rechnet. Die App gibt keinen Leitlinientext wieder.
+Unter „Leitlinien und Quellen“ stehen die Grundlagen mit Herausgeber, Stand und Link – je nach gewähltem Standard die ERC Guidelines for Resuscitation 2025 mit der deutschen Fassung des German Resuscitation Council oder die 2025 AHA Guidelines for CPR and ECC, dazu in beiden Fällen der ILCOR-Konsens als gemeinsame Grundlage. Daneben sind alle Zeiten und Schwellen aufgeführt, mit denen die App tatsächlich rechnet. Unter den fachlichen Inhalten führt jeweils ein Hinweis direkt dorthin. Die App gibt keinen Leitlinientext wieder.
 
 FÜR DEN EINSATZ GEBAUT
 Sehr dunkle Oberfläche mit hohem Kontrast, große Schaltflächen, große Zahlen, keine Spielereien. Der Bildschirm bleibt während des Einsatzes an und sperrt nicht. Ein versehentlich geschlossener oder abgestürzter Einsatz wird beim nächsten Start weitergeführt, weil alle Zeiten als Zeitstempel gespeichert sind.
@@ -184,9 +187,14 @@ Keine Anzeigen, kein Tracking, keine Konten. Im Einsatz darf nichts ablenken. Di
 
 ## Was in V1 bewusst fehlt
 
-Noch nicht enthalten: sichtbare Ereignis-Timeline und Export des Protokolls
-(die Daten dafür werden bereits mitgeschrieben), Sprachumschaltung und
-konfigurierbare Zeitfenster.
+Noch nicht enthalten: **Export des Protokolls** (die Daten dafür werden
+bereits mitgeschrieben und sind unter „Gespeicherte Einsätze" einsehbar) und
+eine **Dosis-Karte für Lidocain** – im ACLS-Standard wird es als Maßnahme
+mit Zeitstempel dokumentiert, aber ohne Dosis-Status wie bei Amiodaron.
+
+Inzwischen enthalten und daher hier gestrichen: Sprachumschaltung
+(sechs Sprachen), konfigurierbare Zeitfenster (Premium) und die Wahl des
+Leitlinien-Standards.
 
 **Grundsatz, der bleibt:** Werbung gibt es in dieser App nicht – auch nicht
 später und in keiner Version. Das AdMob-Modul liegt nur als ungenutzte

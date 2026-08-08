@@ -1,10 +1,11 @@
-# CPR Assist – Erwachsenen-Reanimation (ALS)
+# CPR Assist – Erwachsenen-Reanimation (ALS / ACLS)
 
 CPR Assist ist eine **kognitive Unterstützung und ein strukturiertes
 Ereignis-Protokoll** für die Reanimation Erwachsener nach den
-Reanimationsleitlinien 2025 (GRC/ERC). Die App strukturiert den Ablauf –
-2-Minuten-Zyklen, Rhythmusanalyse, Medikamenten-Status, reversible Ursachen,
-Post-ROSC – und protokolliert jedes Ereignis mit Zeitstempel.
+Reanimationsleitlinien 2025 – wahlweise nach **ERC/GRC (ALS)** oder nach
+**AHA (ACLS)**. Die App strukturiert den Ablauf – 2-Minuten-Zyklen,
+Rhythmusanalyse, Medikamenten-Status, reversible Ursachen, Post-ROSC – und
+protokolliert jedes Ereignis mit Zeitstempel.
 
 > **CPR Assist trifft keine Therapieentscheidungen.** Die App ersetzt weder
 > Ausbildung noch klinisches Urteil; verantwortlich bleibt das behandelnde
@@ -39,6 +40,18 @@ Post-ROSC – und protokolliert jedes Ereignis mit Zeitstempel.
   und Einstellungen → Metronom. Außerhalb eines Einsatzes wird die Auswahl
   nur gespeichert und klingt nicht
 - **Ereignis-Protokoll** im Hintergrund: jeder Schritt mit Zeitstempel
+- **Leitlinien-Standard umschaltbar** (kostenfrei, in den Einstellungen):
+  **ERC/GRC** (Europa) oder **AHA/ACLS** (USA). Beide beruhen auf demselben
+  ILCOR-Konsens; der Wechsel stellt gleichzeitig um: erste Adrenalingabe bei
+  VF/pVT (3. gegenüber 2. Schock), reversible Ursachen (4 H's & HITS
+  gegenüber 5 H's & 5 T's), Zielwerte nach ROSC (SpO₂ 94–98 % gegenüber
+  90–98 %, systolisch &gt; 100 mmHg gegenüber MAD ≥ 65 mmHg), Lidocain als
+  gleichwertiges Antiarrhythmikum sowie die hinterlegten Quellen. Ein
+  Wechsel im laufenden Einsatz behält gesetzte Ursachen und wird
+  protokolliert
+- **Quellenhinweise in der App**: Unter den fachlichen Inhalten (4H/HITS,
+  Post-ROSC, Metronom, Grundeinstellungen, Standardwahl) führt je ein
+  Hinweis auf Herausgeber, Stand und Link der gerade gültigen Fassung
 - **Sechs Sprachen** – Deutsch, English, Français, Español, Italiano,
   Português. Beim ersten Start übernimmt die App die Gerätesprache, danach
   ist sie in den Einstellungen jederzeit umstellbar. International
@@ -130,13 +143,28 @@ npm run quellen
 
 ## Quellen
 
-Die medizinischen Werte der App folgen den Reanimationsleitlinien 2025:
+Die medizinischen Werte der App folgen den Reanimationsleitlinien 2025. Je
+nach gewähltem Standard zeigt die App die zugehörigen Quellen an:
+
+**ERC/GRC (Europa)**
 
 - **ERC Guidelines for Resuscitation 2025**, European Resuscitation Council –
   <https://www.erc.edu/science-research/guidelines/guidelines-2025/guidelines-2025-english/>
 - **Reanimation 2025 – Leitlinien des ERC in deutscher Übersetzung**,
   German Resuscitation Council (GRC) –
   <https://www.grc-org.de/wissenschaft/leitlinien>
+
+**AHA/ACLS (USA)**
+
+- **2025 AHA Guidelines for CPR and ECC – Part 9: Adult Advanced Life
+  Support**, American Heart Association –
+  <https://www.ahajournals.org/doi/10.1161/CIR.0000000000001376>
+- **2025 AHA Guidelines for CPR and ECC – Part 11: Post–Cardiac Arrest
+  Care**, American Heart Association –
+  <https://www.ahajournals.org/doi/10.1161/CIR.0000000000001375>
+
+**Gemeinsame Grundlage beider Standards**
+
 - **ILCOR CoSTR 2025**, International Liaison Committee on Resuscitation –
   <https://www.ilcor.org>
 

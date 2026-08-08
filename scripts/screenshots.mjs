@@ -125,6 +125,24 @@ await schuss("08-massnahmen", { aufbau: jetzt => {
   await p.click("#btn-massnahme");
 } });
 
+await schuss("23-standard", { schritte: async p => {
+  await p.click("#btn-settings");
+  await p.click("#s-standard");
+} });
+
+await schuss("24-ursachen-aha", {
+  aufbau: jetzt => {
+    const e = JSON.parse(localStorage.getItem("cpra_einstellungen") || "{}");
+    e.standard = "aha";
+    localStorage.setItem("cpra_einstellungen", JSON.stringify(e));
+    const { Kern } = window.CPRA;
+    const k = Kern.neuerEinsatz(jetzt - 5 * 60000);
+    k.zyklusStart = jetzt - 30000;
+    localStorage.setItem("cpra_einsatz", JSON.stringify(k));
+  },
+  schritte: async p => { await p.click("#btn-ursachen"); }
+});
+
 /* Sprache, Quellen und Grundeinstellungen – die drei neuen Bereiche. */
 await schuss("19-sprache", { schritte: async p => {
   await p.click("#btn-settings");

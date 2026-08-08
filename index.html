@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>CPR Assist – Erwachsenen-Reanimation</title>
-<meta name="description" content="Kognitive Unterstützung und Ereignis-Protokoll für die Reanimation Erwachsener (ALS): 2-Minuten-Zyklen, Rhythmusanalyse, Adrenalin- und Amiodaron-Status, Metronom, reversible Ursachen (4H/HITS) und Post-ROSC-Erinnerungen. Kein Ersatz für klinische Entscheidungen.">
+<meta name="description" content="Kognitive Unterstützung und Ereignis-Protokoll für die Reanimation Erwachsener – wahlweise nach ERC/GRC (ALS) oder AHA (ACLS): 2-Minuten-Zyklen, Rhythmusanalyse, Adrenalin- und Amiodaron-Status, Metronom, reversible Ursachen (4H/HITS bzw. 5H/5T) und Post-ROSC-Erinnerungen. Kein Ersatz für klinische Entscheidungen.">
 <meta name="theme-color" content="#0b0e10">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%2310161a'/%3E%3Cpath d='M256 442 C 130 352 66 272 66 190 C 66 121 119 68 186 68 C 216 68 244 85 256 112 C 268 85 296 68 326 68 C 393 68 446 121 446 190 C 446 272 382 352 256 442 Z' fill='%232fb3a3'/%3E%3Cpath d='M88 240H168C176 206 206 206 214 240H232L244 268L262 150L280 336L292 240H318C330 194 360 194 372 240H424' fill='none' stroke='%23f4fbfa' stroke-width='22' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
@@ -612,6 +612,15 @@
     word-break:break-all}
   .modal h3.qh{font-size:.78rem;text-transform:uppercase;letter-spacing:.09em;
     color:var(--text2);margin:16px 0 6px;font-weight:700}
+  /* Quellenhinweis unter fachlichen Inhalten: Wer wissen will, worauf eine
+     Angabe beruht, kommt mit einem Tipp zu Herausgeber, Stand und Link. */
+  .quellenlink{display:flex;align-items:center;gap:8px;width:100%;text-align:left;
+    background:none;border:none;border-top:1px solid var(--line);
+    color:var(--text2);font:inherit;font-size:.76rem;line-height:1.4;
+    padding:11px 2px 2px;margin:14px 0 0;cursor:pointer}
+  .quellenlink:hover{color:var(--text)}
+  .quellenlink .ic{width:16px;height:16px;color:var(--accent);flex:none}
+  .quellenlink u{text-decoration:none;color:var(--accent);white-space:nowrap}
   /* ---------- Algorithmus-Profile ---------- */
   .profilliste{list-style:none;margin:0 0 4px;padding:0;display:grid;gap:8px}
   .profilliste li{display:flex;align-items:center;gap:8px;background:var(--bg3);
@@ -703,7 +712,7 @@
   <!-- ======================= Bereit / Start ======================= -->
   <section class="view active" id="view-bereit">
     <div class="hinweisbox" style="margin-top:8px" data-i18n-html="st_hinweis">
-      <b>Erwachsenen-ALS · Leitlinien 2025 (GRC/ERC).</b>
+      <b>Erwachsenen-ALS · Leitlinien 2025 (ERC/GRC).</b>
       CPR Assist strukturiert Zyklen, Medikamente und Dokumentation.
       Die App trifft <b>keine Therapieentscheidungen</b> – verantwortlich
       bleibt das behandelnde Team.
@@ -889,6 +898,10 @@
     <div class="btn-row">
       <button class="btn secondary block" id="btn-ende" data-i18n="en_titel">Einsatz beenden</button>
     </div>
+    <button class="quellenlink" data-quellen>
+      <svg class="ic" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 016.5 3H12v16H6.5A2.5 2.5 0 004 21.5z"/><path d="M20 5.5A2.5 2.5 0 0017.5 3H12v16h5.5a2.5 2.5 0 012.5 2.5z"/></svg>
+      <span data-i18n-html="ql_link">Grundlage</span>
+    </button>
   </section>
 
 </main>
@@ -997,6 +1010,10 @@
       <p class="frage klein" id="regler-hinweis" style="margin:8px 0 0">Speichern übernimmt
         das Tempo gleich – später wählst du es hier mit einem Tipp.</p>
     </div>
+    <button class="quellenlink" data-quellen>
+      <svg class="ic" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 016.5 3H12v16H6.5A2.5 2.5 0 004 21.5z"/><path d="M20 5.5A2.5 2.5 0 0017.5 3H12v16h5.5a2.5 2.5 0 012.5 2.5z"/></svg>
+      <span data-i18n-html="ql_link">Grundlage</span>
+    </button>
   </div>
 </div>
 
@@ -1028,6 +1045,11 @@
     <label class="field" for="ursachen-notiz" data-i18n="ur_notiz">Notiz (optional)</label>
     <textarea id="ursachen-notiz" maxlength="600" data-i18n-ph="ur_notiz_ph"
               placeholder="z. B. Kalium 6,8 – Therapie läuft"></textarea>
+
+    <button class="quellenlink" data-quellen>
+      <svg class="ic" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 016.5 3H12v16H6.5A2.5 2.5 0 004 21.5z"/><path d="M20 5.5A2.5 2.5 0 0017.5 3H12v16h5.5a2.5 2.5 0 012.5 2.5z"/></svg>
+      <span data-i18n-html="ql_link">Grundlage</span>
+    </button>
     <div class="btn-row">
       <button class="btn block" data-close="modal-ursachen" data-i18n="g_fertig">Fertig</button>
     </div>
@@ -1196,6 +1218,11 @@
       <span class="t"><b data-i18n="en_titel">Einsatz beenden</b><span data-i18n="se_ende_sub">stoppt alle Timer, Protokoll bleibt gespeichert</span></span>
     </button>
 
+    <button class="settings-row" id="s-standard">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+      <span class="t"><b data-i18n="sd_titel">Leitlinien-Standard</b><span id="s-standard-sub">ERC / GRC</span></span>
+    </button>
+
     <button class="settings-row" id="s-sprache">
       <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 010 18a15 15 0 010-18z"/></svg>
       <span class="t"><b data-i18n="sp_titel">Sprache</b><span id="s-sprache-sub">Deutsch</span></span>
@@ -1270,7 +1297,7 @@
       <svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
       <b data-i18n="ob1_t">Unterstützung, keine Entscheidung</b>
       <p data-i18n-html="ob1_p">CPR Assist ist eine <b>kognitive Stütze und ein Protokoll</b> für die
-      Reanimation Erwachsener nach den Leitlinien 2025 (GRC/ERC). Die App
+      Reanimation Erwachsener nach den Leitlinien 2025 von ERC/GRC. Die App
       trifft keine Diagnose- oder Therapieentscheidungen und ersetzt weder
       Ausbildung noch klinisches Urteil.</p>
     </div>
@@ -1293,6 +1320,27 @@
       <button class="btn" id="ob-next" style="flex:1">Weiter</button>
       <button class="btn secondary" id="ob-skip" data-i18n="ob_skip">Überspringen</button>
     </div>
+  </div>
+</div>
+
+<!-- ======================= Dialog: Leitlinien-Standard ======================= -->
+<div class="modal-back" id="modal-standard">
+  <div class="modal">
+    <button class="modal-x" data-close="modal-standard" data-i18n-aria="g_schliessen" aria-label="Schließen">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <h3 class="mt"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+      <span data-i18n="sd_titel">Leitlinien-Standard</span></h3>
+    <p class="frage" data-i18n="sd_frage">Nach welcher Fassung soll die App rechnen? Beide stammen
+      aus demselben ILCOR-Konsens und widersprechen sich nicht – sie setzen ihn
+      nur unterschiedlich um.</p>
+    <ul class="sprachliste" id="standard-liste"></ul>
+    <h3 class="qh" data-i18n="sd_unterschiede">Was sich dadurch ändert</h3>
+    <ul class="premiumliste" id="standard-unterschiede"></ul>
+    <button class="quellenlink" data-quellen>
+      <svg class="ic" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 016.5 3H12v16H6.5A2.5 2.5 0 004 21.5z"/><path d="M20 5.5A2.5 2.5 0 0017.5 3H12v16h5.5a2.5 2.5 0 012.5 2.5z"/></svg>
+      <span data-i18n-html="ql_link">Grundlage</span>
+    </button>
   </div>
 </div>
 
@@ -1361,6 +1409,10 @@
       </div>
       <p class="frage klein" id="algo-hinweis" style="margin:8px 0 0"></p>
     </div>
+    <button class="quellenlink" data-quellen>
+      <svg class="ic" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 016.5 3H12v16H6.5A2.5 2.5 0 004 21.5z"/><path d="M20 5.5A2.5 2.5 0 0017.5 3H12v16h5.5a2.5 2.5 0 012.5 2.5z"/></svg>
+      <span data-i18n-html="ql_link">Grundlage</span>
+    </button>
   </div>
 </div>
 
@@ -1394,10 +1446,14 @@
 "use strict";
 /* =========================================================================
    CPR Assist – kognitive Unterstützung und Ereignis-Protokoll für die
-   Reanimation Erwachsener (ALS), Leitlinien 2025 (GRC/ERC).
+   Reanimation Erwachsener – wahlweise nach ERC/GRC (ALS) oder AHA (ACLS),
+   Leitlinien bzw. Guidelines 2025.
 
    Aufbau in klar getrennten Ebenen (von unten nach oben):
      1. KONF     – alle medizinischen Konstanten an EINER Stelle.
+     1a. Standard– Leitlinien-Standard (ERC/GRC oder AHA/ACLS): setzt Werte
+                   und Listen in KONF, damit der Kern nichts davon wissen muss.
+     1b. TEXTE   – Textkatalog für sechs Sprachen, Deutsch als Leitfassung.
      2. Kern     – reiner Rechenkern: Zustandsmaschine, Zyklus-, Adrenalin-
                    und Amiodaron-Status. Kennt kein DOM, keine Uhr und keinen
                    Speicher (Zeit kommt immer als Parameter) – voll testbar.
@@ -1417,8 +1473,10 @@ const APP_VERSION = "1.0.0";
 const $ = id => document.getElementById(id);
 
 /* =========================================================================
-   1. KONF – medizinische Konstanten (Erwachsene, GRC/ERC 2025)
-   Nichts davon ist irgendwo anders hart codiert.
+   1. KONF – medizinische Konstanten (Erwachsene, Leitlinien 2025)
+   Nichts davon ist irgendwo anders hart codiert. Die Voreinstellung ist die
+   europäische Fassung (ERC/GRC); der gewählte Leitlinien-Standard (siehe
+   Abschnitt 1a) überschreibt davon einzelne Werte und Listen.
    ========================================================================= */
 const KONF = {
   ZYKLUS_MS: 120000,            /* 2-Minuten-CPR-Zyklus */
@@ -1440,10 +1498,7 @@ const KONF = {
      unwahrscheinlich · 2 verdächtig/behandelt.
      Name und Info stehen im Textkatalog (Schlüssel "ur_<id>" / "ur_<id>_i"),
      damit sie die Sprache mitwechseln. */
-  URSACHEN: [
-    { id: "hypoxie" }, { id: "hypovolaemie" }, { id: "kalium" }, { id: "hypothermie" },
-    { id: "tamponade" }, { id: "intox" }, { id: "thrombose" }, { id: "spannung" }
-  ],
+  URSACHEN: [],                 /* wird vom gewählten Standard gesetzt */
 
   /* Hinweistöne: Klangvarianten. Jede Variante beschreibt nur, WIE es
      klingt – wann ein Signal kommt, entscheidet weiterhin die Logik.
@@ -1469,10 +1524,7 @@ const KONF = {
   /* Maßnahmen für die Dokumentation. Bewusst kurz gehalten: ein Tipp
      protokolliert die Maßnahme mit Zeitstempel – keine Rückfrage, kein
      Formular, kein Untermenü. Namen kommen aus dem Textkatalog. */
-  MASSNAHMEN: [
-    { id: "ivzugang" }, { id: "iozugang" }, { id: "sga" },
-    { id: "intubation" }, { id: "kapnographie" }, { id: "mechanisch" }
-  ],
+  MASSNAHMEN: [],               /* wird vom gewählten Standard gesetzt */
 
   /* Eigene Maßnahmen des Nutzers (Premium). Wird aus den Einstellungen
      gefüllt, damit der Rechenkern eine einzige Liste kennt und selbst
@@ -1482,22 +1534,7 @@ const KONF = {
   /* Grenzen der eigenen Maßnahmen und Felder. */
   EIGENE_MAX: 8,
 
-  /* ---------------- Quellen der Leitlinien ----------------
-     Steht wörtlich so in der App. `stand` ist das Erscheinungsjahr der
-     jeweiligen Fassung, `geprueft` der Tag, an dem die Werte dieser App
-     zuletzt dagegen abgeglichen wurden. */
-  LEITLINIEN: [
-    { id: "erc",   titel: "ERC Guidelines for Resuscitation 2025",
-      org: "European Resuscitation Council (ERC)",
-      stand: "2025",
-      url: "https://www.erc.edu/science-research/guidelines/guidelines-2025/guidelines-2025-english/" },
-    { id: "grc",   titel: "Reanimation 2025 – Leitlinien des ERC in deutscher Übersetzung",
-      org: "German Resuscitation Council (GRC) · Deutscher Rat für Wiederbelebung",
-      stand: "2025", url: "https://www.grc-org.de/wissenschaft/leitlinien" },
-    { id: "ilcor", titel: "International Consensus on CPR and ECC Science with Treatment Recommendations (CoSTR)",
-      org: "International Liaison Committee on Resuscitation (ILCOR)",
-      stand: "2025", url: "https://www.ilcor.org" }
-  ],
+  LEITLINIEN: [],               /* wird vom gewählten Standard gesetzt */
   LEITLINIEN_GEPRUEFT: "2026-08-08",
 
   /* ---------------- Bearbeitbare Grundeinstellungen (Premium) ----------------
@@ -1515,10 +1552,112 @@ const KONF = {
   ]
 };
 
-/* Unveränderte Voreinstellung nach Leitlinie. Der Standard muss immer
-   erreichbar bleiben – auch dann, wenn ein eigenes Profil aktiv ist. */
+/* Unveränderte Voreinstellung nach europäischer Leitlinie. Sie ist die
+   Grundlage, auf die jeder Standard und jedes eigene Profil aufsetzt. */
 const ALGO_STANDARD = {};
 KONF.ALGO_FELDER.forEach(f => ALGO_STANDARD[f.key] = KONF[f.key]);
+
+/* =========================================================================
+   1a. LEITLINIEN-STANDARD – Europa (ERC/GRC) oder USA (AHA/ACLS)
+
+   Beide Standards stammen aus demselben ILCOR-Konsens; sie widersprechen
+   sich nicht, setzen ihn aber unterschiedlich um. Die App bildet genau
+   diese Unterschiede ab – mehr nicht:
+
+     · erste Adrenalingabe bei VF/pVT: ERC nennt ausdrücklich den 3. Schock,
+       der ACLS-Algorithmus gibt nach dem 2. Schock;
+     · reversible Ursachen: 4 H's + HITS (8) gegenüber 5 H's + 5 T's (10) –
+       inhaltlich dasselbe, nur anders gruppiert;
+     · Zielwerte nach ROSC (Sauerstoffsättigung, Blutdruck);
+     · das Antiarrhythmikum: AHA nennt Lidocain gleichwertig neben
+       Amiodaron, ERC nur als Ersatz.
+
+   Alles Übrige – 2-Minuten-Zyklen, 100–120/min, Adrenalin 1 mg alle
+   3–5 min, Amiodaron 300/150 mg – ist in beiden Standards gleich.
+
+   Die Wahl ist bewusst KEINE Premium-Funktion: Nach welcher Leitlinie
+   gearbeitet wird, gehört zum Kern der Reanimation, nicht zum Komfort.
+   ========================================================================= */
+const STANDARDS = [
+  {
+    id: "erc",
+    /* Abweichungen von ALGO_STANDARD – bei Europa keine, das IST die Basis. */
+    werte: {},
+    ursachen: [
+      { id: "hypoxie" }, { id: "hypovolaemie" }, { id: "kalium" }, { id: "hypothermie" },
+      { id: "tamponade" }, { id: "intox" }, { id: "thrombose" }, { id: "spannung" }
+    ],
+    massnahmen: [
+      { id: "ivzugang" }, { id: "iozugang" }, { id: "sga" },
+      { id: "intubation" }, { id: "kapnographie" }, { id: "mechanisch" }
+    ],
+    leitlinien: [
+      { id: "erc",   titel: "ERC Guidelines for Resuscitation 2025",
+        org: "European Resuscitation Council (ERC)",
+        stand: "2025",
+        url: "https://www.erc.edu/science-research/guidelines/guidelines-2025/guidelines-2025-english/" },
+      { id: "grc",   titel: "Reanimation 2025 – Leitlinien des ERC in deutscher Übersetzung",
+        org: "German Resuscitation Council (GRC) · Deutscher Rat für Wiederbelebung",
+        stand: "2025", url: "https://www.grc-org.de/wissenschaft/leitlinien" },
+      { id: "ilcor", titel: "International Consensus on CPR and ECC Science with Treatment Recommendations (CoSTR)",
+        org: "International Liaison Committee on Resuscitation (ILCOR)",
+        stand: "2025", url: "https://www.ilcor.org" }
+    ]
+  },
+  {
+    id: "aha",
+    werte: { ADRENALIN_SCHOCK: 2 },
+    ursachen: [
+      { id: "hypovolaemie" }, { id: "hypoxie" }, { id: "azidose" }, { id: "kalium_aha" },
+      { id: "hypothermie" },
+      { id: "spannung" }, { id: "tamponade" }, { id: "intox" },
+      { id: "thrombose_pulmonal" }, { id: "thrombose_koronar" }
+    ],
+    massnahmen: [
+      { id: "ivzugang" }, { id: "iozugang" }, { id: "sga" },
+      { id: "intubation" }, { id: "kapnographie" }, { id: "mechanisch" },
+      /* AHA führt Lidocain gleichwertig neben Amiodaron. Die Medikamenten-
+         karte kennt weiterhin nur Amiodaron mit Dosis-Status; Lidocain wird
+         hier als Ereignis mit Zeitstempel dokumentiert. */
+      { id: "lidocain" }
+    ],
+    leitlinien: [
+      { id: "aha9",  titel: "2025 AHA Guidelines for CPR and ECC – Part 9: Adult Advanced Life Support",
+        org: "American Heart Association (AHA)",
+        stand: "2025", url: "https://www.ahajournals.org/doi/10.1161/CIR.0000000000001376" },
+      { id: "aha11", titel: "2025 AHA Guidelines for CPR and ECC – Part 11: Post–Cardiac Arrest Care",
+        org: "American Heart Association (AHA)",
+        stand: "2025", url: "https://www.ahajournals.org/doi/10.1161/CIR.0000000000001375" },
+      { id: "ilcor", titel: "International Consensus on CPR and ECC Science with Treatment Recommendations (CoSTR)",
+        org: "International Liaison Committee on Resuscitation (ILCOR)",
+        stand: "2025", url: "https://www.ilcor.org" }
+    ]
+  }
+];
+
+/* Setzt die Listen und Basiswerte des gewählten Standards in KONF. Der
+   Rechenkern liest wie bisher nur KONF und weiß von Standards nichts. */
+const Standard = {
+  id(){
+    const s = Einst && Einst.werte ? Einst.werte.standard : null;
+    return STANDARDS.some(x => x.id === s) ? s : "erc";
+  },
+  aktiv(){ return STANDARDS.find(x => x.id === this.id()) || STANDARDS[0]; },
+  /* Grundwerte des Standards – darauf setzt ein eigenes Profil auf. */
+  basis(){
+    const b = {};
+    KONF.ALGO_FELDER.forEach(f => b[f.key] = ALGO_STANDARD[f.key]);
+    Object.keys(this.aktiv().werte).forEach(k => b[k] = this.aktiv().werte[k]);
+    return b;
+  },
+  anwenden(){
+    const s = this.aktiv();
+    KONF.URSACHEN = s.ursachen;
+    KONF.MASSNAHMEN = s.massnahmen;
+    KONF.LEITLINIEN = s.leitlinien;
+  },
+  kurz(){ return tText("std_" + this.id() + "_kurz"); }
+};
 
 /* =========================================================================
    1b. TEXTE – Mehrsprachigkeit
@@ -1555,12 +1694,12 @@ de: {
   zeit_suffix: " Uhr",
 
   /* Kopfzeile */
-  kopf_bereit: "Erwachsenen-ALS · Bereit",
+  kopf_bereit: "{d} · Bereit",
   kopf_aktiv: "Aktiver Einsatz",
   kopf_rosc: "Post-ROSC",
 
   /* Startseite */
-  st_hinweis: "<b>Erwachsenen-ALS · Leitlinien 2025 (GRC/ERC).</b> Die App trifft <b>keine Therapieentscheidungen</b> – verantwortlich bleibt das behandelnde Team.",
+  st_hinweis: "<b>{d} · Leitlinien 2025 ({s}).</b> Die App trifft <b>keine Therapieentscheidungen</b> – verantwortlich bleibt das behandelnde Team.",
   st_p1: "<b>2-Minuten-Zyklen</b> mit Warnung vor dem Analysefenster und Erinnerung an den Helferwechsel",
   st_p2: "<b>Adrenalin &amp; Amiodaron</b> als verständlicher Status statt roher Timer",
   st_p3: "<b>Rhythmus, Schocks, ROSC, 4H/HITS</b> – jede Aktion einen Tipp entfernt, alles mit Zeitstempel",
@@ -1720,7 +1859,7 @@ de: {
 
   /* Metronom */
   me_titel: "Metronom",
-  me_frage: "Taktgeber für die Thoraxkompressionen. Zielbereich für Erwachsene: 100–120 pro Minute. Ersetzt keine Qualitätskontrolle.",
+  me_frage: "Taktgeber für die Thoraxkompressionen. Zielbereich für Erwachsene: 100–120 pro Minute – in beiden Standards gleich. Ersetzt keine Qualitätskontrolle.",
   me_aus: "Aus", me_aus_sub: "kein Ton", me_aus_klein: "aus",
   me_100: "unteres Ende des Zielbereichs",
   me_110: "Standard – Mitte des Zielbereichs",
@@ -1805,15 +1944,15 @@ de: {
   ql_werte: "In der App hinterlegte Werte",
   ql_stand: "Stand {s}",
   ql_geprueft: "Werte dieser App zuletzt abgeglichen am {d} · App-Version {v}.",
-  ql_sub: "ERC/GRC 2025 · Stand {d}",
+  ql_sub: "{s} 2025 · Stand {d}",
   ql_abweichung: "<b>Achtung:</b> Aktuell rechnet die App mit dem eigenen Profil „{n}“ und weicht damit bewusst von der Voreinstellung der Leitlinie ab.",
 
   /* Grundeinstellungen / Algorithmus */
   al_titel: "Grundeinstellungen bearbeiten",
   al_banner: "Benutzerdefinierter Algorithmus",
-  al_frage: "Zeiten und Schwellen des Ablaufs an einen eigenen Standard anpassen und als Profil speichern. <b>Die Voreinstellung entspricht der Leitlinie</b> – ein eigenes Profil weicht bewusst davon ab und wird deshalb während des Einsatzes oben angezeigt. <span class=\"premium-marke\">Premium</span>",
+  al_frage: "Zeiten und Schwellen des Ablaufs an einen eigenen Standard anpassen und als Profil speichern. <b>Die Voreinstellung entspricht {s} 2025</b> – ein eigenes Profil weicht bewusst davon ab und wird deshalb während des Einsatzes oben angezeigt. <span class=\"premium-marke\">Premium</span>",
   al_standard: "Standard nach Leitlinie",
-  al_standard_sub: "ERC/GRC 2025 – unverändert",
+  al_standard_sub: "{s} 2025 – unverändert",
   al_neu: "Eigenes Profil anlegen",
   al_bearbeiten: "Profil bearbeiten",
   al_speichern: "Profil speichern",
@@ -1867,7 +2006,7 @@ de: {
   ob_los: "Verstanden – los geht’s",
   ob_skip: "Überspringen",
   ob1_t: "Unterstützung, keine Entscheidung",
-  ob1_p: "CPR Assist ist eine <b>kognitive Stütze und ein Protokoll</b> für die Reanimation Erwachsener nach den Leitlinien 2025 (GRC/ERC). Die App trifft keine Diagnose- oder Therapieentscheidungen und ersetzt weder Ausbildung noch klinisches Urteil.",
+  ob1_p: "CPR Assist ist eine <b>kognitive Stütze und ein Protokoll</b> für die Reanimation Erwachsener nach den Leitlinien 2025 von {s}. Die App trifft keine Diagnose- oder Therapieentscheidungen und ersetzt weder Ausbildung noch klinisches Urteil.",
   ob2_t: "Zyklen, Analyse, Medikamente",
   ob2_p: "Der große Ring zählt den <b>2-Minuten-Zyklus</b> herunter und wechselt dann sichtbar ins Analysefenster (Rhythmus prüfen, Helfer wechseln). Adrenalin und Amiodaron zeigen ihren Status: zu früh, fällig, überfällig.",
   ob3_t: "Alles bleibt auf dem Gerät",
@@ -1931,7 +2070,38 @@ de: {
   ts_sprache: "Sprache umgestellt auf {n}",
   ts_algo_standard: "Standard der Leitlinie ist wieder aktiv",
   ts_algo_aktiv: "Profil „{n}“ ist aktiv – oben sichtbar",
-  ts_algo_gespeichert: "Profil „{n}“ gespeichert und aktiv"
+  ts_algo_gespeichert: "Profil „{n}“ gespeichert und aktiv",
+  /* Leitlinien-Standard */
+  sd_titel: "Leitlinien-Standard",
+  sd_frage: "Nach welcher Fassung soll die App rechnen? Beide stammen aus demselben ILCOR-Konsens und widersprechen sich nicht – sie setzen ihn nur unterschiedlich um.",
+  sd_unterschiede: "Was sich dadurch ändert",
+  sd_u1: "<b>Erstes Adrenalin bei VF/pVT</b> – ERC nennt den 3. Schock, der ACLS-Algorithmus gibt nach dem 2.",
+  sd_u2: "<b>Reversible Ursachen</b> – 4 H’s und HITS (8 Punkte) gegenüber 5 H’s und 5 T’s (10 Punkte). Inhaltlich dasselbe, nur anders gruppiert.",
+  sd_u3: "<b>Sauerstoff nach ROSC</b> – Ziel 94–98 % (ERC) gegenüber 90–98 % (AHA).",
+  sd_u4: "<b>Blutdruck nach ROSC</b> – systolisch über 100 mmHg (ERC) gegenüber MAD ab 65 mmHg (AHA).",
+  sd_u5: "<b>Antiarrhythmikum</b> – die AHA nennt Lidocain gleichwertig neben Amiodaron; es steht dann in der Maßnahmen-Auswahl.",
+  std_erc: "ERC / GRC", std_erc_sub: "Europa", std_erc_kurz: "ERC/GRC",
+  std_aha: "AHA / ACLS", std_aha_sub: "USA", std_aha_kurz: "AHA/ACLS",
+  ak_ursachen_erc: "4H / HITS", ak_ursachen_aha: "5H / 5T",
+  ur_titel_erc: "Reversible Ursachen – 4 H’s &amp; HITS",
+  ur_titel_aha: "Reversible Ursachen – 5 H’s &amp; 5 T’s",
+  ro_oxygen_i_erc: "anfangs hohe O₂-Zufuhr, sobald SpO₂ messbar: Ziel 94–98 %",
+  ro_oxygen_i_aha: "anfangs 100 % O₂, nach Stabilisierung: Ziel SpO₂ 90–98 %",
+  ro_kreislauf_i_erc: "Ziel systolischer Blutdruck &gt; 100 mmHg",
+  ro_kreislauf_i_aha: "Ziel mittlerer arterieller Druck ≥ 65 mmHg",
+  ur_azidose: "Azidose (Wasserstoffionen)",
+  ur_azidose_i: "BGA; Ursache behandeln, Beatmung anpassen",
+  ur_kalium_aha: "Hypo-/Hyperkaliämie",
+  ur_kalium_aha_i: "Elektrolyte prüfen; Kalzium/Glukose-Insulin erwägen",
+  ur_thrombose_pulmonal: "Thrombose – pulmonal",
+  ur_thrombose_pulmonal_i: "Lungenembolie? Lyse erwägen",
+  ur_thrombose_koronar: "Thrombose – koronar",
+  ur_thrombose_koronar_i: "Infarkt? Koronarintervention erwägen",
+  ms_lidocain: "Lidocain",
+  ev_standard: "Leitlinien-Standard: {n}",
+  ts_standard: "Die App rechnet jetzt nach {n}.",
+  std_erc_disziplin: "Erwachsenen-ALS", std_aha_disziplin: "Erwachsenen-ACLS",
+  ql_link: "Grundlage: {s} 2025 · <u>Quellen ansehen</u>"
 },
 
 /* ------------------------------------------------------------------ en */
@@ -1941,11 +2111,11 @@ en: {
   g_schock_nr: "shock {n}",
   zeit_suffix: "",
 
-  kopf_bereit: "Adult ALS · Ready",
+  kopf_bereit: "{d} · Ready",
   kopf_aktiv: "Resuscitation running",
   kopf_rosc: "Post-ROSC",
 
-  st_hinweis: "<b>Adult ALS · Guidelines 2025 (ERC/GRC).</b> The app makes <b>no treatment decisions</b> – the treating team stays responsible.",
+  st_hinweis: "<b>{d} · Guidelines 2025 ({s}).</b> The app makes <b>no treatment decisions</b> – the treating team stays responsible.",
   st_p1: "<b>2-minute cycles</b> with a warning before the rhythm check and a reminder to change compressors",
   st_p2: "<b>Adrenaline &amp; amiodarone</b> as a clear status instead of a bare timer",
   st_p3: "<b>Rhythm, shocks, ROSC, 4H/4T</b> – every action one tap away, everything time-stamped",
@@ -2097,7 +2267,7 @@ en: {
   en_beginn: "Start", en_algo: "Algorithm",
 
   me_titel: "Metronome",
-  me_frage: "Pacing for chest compressions. Target range for adults: 100–120 per minute. It does not replace quality control.",
+  me_frage: "Pacing for chest compressions. Target range for adults: 100–120 per minute – identical in both standards. It does not replace quality control.",
   me_aus: "Off", me_aus_sub: "no sound", me_aus_klein: "off",
   me_100: "lower end of the target range",
   me_110: "standard – middle of the target range",
@@ -2176,14 +2346,14 @@ en: {
   ql_werte: "Values stored in the app",
   ql_stand: "Edition {s}",
   ql_geprueft: "Values of this app last reconciled on {d} · app version {v}.",
-  ql_sub: "ERC/GRC 2025 · checked {d}",
+  ql_sub: "{s} 2025 · checked {d}",
   ql_abweichung: "<b>Note:</b> the app is currently using your own profile “{n}” and therefore deliberately deviates from the guideline default.",
 
   al_titel: "Edit base settings",
   al_banner: "Custom algorithm",
-  al_frage: "Adapt the timings and thresholds of the workflow to your own standard and save them as a profile. <b>The default matches the guideline</b> – a custom profile deliberately deviates from it and is therefore shown at the top during a resuscitation. <span class=\"premium-marke\">Premium</span>",
+  al_frage: "Adapt the timings and thresholds of the workflow to your own standard and save them as a profile. <b>The default matches {s} 2025</b> – a custom profile deliberately deviates from it and is therefore shown at the top during a resuscitation. <span class=\"premium-marke\">Premium</span>",
   al_standard: "Guideline default",
-  al_standard_sub: "ERC/GRC 2025 – unchanged",
+  al_standard_sub: "{s} 2025 – unchanged",
   al_neu: "Create a custom profile",
   al_bearbeiten: "Edit profile",
   al_speichern: "Save profile",
@@ -2235,7 +2405,7 @@ en: {
   ob_los: "Understood – let’s go",
   ob_skip: "Skip",
   ob1_t: "Support, not decisions",
-  ob1_p: "CPR Assist is a <b>cognitive aid and a log</b> for adult resuscitation following the 2025 guidelines (ERC/GRC). The app makes no diagnostic or treatment decisions and replaces neither training nor clinical judgement.",
+  ob1_p: "CPR Assist is a <b>cognitive aid and a log</b> for adult resuscitation following the 2025 guidelines of {s}. The app makes no diagnostic or treatment decisions and replaces neither training nor clinical judgement.",
   ob2_t: "Cycles, analysis, drugs",
   ob2_p: "The large ring counts down the <b>2-minute cycle</b> and then switches visibly to the analysis window (check rhythm, change compressor). Adrenaline and amiodarone show their status: too early, due, overdue.",
   ob3_t: "Everything stays on the device",
@@ -2297,7 +2467,37 @@ en: {
   ts_sprache: "Language switched to {n}",
   ts_algo_standard: "The guideline default is active again",
   ts_algo_aktiv: "Profile “{n}” is active – shown at the top",
-  ts_algo_gespeichert: "Profile “{n}” saved and active"
+  ts_algo_gespeichert: "Profile “{n}” saved and active",
+  sd_titel: "Guideline standard",
+  sd_frage: "Which edition should the app follow? Both come from the same ILCOR consensus and do not contradict each other – they only implement it differently.",
+  sd_unterschiede: "What this changes",
+  sd_u1: "<b>First adrenaline in VF/pVT</b> – ERC names the 3rd shock, the ACLS algorithm gives it after the 2nd.",
+  sd_u2: "<b>Reversible causes</b> – 4 H’s and 4 T’s (8 items) versus 5 H’s and 5 T’s (10 items). Same content, grouped differently.",
+  sd_u3: "<b>Oxygen after ROSC</b> – target 94–98 % (ERC) versus 90–98 % (AHA).",
+  sd_u4: "<b>Blood pressure after ROSC</b> – systolic above 100 mmHg (ERC) versus MAP from 65 mmHg (AHA).",
+  sd_u5: "<b>Antiarrhythmic</b> – the AHA names lidocaine alongside amiodarone; it then appears in the intervention list.",
+  std_erc: "ERC / GRC", std_erc_sub: "Europe", std_erc_kurz: "ERC/GRC",
+  std_aha: "AHA / ACLS", std_aha_sub: "USA", std_aha_kurz: "AHA/ACLS",
+  ak_ursachen_erc: "4H / 4T", ak_ursachen_aha: "5H / 5T",
+  ur_titel_erc: "Reversible causes – 4 H’s &amp; 4 T’s",
+  ur_titel_aha: "Reversible causes – 5 H’s &amp; 5 T’s",
+  ro_oxygen_i_erc: "high O₂ at first; once SpO₂ is reliable aim for 94–98 %",
+  ro_oxygen_i_aha: "100 % O₂ at first; after stabilisation aim for SpO₂ 90–98 %",
+  ro_kreislauf_i_erc: "target systolic blood pressure &gt; 100 mmHg",
+  ro_kreislauf_i_aha: "target mean arterial pressure ≥ 65 mmHg",
+  ur_azidose: "Acidosis (hydrogen ion)",
+  ur_azidose_i: "blood gas; treat the cause, adjust ventilation",
+  ur_kalium_aha: "Hypo-/hyperkalaemia",
+  ur_kalium_aha_i: "check electrolytes; consider calcium, glucose-insulin",
+  ur_thrombose_pulmonal: "Thrombosis – pulmonary",
+  ur_thrombose_pulmonal_i: "pulmonary embolism? consider thrombolysis",
+  ur_thrombose_koronar: "Thrombosis – coronary",
+  ur_thrombose_koronar_i: "infarction? consider coronary intervention",
+  ms_lidocain: "Lidocaine",
+  ev_standard: "Guideline standard: {n}",
+  ts_standard: "The app now follows {n}.",
+  std_erc_disziplin: "Adult ALS", std_aha_disziplin: "Adult ACLS",
+  ql_link: "Based on {s} 2025 · <u>view sources</u>"
 },
 
 /* ------------------------------------------------------------------ fr */
@@ -2307,11 +2507,11 @@ fr: {
   g_schock_nr: "choc {n}",
   zeit_suffix: "",
 
-  kopf_bereit: "ALS adulte · Prêt",
+  kopf_bereit: "{d} · Prêt",
   kopf_aktiv: "Réanimation en cours",
   kopf_rosc: "Post-ROSC",
 
-  st_hinweis: "<b>ALS adulte · Recommandations 2025 (ERC/GRC).</b> L’application ne prend <b>aucune décision thérapeutique</b> – l’équipe soignante reste responsable.",
+  st_hinweis: "<b>{d} · Recommandations 2025 ({s}).</b> L’application ne prend <b>aucune décision thérapeutique</b> – l’équipe soignante reste responsable.",
   st_p1: "<b>Cycles de 2 minutes</b> avec alerte avant l’analyse du rythme et rappel de relais du masseur",
   st_p2: "<b>Adrénaline et amiodarone</b> sous forme de statut clair plutôt que d’un simple minuteur",
   st_p3: "<b>Rythme, chocs, ROSC, 4H/4T</b> – chaque action à une pression, tout horodaté",
@@ -2463,7 +2663,7 @@ fr: {
   en_beginn: "Début", en_algo: "Algorithme",
 
   me_titel: "Métronome",
-  me_frage: "Cadence pour les compressions thoraciques. Plage cible chez l’adulte : 100–120 par minute. Ne remplace pas le contrôle qualité.",
+  me_frage: "Cadence pour les compressions thoraciques. Plage cible chez l’adulte : 100–120 par minute – identique dans les deux référentiels. Ne remplace pas le contrôle qualité.",
   me_aus: "Arrêt", me_aus_sub: "aucun son", me_aus_klein: "arrêt",
   me_100: "borne basse de la plage cible",
   me_110: "standard – milieu de la plage cible",
@@ -2542,14 +2742,14 @@ fr: {
   ql_werte: "Valeurs enregistrées dans l’application",
   ql_stand: "Édition {s}",
   ql_geprueft: "Valeurs de cette application vérifiées le {d} · version {v}.",
-  ql_sub: "ERC/GRC 2025 · vérifié le {d}",
+  ql_sub: "{s} 2025 · vérifié le {d}",
   ql_abweichung: "<b>Attention :</b> l’application utilise actuellement votre profil « {n} » et s’écarte donc volontairement du réglage des recommandations.",
 
   al_titel: "Modifier les réglages de base",
   al_banner: "Algorithme personnalisé",
-  al_frage: "Adapter les durées et les seuils du déroulement à votre propre standard et les enregistrer comme profil. <b>Le réglage par défaut correspond aux recommandations</b> – un profil personnalisé s’en écarte volontairement et est donc affiché en haut pendant l’intervention. <span class=\"premium-marke\">Premium</span>",
+  al_frage: "Adapter les durées et les seuils du déroulement à votre propre standard et les enregistrer comme profil. <b>Le réglage par défaut correspond à {s} 2025</b> – un profil personnalisé s’en écarte volontairement et est donc affiché en haut pendant l’intervention. <span class=\"premium-marke\">Premium</span>",
   al_standard: "Réglage des recommandations",
-  al_standard_sub: "ERC/GRC 2025 – inchangé",
+  al_standard_sub: "{s} 2025 – inchangé",
   al_neu: "Créer un profil",
   al_bearbeiten: "Modifier le profil",
   al_speichern: "Enregistrer le profil",
@@ -2601,7 +2801,7 @@ fr: {
   ob_los: "Compris – c’est parti",
   ob_skip: "Passer",
   ob1_t: "Une aide, pas une décision",
-  ob1_p: "CPR Assist est une <b>aide cognitive et un journal</b> pour la réanimation de l’adulte selon les recommandations 2025 (ERC/GRC). L’application ne prend aucune décision diagnostique ou thérapeutique et ne remplace ni la formation ni le jugement clinique.",
+  ob1_p: "CPR Assist est une <b>aide cognitive et un journal</b> pour la réanimation de l’adulte selon les recommandations 2025 de {s}. L’application ne prend aucune décision diagnostique ou thérapeutique et ne remplace ni la formation ni le jugement clinique.",
   ob2_t: "Cycles, analyse, médicaments",
   ob2_p: "Le grand anneau décompte le <b>cycle de 2 minutes</b> puis passe visiblement à la fenêtre d’analyse (vérifier le rythme, relayer le masseur). L’adrénaline et l’amiodarone affichent leur statut : trop tôt, à faire, en retard.",
   ob3_t: "Tout reste sur l’appareil",
@@ -2663,7 +2863,37 @@ fr: {
   ts_sprache: "Langue changée en {n}",
   ts_algo_standard: "Le réglage des recommandations est de nouveau actif",
   ts_algo_aktiv: "Le profil « {n} » est actif – visible en haut",
-  ts_algo_gespeichert: "Profil « {n} » enregistré et actif"
+  ts_algo_gespeichert: "Profil « {n} » enregistré et actif",
+  sd_titel: "Référentiel",
+  sd_frage: "Selon quelle version l’application doit-elle raisonner ? Les deux viennent du même consensus ILCOR et ne se contredisent pas – elles le mettent seulement en œuvre différemment.",
+  sd_unterschiede: "Ce que cela change",
+  sd_u1: "<b>Première adrénaline en FV/TVsp</b> – l’ERC indique le 3e choc, l’algorithme ACLS l’administre après le 2e.",
+  sd_u2: "<b>Causes réversibles</b> – 4 H et 4 T (8 points) contre 5 H et 5 T (10 points). Même contenu, regroupé autrement.",
+  sd_u3: "<b>Oxygène après ROSC</b> – objectif 94–98 % (ERC) contre 90–98 % (AHA).",
+  sd_u4: "<b>Pression artérielle après ROSC</b> – systolique au-dessus de 100 mmHg (ERC) contre PAM à partir de 65 mmHg (AHA).",
+  sd_u5: "<b>Antiarythmique</b> – l’AHA place la lidocaïne au même niveau que l’amiodarone ; elle figure alors dans la liste des gestes.",
+  std_erc: "ERC / GRC", std_erc_sub: "Europe", std_erc_kurz: "ERC/GRC",
+  std_aha: "AHA / ACLS", std_aha_sub: "États-Unis", std_aha_kurz: "AHA/ACLS",
+  ak_ursachen_erc: "4H / 4T", ak_ursachen_aha: "5H / 5T",
+  ur_titel_erc: "Causes réversibles – 4 H &amp; 4 T",
+  ur_titel_aha: "Causes réversibles – 5 H &amp; 5 T",
+  ro_oxygen_i_erc: "O₂ élevé au début ; dès que la SpO₂ est fiable : objectif 94–98 %",
+  ro_oxygen_i_aha: "O₂ à 100 % au début ; après stabilisation : objectif SpO₂ 90–98 %",
+  ro_kreislauf_i_erc: "objectif pression systolique &gt; 100 mmHg",
+  ro_kreislauf_i_aha: "objectif pression artérielle moyenne ≥ 65 mmHg",
+  ur_azidose: "Acidose (ions hydrogène)",
+  ur_azidose_i: "gaz du sang ; traiter la cause, adapter la ventilation",
+  ur_kalium_aha: "Hypo-/hyperkaliémie",
+  ur_kalium_aha_i: "contrôler les électrolytes ; envisager calcium, glucose-insuline",
+  ur_thrombose_pulmonal: "Thrombose – pulmonaire",
+  ur_thrombose_pulmonal_i: "embolie pulmonaire ? envisager la thrombolyse",
+  ur_thrombose_koronar: "Thrombose – coronaire",
+  ur_thrombose_koronar_i: "infarctus ? envisager une coronarographie",
+  ms_lidocain: "Lidocaïne",
+  ev_standard: "Référentiel : {n}",
+  ts_standard: "L’application suit désormais {n}.",
+  std_erc_disziplin: "ALS adulte", std_aha_disziplin: "ACLS adulte",
+  ql_link: "Fondement : {s} 2025 · <u>voir les sources</u>"
 },
 
 /* ------------------------------------------------------------------ es */
@@ -2673,11 +2903,11 @@ es: {
   g_schock_nr: "choque {n}",
   zeit_suffix: " h",
 
-  kopf_bereit: "SVA adultos · Listo",
+  kopf_bereit: "{d} · Listo",
   kopf_aktiv: "Reanimación en curso",
   kopf_rosc: "Post-ROSC",
 
-  st_hinweis: "<b>SVA adultos · Guías 2025 (ERC/GRC).</b> La app <b>no toma decisiones terapéuticas</b>: la responsabilidad es del equipo asistencial.",
+  st_hinweis: "<b>{d} · Guías 2025 ({s}).</b> La app <b>no toma decisiones terapéuticas</b>: la responsabilidad es del equipo asistencial.",
   st_p1: "<b>Ciclos de 2 minutos</b> con aviso antes del análisis del ritmo y recordatorio de relevo del reanimador",
   st_p2: "<b>Adrenalina y amiodarona</b> como estado comprensible en vez de un simple temporizador",
   st_p3: "<b>Ritmo, choques, ROSC, 4H/4T</b>: cada acción a un toque, todo con marca de tiempo",
@@ -2829,7 +3059,7 @@ es: {
   en_beginn: "Inicio", en_algo: "Algoritmo",
 
   me_titel: "Metrónomo",
-  me_frage: "Marca el ritmo de las compresiones torácicas. Rango objetivo en adultos: 100–120 por minuto. No sustituye el control de calidad.",
+  me_frage: "Marca el ritmo de las compresiones torácicas. Rango objetivo en adultos: 100–120 por minuto, idéntico en ambos estándares. No sustituye el control de calidad.",
   me_aus: "Apagado", me_aus_sub: "sin sonido", me_aus_klein: "apagado",
   me_100: "extremo inferior del rango objetivo",
   me_110: "estándar: centro del rango objetivo",
@@ -2908,14 +3138,14 @@ es: {
   ql_werte: "Valores guardados en la app",
   ql_stand: "Edición {s}",
   ql_geprueft: "Valores de esta app cotejados por última vez el {d} · versión {v}.",
-  ql_sub: "ERC/GRC 2025 · revisado {d}",
+  ql_sub: "{s} 2025 · revisado {d}",
   ql_abweichung: "<b>Atención:</b> la app usa actualmente tu perfil «{n}» y por tanto se aparta a propósito del ajuste de las guías.",
 
   al_titel: "Editar los ajustes básicos",
   al_banner: "Algoritmo personalizado",
-  al_frage: "Adapta los tiempos y umbrales del procedimiento a tu propio estándar y guárdalos como perfil. <b>El ajuste por defecto corresponde a las guías</b>: un perfil propio se aparta de él a propósito y por eso se muestra arriba durante la reanimación. <span class=\"premium-marke\">Premium</span>",
+  al_frage: "Adapta los tiempos y umbrales del procedimiento a tu propio estándar y guárdalos como perfil. <b>El ajuste por defecto corresponde a {s} 2025</b>: un perfil propio se aparta de él a propósito y por eso se muestra arriba durante la reanimación. <span class=\"premium-marke\">Premium</span>",
   al_standard: "Ajuste según las guías",
-  al_standard_sub: "ERC/GRC 2025 – sin cambios",
+  al_standard_sub: "{s} 2025 – sin cambios",
   al_neu: "Crear un perfil propio",
   al_bearbeiten: "Editar el perfil",
   al_speichern: "Guardar el perfil",
@@ -2967,7 +3197,7 @@ es: {
   ob_los: "Entendido, empecemos",
   ob_skip: "Omitir",
   ob1_t: "Apoyo, no decisiones",
-  ob1_p: "CPR Assist es una <b>ayuda cognitiva y un registro</b> para la reanimación del adulto según las guías 2025 (ERC/GRC). La app no toma decisiones diagnósticas ni terapéuticas y no sustituye la formación ni el juicio clínico.",
+  ob1_p: "CPR Assist es una <b>ayuda cognitiva y un registro</b> para la reanimación del adulto según las guías 2025 de {s}. La app no toma decisiones diagnósticas ni terapéuticas y no sustituye la formación ni el juicio clínico.",
   ob2_t: "Ciclos, análisis, medicación",
   ob2_p: "El anillo grande cuenta atrás el <b>ciclo de 2 minutos</b> y pasa después de forma visible a la ventana de análisis (comprobar ritmo, relevar reanimador). Adrenalina y amiodarona muestran su estado: pronto, toca, atrasada.",
   ob3_t: "Todo permanece en el dispositivo",
@@ -3029,7 +3259,37 @@ es: {
   ts_sprache: "Idioma cambiado a {n}",
   ts_algo_standard: "El ajuste de las guías vuelve a estar activo",
   ts_algo_aktiv: "El perfil «{n}» está activo – visible arriba",
-  ts_algo_gespeichert: "Perfil «{n}» guardado y activo"
+  ts_algo_gespeichert: "Perfil «{n}» guardado y activo",
+  sd_titel: "Estándar de guías",
+  sd_frage: "¿Según qué versión debe calcular la app? Ambas proceden del mismo consenso ILCOR y no se contradicen: solo lo aplican de forma distinta.",
+  sd_unterschiede: "Qué cambia con ello",
+  sd_u1: "<b>Primera adrenalina en FV/TVsp</b>: el ERC indica el 3.er choque; el algoritmo ACLS la administra tras el 2.º.",
+  sd_u2: "<b>Causas reversibles</b>: 4 H y 4 T (8 puntos) frente a 5 H y 5 T (10 puntos). El mismo contenido, agrupado de otra manera.",
+  sd_u3: "<b>Oxígeno tras ROSC</b>: objetivo 94–98 % (ERC) frente a 90–98 % (AHA).",
+  sd_u4: "<b>Presión arterial tras ROSC</b>: sistólica por encima de 100 mmHg (ERC) frente a PAM desde 65 mmHg (AHA).",
+  sd_u5: "<b>Antiarrítmico</b>: la AHA sitúa la lidocaína al mismo nivel que la amiodarona; entonces aparece en la lista de intervenciones.",
+  std_erc: "ERC / GRC", std_erc_sub: "Europa", std_erc_kurz: "ERC/GRC",
+  std_aha: "AHA / ACLS", std_aha_sub: "EE. UU.", std_aha_kurz: "AHA/ACLS",
+  ak_ursachen_erc: "4H / 4T", ak_ursachen_aha: "5H / 5T",
+  ur_titel_erc: "Causas reversibles – 4 H y 4 T",
+  ur_titel_aha: "Causas reversibles – 5 H y 5 T",
+  ro_oxygen_i_erc: "O₂ alto al principio; con SpO₂ fiable objetivo 94–98 %",
+  ro_oxygen_i_aha: "O₂ al 100 % al principio; tras estabilizar objetivo SpO₂ 90–98 %",
+  ro_kreislauf_i_erc: "objetivo presión sistólica &gt; 100 mmHg",
+  ro_kreislauf_i_aha: "objetivo presión arterial media ≥ 65 mmHg",
+  ur_azidose: "Acidosis (ion hidrógeno)",
+  ur_azidose_i: "gasometría; tratar la causa, ajustar la ventilación",
+  ur_kalium_aha: "Hipo-/hiperpotasemia",
+  ur_kalium_aha_i: "revisar electrolitos; valorar calcio, glucosa-insulina",
+  ur_thrombose_pulmonal: "Trombosis – pulmonar",
+  ur_thrombose_pulmonal_i: "¿TEP? valorar fibrinólisis",
+  ur_thrombose_koronar: "Trombosis – coronaria",
+  ur_thrombose_koronar_i: "¿infarto? valorar intervención coronaria",
+  ms_lidocain: "Lidocaína",
+  ev_standard: "Estándar de guías: {n}",
+  ts_standard: "La app sigue ahora {n}.",
+  std_erc_disziplin: "SVA adultos", std_aha_disziplin: "ACLS adultos",
+  ql_link: "Base: {s} 2025 · <u>ver fuentes</u>"
 },
 
 /* ------------------------------------------------------------------ it */
@@ -3039,11 +3299,11 @@ it: {
   g_schock_nr: "shock {n}",
   zeit_suffix: "",
 
-  kopf_bereit: "ALS adulti · Pronto",
+  kopf_bereit: "{d} · Pronto",
   kopf_aktiv: "Rianimazione in corso",
   kopf_rosc: "Post-ROSC",
 
-  st_hinweis: "<b>ALS adulti · Linee guida 2025 (ERC/GRC).</b> L’app <b>non prende decisioni terapeutiche</b>: la responsabilità resta dell’équipe.",
+  st_hinweis: "<b>{d} · Linee guida 2025 ({s}).</b> L’app <b>non prende decisioni terapeutiche</b>: la responsabilità resta dell’équipe.",
   st_p1: "<b>Cicli di 2 minuti</b> con avviso prima dell’analisi del ritmo e promemoria per il cambio del soccorritore",
   st_p2: "<b>Adrenalina e amiodarone</b> come stato comprensibile invece di un semplice timer",
   st_p3: "<b>Ritmo, shock, ROSC, 4H/4T</b>: ogni azione a un tocco, tutto con marca temporale",
@@ -3195,7 +3455,7 @@ it: {
   en_beginn: "Inizio", en_algo: "Algoritmo",
 
   me_titel: "Metronomo",
-  me_frage: "Cadenza per le compressioni toraciche. Intervallo obiettivo negli adulti: 100–120 al minuto. Non sostituisce il controllo di qualità.",
+  me_frage: "Cadenza per le compressioni toraciche. Intervallo obiettivo negli adulti: 100–120 al minuto, identico in entrambi gli standard. Non sostituisce il controllo di qualità.",
   me_aus: "Spento", me_aus_sub: "nessun suono", me_aus_klein: "spento",
   me_100: "estremo inferiore dell’intervallo obiettivo",
   me_110: "standard: centro dell’intervallo obiettivo",
@@ -3274,14 +3534,14 @@ it: {
   ql_werte: "Valori memorizzati nell’app",
   ql_stand: "Edizione {s}",
   ql_geprueft: "Valori di questa app verificati l’ultima volta il {d} · versione {v}.",
-  ql_sub: "ERC/GRC 2025 · verificato il {d}",
+  ql_sub: "{s} 2025 · verificato il {d}",
   ql_abweichung: "<b>Attenzione:</b> l’app sta usando il tuo profilo «{n}» e si discosta quindi volutamente dall’impostazione delle linee guida.",
 
   al_titel: "Modifica le impostazioni di base",
   al_banner: "Algoritmo personalizzato",
-  al_frage: "Adatta tempi e soglie della procedura al tuo standard e salvali come profilo. <b>L’impostazione predefinita corrisponde alle linee guida</b>: un profilo personale se ne discosta volutamente e per questo viene mostrato in alto durante l’intervento. <span class=\"premium-marke\">Premium</span>",
+  al_frage: "Adatta tempi e soglie della procedura al tuo standard e salvali come profilo. <b>L’impostazione predefinita corrisponde a {s} 2025</b>: un profilo personale se ne discosta volutamente e per questo viene mostrato in alto durante l’intervento. <span class=\"premium-marke\">Premium</span>",
   al_standard: "Impostazione secondo linee guida",
-  al_standard_sub: "ERC/GRC 2025 – invariata",
+  al_standard_sub: "{s} 2025 – invariata",
   al_neu: "Crea un profilo personale",
   al_bearbeiten: "Modifica profilo",
   al_speichern: "Salva profilo",
@@ -3333,7 +3593,7 @@ it: {
   ob_los: "Capito – si comincia",
   ob_skip: "Salta",
   ob1_t: "Supporto, non decisioni",
-  ob1_p: "CPR Assist è un <b>ausilio cognitivo e un registro</b> per la rianimazione dell’adulto secondo le linee guida 2025 (ERC/GRC). L’app non prende decisioni diagnostiche o terapeutiche e non sostituisce né la formazione né il giudizio clinico.",
+  ob1_p: "CPR Assist è un <b>ausilio cognitivo e un registro</b> per la rianimazione dell’adulto secondo le linee guida 2025 di {s}. L’app non prende decisioni diagnostiche o terapeutiche e non sostituisce né la formazione né il giudizio clinico.",
   ob2_t: "Cicli, analisi, farmaci",
   ob2_p: "L’anello grande conta alla rovescia il <b>ciclo di 2 minuti</b> e passa poi visibilmente alla finestra di analisi (controlla il ritmo, cambia soccorritore). Adrenalina e amiodarone mostrano il loro stato: troppo presto, dovuta, in ritardo.",
   ob3_t: "Tutto resta sul dispositivo",
@@ -3395,7 +3655,37 @@ it: {
   ts_sprache: "Lingua impostata su {n}",
   ts_algo_standard: "L’impostazione delle linee guida è di nuovo attiva",
   ts_algo_aktiv: "Il profilo «{n}» è attivo – visibile in alto",
-  ts_algo_gespeichert: "Profilo «{n}» salvato e attivo"
+  ts_algo_gespeichert: "Profilo «{n}» salvato e attivo",
+  sd_titel: "Standard delle linee guida",
+  sd_frage: "Secondo quale versione deve ragionare l’app? Entrambe derivano dallo stesso consenso ILCOR e non si contraddicono: lo applicano solo in modo diverso.",
+  sd_unterschiede: "Che cosa cambia",
+  sd_u1: "<b>Prima adrenalina in FV/TVsp</b>: l’ERC indica il 3° shock, l’algoritmo ACLS la somministra dopo il 2°.",
+  sd_u2: "<b>Cause reversibili</b>: 4 H e 4 T (8 voci) contro 5 H e 5 T (10 voci). Stesso contenuto, raggruppato diversamente.",
+  sd_u3: "<b>Ossigeno dopo il ROSC</b>: obiettivo 94–98 % (ERC) contro 90–98 % (AHA).",
+  sd_u4: "<b>Pressione dopo il ROSC</b>: sistolica sopra 100 mmHg (ERC) contro PAM da 65 mmHg (AHA).",
+  sd_u5: "<b>Antiaritmico</b>: l’AHA mette la lidocaina sullo stesso piano dell’amiodarone; compare allora nell’elenco delle procedure.",
+  std_erc: "ERC / GRC", std_erc_sub: "Europa", std_erc_kurz: "ERC/GRC",
+  std_aha: "AHA / ACLS", std_aha_sub: "USA", std_aha_kurz: "AHA/ACLS",
+  ak_ursachen_erc: "4H / 4T", ak_ursachen_aha: "5H / 5T",
+  ur_titel_erc: "Cause reversibili – 4 H e 4 T",
+  ur_titel_aha: "Cause reversibili – 5 H e 5 T",
+  ro_oxygen_i_erc: "all’inizio O₂ elevato; con SpO₂ affidabile obiettivo 94–98 %",
+  ro_oxygen_i_aha: "all’inizio O₂ al 100 %; dopo la stabilizzazione obiettivo SpO₂ 90–98 %",
+  ro_kreislauf_i_erc: "obiettivo pressione sistolica &gt; 100 mmHg",
+  ro_kreislauf_i_aha: "obiettivo pressione arteriosa media ≥ 65 mmHg",
+  ur_azidose: "Acidosi (ioni idrogeno)",
+  ur_azidose_i: "emogas; trattare la causa, adattare la ventilazione",
+  ur_kalium_aha: "Ipo-/iperkaliemia",
+  ur_kalium_aha_i: "controllare gli elettroliti; valutare calcio, glucosio-insulina",
+  ur_thrombose_pulmonal: "Trombosi – polmonare",
+  ur_thrombose_pulmonal_i: "embolia polmonare? valutare la trombolisi",
+  ur_thrombose_koronar: "Trombosi – coronarica",
+  ur_thrombose_koronar_i: "infarto? valutare l’intervento coronarico",
+  ms_lidocain: "Lidocaina",
+  ev_standard: "Standard delle linee guida: {n}",
+  ts_standard: "L’app segue ora {n}.",
+  std_erc_disziplin: "ALS adulti", std_aha_disziplin: "ACLS adulti",
+  ql_link: "Base: {s} 2025 · <u>vedi le fonti</u>"
 },
 
 /* ------------------------------------------------------------------ pt */
@@ -3405,11 +3695,11 @@ pt: {
   g_schock_nr: "choque {n}",
   zeit_suffix: " h",
 
-  kopf_bereit: "SAV adultos · Pronto",
+  kopf_bereit: "{d} · Pronto",
   kopf_aktiv: "Reanimação em curso",
   kopf_rosc: "Pós-ROSC",
 
-  st_hinweis: "<b>SAV adultos · Recomendações 2025 (ERC/GRC).</b> A aplicação <b>não toma decisões terapêuticas</b>: a responsabilidade é da equipa.",
+  st_hinweis: "<b>{d} · Recomendações 2025 ({s}).</b> A aplicação <b>não toma decisões terapêuticas</b>: a responsabilidade é da equipa.",
   st_p1: "<b>Ciclos de 2 minutos</b> com aviso antes da análise do ritmo e lembrete para render o reanimador",
   st_p2: "<b>Adrenalina e amiodarona</b> como estado compreensível em vez de um simples temporizador",
   st_p3: "<b>Ritmo, choques, ROSC, 4H/4T</b>: cada ação a um toque, tudo com registo de hora",
@@ -3561,7 +3851,7 @@ pt: {
   en_beginn: "Início", en_algo: "Algoritmo",
 
   me_titel: "Metrónomo",
-  me_frage: "Cadência para as compressões torácicas. Intervalo alvo no adulto: 100–120 por minuto. Não substitui o controlo de qualidade.",
+  me_frage: "Cadência para as compressões torácicas. Intervalo alvo no adulto: 100–120 por minuto, igual nos dois referenciais. Não substitui o controlo de qualidade.",
   me_aus: "Desligado", me_aus_sub: "sem som", me_aus_klein: "desl.",
   me_100: "limite inferior do intervalo alvo",
   me_110: "padrão: centro do intervalo alvo",
@@ -3640,14 +3930,14 @@ pt: {
   ql_werte: "Valores guardados na aplicação",
   ql_stand: "Edição {s}",
   ql_geprueft: "Valores desta aplicação verificados pela última vez a {d} · versão {v}.",
-  ql_sub: "ERC/GRC 2025 · verificado a {d}",
+  ql_sub: "{s} 2025 · verificado a {d}",
   ql_abweichung: "<b>Atenção:</b> a aplicação está a usar o seu perfil «{n}» e afasta-se assim propositadamente da predefinição das recomendações.",
 
   al_titel: "Editar as definições de base",
   al_banner: "Algoritmo personalizado",
-  al_frage: "Adapte tempos e limiares do procedimento ao seu padrão e guarde-os como perfil. <b>A predefinição corresponde às recomendações</b>: um perfil próprio afasta-se dela propositadamente e por isso é mostrado em cima durante o caso. <span class=\"premium-marke\">Premium</span>",
+  al_frage: "Adapte tempos e limiares do procedimento ao seu padrão e guarde-os como perfil. <b>A predefinição corresponde a {s} 2025</b>: um perfil próprio afasta-se dela propositadamente e por isso é mostrado em cima durante o caso. <span class=\"premium-marke\">Premium</span>",
   al_standard: "Predefinição das recomendações",
-  al_standard_sub: "ERC/GRC 2025 – inalterada",
+  al_standard_sub: "{s} 2025 – inalterada",
   al_neu: "Criar um perfil próprio",
   al_bearbeiten: "Editar o perfil",
   al_speichern: "Guardar o perfil",
@@ -3699,7 +3989,7 @@ pt: {
   ob_los: "Entendido – vamos",
   ob_skip: "Ignorar",
   ob1_t: "Apoio, não decisões",
-  ob1_p: "O CPR Assist é um <b>apoio cognitivo e um registo</b> para a reanimação do adulto segundo as recomendações 2025 (ERC/GRC). A aplicação não toma decisões de diagnóstico nem terapêuticas e não substitui a formação nem o juízo clínico.",
+  ob1_p: "O CPR Assist é um <b>apoio cognitivo e um registo</b> para a reanimação do adulto segundo as recomendações 2025 de {s}. A aplicação não toma decisões de diagnóstico nem terapêuticas e não substitui a formação nem o juízo clínico.",
   ob2_t: "Ciclos, análise, fármacos",
   ob2_p: "O anel grande faz a contagem decrescente do <b>ciclo de 2 minutos</b> e passa depois visivelmente à janela de análise (verificar o ritmo, render o reanimador). A adrenalina e a amiodarona mostram o seu estado: cedo, devida, atrasada.",
   ob3_t: "Tudo fica no dispositivo",
@@ -3761,7 +4051,37 @@ pt: {
   ts_sprache: "Idioma alterado para {n}",
   ts_algo_standard: "A predefinição das recomendações está de novo ativa",
   ts_algo_aktiv: "O perfil «{n}» está ativo – visível em cima",
-  ts_algo_gespeichert: "Perfil «{n}» guardado e ativo"
+  ts_algo_gespeichert: "Perfil «{n}» guardado e ativo",
+  sd_titel: "Referencial de recomendações",
+  sd_frage: "Segundo que versão deve a aplicação calcular? Ambas vêm do mesmo consenso ILCOR e não se contradizem: apenas o aplicam de forma diferente.",
+  sd_unterschiede: "O que isso altera",
+  sd_u1: "<b>Primeira adrenalina em FV/TVsp</b>: o ERC indica o 3.º choque; o algoritmo ACLS administra-a após o 2.º.",
+  sd_u2: "<b>Causas reversíveis</b>: 4 H e 4 T (8 pontos) frente a 5 H e 5 T (10 pontos). O mesmo conteúdo, agrupado de outra forma.",
+  sd_u3: "<b>Oxigénio após ROSC</b>: objetivo 94–98 % (ERC) frente a 90–98 % (AHA).",
+  sd_u4: "<b>Pressão arterial após ROSC</b>: sistólica acima de 100 mmHg (ERC) frente a PAM a partir de 65 mmHg (AHA).",
+  sd_u5: "<b>Antiarrítmico</b>: a AHA coloca a lidocaína ao mesmo nível da amiodarona; passa então a constar na lista de procedimentos.",
+  std_erc: "ERC / GRC", std_erc_sub: "Europa", std_erc_kurz: "ERC/GRC",
+  std_aha: "AHA / ACLS", std_aha_sub: "EUA", std_aha_kurz: "AHA/ACLS",
+  ak_ursachen_erc: "4H / 4T", ak_ursachen_aha: "5H / 5T",
+  ur_titel_erc: "Causas reversíveis – 4 H e 4 T",
+  ur_titel_aha: "Causas reversíveis – 5 H e 5 T",
+  ro_oxygen_i_erc: "O₂ elevado no início; com SpO₂ fiável objetivo 94–98 %",
+  ro_oxygen_i_aha: "O₂ a 100 % no início; após estabilizar objetivo SpO₂ 90–98 %",
+  ro_kreislauf_i_erc: "objetivo pressão sistólica &gt; 100 mmHg",
+  ro_kreislauf_i_aha: "objetivo pressão arterial média ≥ 65 mmHg",
+  ur_azidose: "Acidose (ião hidrogénio)",
+  ur_azidose_i: "gasometria; tratar a causa, ajustar a ventilação",
+  ur_kalium_aha: "Hipo-/hipercaliemia",
+  ur_kalium_aha_i: "verificar eletrólitos; ponderar cálcio, glicose-insulina",
+  ur_thrombose_pulmonal: "Trombose – pulmonar",
+  ur_thrombose_pulmonal_i: "TEP? ponderar trombólise",
+  ur_thrombose_koronar: "Trombose – coronária",
+  ur_thrombose_koronar_i: "enfarte? ponderar intervenção coronária",
+  ms_lidocain: "Lidocaína",
+  ev_standard: "Referencial: {n}",
+  ts_standard: "A aplicação segue agora {n}.",
+  std_erc_disziplin: "SAV adultos", std_aha_disziplin: "ACLS adultos",
+  ql_link: "Base: {s} 2025 · <u>ver fontes</u>"
 }
 
 };
@@ -3805,6 +4125,19 @@ function t(key, werte){
 function tText(key, werte){
   return t(key, werte).replace(/&amp;/g, "&").replace(/&gt;/g, ">").replace(/&lt;/g, "<");
 }
+/* Standardabhängige Texte. Gibt es zu einem Schlüssel eine Fassung mit dem
+   Kürzel des Standards (z. B. "ur_titel_aha"), gilt die – sonst der
+   allgemeine Schlüssel. So steht im Katalog nur das doppelt, was sich
+   zwischen Europa und USA wirklich unterscheidet. */
+function tStd(key, werte){
+  const spez = key + "_" + Standard.id();
+  return TEXTE.de[spez] != null ? t(spez, werte) : t(key, werte);
+}
+function tTextStd(key, werte){
+  const spez = key + "_" + Standard.id();
+  return TEXTE.de[spez] != null ? tText(spez, werte) : tText(key, werte);
+}
+
 /* Einzahl/Mehrzahl. Für genau eine Sache gibt es einen eigenen Schlüssel
    "<key>_1" ohne Platzhalter – „1 Einsatz" statt „1 Einsätze". Sprachen mit
    feineren Zahlformen (z. B. Polnisch) bräuchten hier mehr Fälle; die sechs
@@ -4123,6 +4456,7 @@ const Einst = {
   werte: { ton: true, vibration: true, bildschirmAn: true,
            metronomAn: false, metronomBpm: KONF.BPM_STANDARD, autostart: false,
            sprache: null,         /* null = noch nie gewählt → Gerätesprache */
+           standard: "erc",       /* Leitlinien-Standard: "erc" | "aha" */
            tonVariante: "klar",   /* Premium: Klang der Hinweistöne */
            tempi: [],             /* Premium: eigene Tempi [{id,name,bpm}] */
            tempoId: null,         /* welches eigene Tempo gerade gewählt ist */
@@ -4139,6 +4473,7 @@ const Einst = {
       if (typeof roh.metronomAn === "boolean") this.werte.metronomAn = roh.metronomAn;
       if (typeof roh.autostart === "boolean") this.werte.autostart = roh.autostart;
       if (SPRACHEN.some(s => s.code === roh.sprache)) this.werte.sprache = roh.sprache;
+      if (STANDARDS.some(s => s.id === roh.standard)) this.werte.standard = roh.standard;
       if (KONF.TOENE.some(t => t.id === roh.tonVariante)) this.werte.tonVariante = roh.tonVariante;
       if (Array.isArray(roh.felder)) this.werte.felder = roh.felder.slice(0, KONF.EIGENE_MAX);
       if (Array.isArray(roh.tempi)) this.werte.tempi = roh.tempi.slice(0, KONF.EIGENE_MAX);
@@ -4180,8 +4515,12 @@ const Algo = {
     if (anzeige < f.min || anzeige > f.max) return null;
     return anzeige * f.faktor;
   },
+  /* Reihenfolge: Basis der Leitlinie → Werte des gewählten Standards →
+     Werte eines eigenen Profils. Jede Stufe darf die vorige überschreiben. */
   anwenden(){
-    KONF.ALGO_FELDER.forEach(f => KONF[f.key] = ALGO_STANDARD[f.key]);
+    Standard.anwenden();
+    const basis = Standard.basis();
+    KONF.ALGO_FELDER.forEach(f => KONF[f.key] = basis[f.key]);
     const p = this.aktiv();
     if (!p || !p.werte) return;
     KONF.ALGO_FELDER.forEach(f => {
@@ -4189,10 +4528,11 @@ const Algo = {
       if (w != null) KONF[f.key] = w;
     });
   },
-  /* Wie viele Werte weichen vom Standard ab? Für die Kurzbeschreibung. */
+  /* Wie viele Werte weichen vom gewählten Standard ab? */
   abweichungen(werte){
+    const basis = Standard.basis();
     return KONF.ALGO_FELDER.filter(f => (werte && werte[f.key] != null)
-      && werte[f.key] !== ALGO_STANDARD[f.key]).length;
+      && werte[f.key] !== basis[f.key]).length;
   },
   /* Anzeigetext eines Werts in seiner Einheit. */
   wertText(key, wert){
@@ -4211,6 +4551,23 @@ const Algo = {
     return p ? p.name : tText("al_standard");
   }
 };
+
+/* Wechsel des Leitlinien-Standards. Läuft ein Einsatz, wird der Wechsel
+   protokolliert und die Ursachenliste des Einsatzes auf die neue Fassung
+   erweitert – bereits gesetzte Zustände bleiben dabei erhalten. */
+function standardSetzen(id){
+  if (!STANDARDS.some(s => s.id === id) || id === Standard.id()) return;
+  Einst.set("standard", id);
+  Algo.anwenden();
+  if (Einsatz.aktiv()){
+    const e = Einsatz.e;
+    KONF.URSACHEN.forEach(u => { if (!(u.id in e.ursachen)) e.ursachen[u.id] = 0; });
+    Kern.ereignis(e, Date.now(), "standard", t("ev_standard", { n: Standard.kurz() }));
+    Einsatz.speichern();
+  }
+  uebersetzen();
+  toast(t("ts_standard", { n: Standard.kurz() }), 3600);
+}
 
 /* =========================================================================
    4. EINSATZ – Datenhaltung des laufenden Einsatzes
@@ -4758,7 +5115,11 @@ function halteAktion(btn, dauerMs, aktion){
 /* ---------- Rendering: Kopfzeile ---------- */
 function renderKopf(now){
   const el = $("head-sub");
-  if (!Einsatz.aktiv()){ el.textContent = tText("kopf_bereit"); return; }
+  if (!Einsatz.aktiv()){
+    el.textContent = tText("kopf_bereit",
+      { d: tText("std_" + Standard.id() + "_disziplin") });
+    return;
+  }
   const e = Einsatz.e;
   const dauer = Kern.fmtUhr(now - e.startZeit);
   el.textContent = (e.phase === "rosc" ? tText("kopf_rosc") : tText("kopf_aktiv")) + " · " + dauer;
@@ -4889,7 +5250,7 @@ function renderAktionen(){
   $("schock-unter").textContent = t("ak_schock_unter", { n: e.schocks.length });
   $("rhythmus-unter").textContent = e.rhythmus
     ? Kern.rhythmusLabel(e.rhythmus) : tText("ak_rhythmus_offen");
-  const offen = KONF.URSACHEN.filter(u => e.ursachen[u.id] === 0).length;
+  const offen = KONF.URSACHEN.filter(u => !e.ursachen[u.id]).length;
   $("ursachen-unter").textContent = offen
     ? t("ak_ursachen_offen", { n: offen }) : tText("ak_ursachen_fertig");
   /* Auf der Taste steht die zuletzt dokumentierte Maßnahme – so ist ohne
@@ -4929,8 +5290,8 @@ function renderRoscListe(){
       + 'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'
       + '<path d="M5 12l5 5L20 7"/></svg></span>'
       + '<span class="t"><b></b><span></span></span></button>';
-    li.querySelector("b").textContent = tText("ro_" + k);
-    li.querySelector(".t span").textContent = tText("ro_" + k + "_i");
+    li.querySelector("b").textContent = tTextStd("ro_" + k);
+    li.querySelector(".t span").textContent = tTextStd("ro_" + k + "_i");
     li.querySelector("button").addEventListener("click", () => {
       if (!Einsatz.aktiv()) return;
       const e = Einsatz.e;
@@ -4958,7 +5319,9 @@ function renderUrsachen(){
   ul.innerHTML = "";
   KONF.URSACHEN.forEach(u => {
     const li = document.createElement("li");
-    const zustand = e ? e.ursachen[u.id] : 0;
+    /* Nach einem Standardwechsel kann eine Ursache im laufenden Einsatz
+       noch fehlen – dann gilt sie als offen. */
+    const zustand = e ? (e.ursachen[u.id] || 0) : 0;
     li.innerHTML =
       '<div class="uk"><b></b></div>'
       + '<div class="info"></div>'
@@ -5059,7 +5422,8 @@ function renderVorwahl(){
   $("vw-bpm").classList.toggle("an", w.metronomAn);
   document.querySelectorAll("#vw-bpm button").forEach(b =>
     b.classList.toggle("active", Number(b.dataset.bpm) === w.metronomBpm));
-  $("quellen-sub").textContent = t("ql_sub", { d: KONF.LEITLINIEN_GEPRUEFT });
+  $("quellen-sub").textContent = t("ql_sub",
+    { s: Standard.kurz(), d: KONF.LEITLINIEN_GEPRUEFT });
 }
 
 /* ---------- Rendering: Einstellungen & Metronom ---------- */
@@ -5081,7 +5445,10 @@ function renderSettings(){
   $("s-algo-sub").textContent = p
     ? t("al_aktiv_sub", { n: p.name }) : tText("al_standard");
   $("s-sprache-sub").textContent = I18N.sprache().name;
-  $("s-quellen-sub").textContent = t("ql_sub", { d: KONF.LEITLINIEN_GEPRUEFT });
+  $("s-standard-sub").textContent = tText("std_" + Standard.id())
+    + " · " + tText("std_" + Standard.id() + "_sub");
+  $("s-quellen-sub").textContent = t("ql_sub",
+    { s: Standard.kurz(), d: KONF.LEITLINIEN_GEPRUEFT });
   const anzahl = Einsatz.archiv().length;
   $("s-archiv-sub").textContent = anzahl
     ? tZahl("ar_anzahl", anzahl) : tText("ar_keine");
@@ -5729,19 +6096,22 @@ $("premium-restore").addEventListener("click", () => Billing.wiederherstellen())
    ========================================================================= */
 function uebersetzen(){
   document.documentElement.lang = I18N.code;
+  /* tStd statt t: Schlüssel mit einer standardabhängigen Fassung
+     (z. B. "ak_ursachen_aha") ziehen dabei automatisch mit. */
+  const std = { s: Standard.kurz(), d: tText("std_" + Standard.id() + "_disziplin") };
   document.querySelectorAll("[data-i18n]").forEach(el => {
-    el.textContent = tText(el.dataset.i18n);
+    el.textContent = tTextStd(el.dataset.i18n, std);
   });
   /* Texte mit Auszeichnung (fett, Links, Premium-Marke). Der Inhalt stammt
      ausschließlich aus dem eigenen Katalog, nie aus Nutzereingaben. */
   document.querySelectorAll("[data-i18n-html]").forEach(el => {
-    el.innerHTML = t(el.dataset.i18nHtml);
+    el.innerHTML = tStd(el.dataset.i18nHtml, std);
   });
   document.querySelectorAll("[data-i18n-aria]").forEach(el => {
-    el.setAttribute("aria-label", tText(el.dataset.i18nAria));
+    el.setAttribute("aria-label", tTextStd(el.dataset.i18nAria, std));
   });
   document.querySelectorAll("[data-i18n-ph]").forEach(el => {
-    el.setAttribute("placeholder", tText(el.dataset.i18nPh));
+    el.setAttribute("placeholder", tTextStd(el.dataset.i18nPh, std));
   });
   /* Aufgebaute Listen neu zeichnen, damit auch sie die Sprache mitnehmen. */
   renderRoscListe();
@@ -5751,6 +6121,7 @@ function uebersetzen(){
   renderAlgoFelder();
   renderAlgoListe();
   renderQuellen();
+  renderStandards();
   UI.metronomAnzeigen();
   vollRender();
 }
@@ -5789,6 +6160,57 @@ function renderSprachen(){
 function spracheOeffnen(){ renderSprachen(); openModal("modal-sprache"); }
 
 /* =========================================================================
+   LEITLINIEN-STANDARD
+   ========================================================================= */
+function renderStandards(){
+  const ul = $("standard-liste");
+  ul.innerHTML = "";
+  STANDARDS.forEach(s => {
+    const li = document.createElement("li");
+    if (s.id === Standard.id()) li.className = "aktiv";
+    const b = document.createElement("button");
+    b.type = "button";
+    b.dataset.standard = s.id;
+    b.innerHTML = '<b></b><span class="eigen"></span>'
+      + '<svg class="ic mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+      + 'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'
+      + '<path d="M5 12l5 5L20 7"/></svg>';
+    b.querySelector("b").textContent = tText("std_" + s.id);
+    b.querySelector(".eigen").textContent = tText("std_" + s.id + "_sub");
+    b.addEventListener("click", () => {
+      closeModal("modal-standard");
+      standardSetzen(s.id);
+    });
+    li.appendChild(b);
+    ul.appendChild(li);
+  });
+
+  /* Die Unterschiede beim Namen nennen – wer umschaltet, soll wissen,
+     was sich dadurch ändert, statt es im Einsatz zu entdecken. */
+  const ul2 = $("standard-unterschiede");
+  ul2.innerHTML = "";
+  ["sd_u1", "sd_u2", "sd_u3", "sd_u4", "sd_u5"].forEach(k => {
+    const li = document.createElement("li");
+    li.innerHTML = '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+      + 'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'
+      + '<path d="M5 12l5 5L20 7"/></svg><div></div>';
+    li.querySelector("div").innerHTML = t(k);
+    ul2.appendChild(li);
+  });
+}
+function standardOeffnen(){ renderStandards(); openModal("modal-standard"); }
+
+/* Jeder Quellenhinweis führt auf denselben Dialog. Er legt sich über das
+   offene Fenster, statt es zu schließen – man will danach dort weitermachen,
+   wo man war. */
+document.querySelectorAll("[data-quellen]").forEach(b =>
+  b.addEventListener("click", quellenOeffnen));
+$("s-standard").addEventListener("click", () => {
+  closeModal("modal-settings");
+  standardOeffnen();
+});
+
+/* =========================================================================
    LEITLINIEN UND QUELLEN
    Was der App zugrunde liegt, mit Quelle und Stand – und daneben die Werte,
    mit denen sie tatsächlich rechnet. Weicht ein eigenes Profil davon ab,
@@ -5810,12 +6232,13 @@ function renderQuellen(){
   });
 
   const dl = $("quellen-werte");
+  const basis = Standard.basis();
   dl.innerHTML = "";
   KONF.ALGO_FELDER.forEach(f => {
     const dt = document.createElement("dt"), dd = document.createElement("dd");
-    dt.textContent = tText("al_f_" + f.key);
+    dt.textContent = tTextStd("al_f_" + f.key);
     dd.textContent = Algo.wertText(f.key, KONF[f.key]);
-    if (KONF[f.key] !== ALGO_STANDARD[f.key]) dd.style.color = "var(--warn)";
+    if (KONF[f.key] !== basis[f.key]) dd.style.color = "var(--warn)";
     dl.appendChild(dt); dl.appendChild(dd);
   });
 
@@ -5952,10 +6375,11 @@ let algoBearbeitet = null;      /* id des Profils, das gerade bearbeitet wird */
 let algoEntwurf = null;         /* { KEY: wert } – Arbeitskopie */
 
 function algoEntwurfNeu(werte){
+  const basis = Standard.basis();
   algoEntwurf = {};
   KONF.ALGO_FELDER.forEach(f => {
     const w = werte && werte[f.key] != null ? Algo.gueltig(f.key, werte[f.key]) : null;
-    algoEntwurf[f.key] = w == null ? ALGO_STANDARD[f.key] : w;
+    algoEntwurf[f.key] = w == null ? basis[f.key] : w;
   });
 }
 
@@ -5965,6 +6389,7 @@ function renderAlgoFelder(){
   const box = $("algo-felder");
   if (!box) return;
   if (!algoEntwurf) algoEntwurfNeu(null);
+  const basis = Standard.basis();
   box.innerHTML = "";
   KONF.ALGO_FELDER.forEach(f => {
     const div = document.createElement("div");
@@ -5973,15 +6398,15 @@ function renderAlgoFelder(){
     div.innerHTML = '<div class="zeile"><b></b><span class="wert"></span></div>'
       + '<div class="info"></div>'
       + '<input type="range">';
-    div.querySelector("b").textContent = tText("al_f_" + f.key);
-    div.querySelector(".info").textContent = tText("al_f_" + f.key + "_i");
+    div.querySelector("b").textContent = tTextStd("al_f_" + f.key);
+    div.querySelector(".info").textContent = tTextStd("al_f_" + f.key + "_i");
     const r = div.querySelector("input");
     r.min = String(f.min); r.max = String(f.max); r.step = String(f.schritt);
     r.value = String(Math.round(algoEntwurf[f.key] / f.faktor));
-    r.setAttribute("aria-label", tText("al_f_" + f.key));
+    r.setAttribute("aria-label", tTextStd("al_f_" + f.key));
     const zeigen = () => {
       div.querySelector(".wert").textContent = Algo.wertText(f.key, algoEntwurf[f.key]);
-      div.classList.toggle("geaendert", algoEntwurf[f.key] !== ALGO_STANDARD[f.key]);
+      div.classList.toggle("geaendert", algoEntwurf[f.key] !== basis[f.key]);
     };
     r.addEventListener("input", () => {
       algoEntwurf[f.key] = Number(r.value) * f.faktor;
@@ -6004,7 +6429,7 @@ function renderAlgoListe(){
   if (!aktivId) std.className = "aktiv";
   std.innerHTML = '<button class="waehl" type="button"><b></b><span></span></button>';
   std.querySelector("b").textContent = tText("al_standard");
-  std.querySelector("span").textContent = tText("al_standard_sub");
+  std.querySelector("span").textContent = t("al_standard_sub", { s: Standard.kurz() });
   std.querySelector(".waehl").addEventListener("click", () => algoWaehlen(null));
   ul.appendChild(std);
 
@@ -6353,7 +6778,8 @@ Einst.laden();
 /* Sprache zuerst: Alles Weitere erzeugt bereits Text. Beim allerersten
    Start wird die Gerätesprache übernommen, sofern sie dabei ist. */
 I18N.setzen(Einst.werte.sprache || I18N.geraetesprache());
-Edition.apply();
+Standard.anwenden();      /* Ursachen-, Maßnahmen- und Quellenlisten setzen */
+Edition.apply();          /* darin: Algo.anwenden() mit den Werten des Standards */
 uebersetzen();
 UI.metronomAnzeigen();
 
@@ -6389,7 +6815,8 @@ if (Ads.ENABLED) Ads.sync();
 
 /* Für die automatisierten Tests: Der Rechenkern ist bewusst DOM-frei und
    wird hier zum Prüfen freigelegt. Die Oberfläche greift nicht darauf zu. */
-window.CPRA = { KONF, ALGO_STANDARD, Kern, Einst, Einsatz, Algo, Bridge, WakeLock,
+window.CPRA = { KONF, ALGO_STANDARD, STANDARDS, Standard, standardSetzen,
+                Kern, Einst, Einsatz, Algo, Bridge, WakeLock,
                 Audio: Audio_, Metronom, Signale, Edition, Ads, Billing,
                 I18N, SPRACHEN, TEXTE, t, APP_VERSION };
 </script>

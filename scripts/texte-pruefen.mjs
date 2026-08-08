@@ -64,11 +64,20 @@ console.log(`JS verlangt ${ausJs.size} feste Schlüssel`);
 
 /* Zusammengesetzte Schlüssel (t("ur_" + id) usw.) prüfen wir gezielt. */
 const bausteine = [
-  ...["hypoxie","hypovolaemie","kalium","hypothermie","tamponade","intox","thrombose","spannung"]
+  ...["hypoxie","hypovolaemie","kalium","hypothermie","tamponade","intox","thrombose","spannung",
+      "azidose","kalium_aha","thrombose_pulmonal","thrombose_koronar"]
       .flatMap(id => ["ur_" + id, "ur_" + id + "_i"]),
   ...["atemweg","oxygen","ekg","ursache","kreislauf","temperatur"]
       .flatMap(k => ["ro_" + k, "ro_" + k + "_i"]),
-  ...["ivzugang","iozugang","sga","intubation","kapnographie","mechanisch"].map(id => "ms_" + id),
+  ...["ivzugang","iozugang","sga","intubation","kapnographie","mechanisch","lidocain"]
+      .map(id => "ms_" + id),
+  /* Standardabhängige Fassungen: existiert eine, muss sie für JEDEN
+     Standard existieren – sonst fällt einer stillschweigend zurück. */
+  ...["erc","aha"].flatMap(std => [
+    "std_" + std, "std_" + std + "_sub", "std_" + std + "_kurz",
+    "ak_ursachen_" + std, "ur_titel_" + std,
+    "ro_oxygen_i_" + std, "ro_kreislauf_i_" + std
+  ]),
   ...["klar","sanft","tief","signal"].flatMap(id => ["to_" + id, "to_" + id + "_i"]),
   ...["schockbar","nichtschockbar","unklar"].flatMap(a => ["rh_l_" + a, "rh_k_" + a]),
   ...["ZYKLUS_MS","WARN_MS","ADRENALIN_FRUEH_MS","ADRENALIN_SPAET_MS","ADRENALIN_SCHOCK",

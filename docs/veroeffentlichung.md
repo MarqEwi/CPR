@@ -44,7 +44,24 @@ und prüf, dass die Seite wirklich erscheint – Google prüft das auch.
 4. Datenschutz-URL eintragen:
    `https://marqewi.github.io/CPR/datenschutz.html`
 
-### 2a. Sprachen im Store-Eintrag
+### 2a. Leitlinien-Standard und was das fürs Review bedeutet
+
+Die App rechnet wahlweise nach ERC/GRC (Europa, ALS) oder nach AHA/ACLS
+(USA); die Wahl steht in den Einstellungen und ist **kostenfrei**. Für die
+Play Console ändert das nichts an den Formularen – wohl aber an der
+Beschreibung: Erwähne beide Standards ausdrücklich (Textbaustein „ZWEI
+LEITLINIEN-STANDARDS" in `docs/store-texte.md`). Sonst wirkt es bei einer
+Prüfung aus den USA so, als bilde die App nur europäische Leitlinien ab.
+
+**Nicht schreiben:** „ACLS-zertifiziert", „AHA-konform", „nach AHA
+zugelassen" oder Ähnliches. Die App bildet Zeiten und Reihenfolgen ab, sie
+ist weder zertifiziert noch von einer Fachgesellschaft geprüft. Richtig ist:
+*orientiert sich an* den Leitlinien 2025 von ERC/GRC bzw. AHA. Dieselbe
+Vorsicht gilt für Logos: Weder ERC-, GRC-, AHA- noch ILCOR-Logos verwenden –
+Namensnennung als Quellenangabe ist zulässig, ein Logo suggeriert eine
+Partnerschaft, die es nicht gibt.
+
+### 2b. Sprachen im Store-Eintrag
 
 Die App selbst spricht sechs Sprachen (Deutsch, Englisch, Französisch,
 Spanisch, Italienisch, Portugiesisch) und stellt sich beim ersten Start
