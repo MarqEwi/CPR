@@ -262,6 +262,19 @@
     font-variant-numeric:tabular-nums;transition:background .13s, color .13s, border-color .13s}
   .vorwahl .bpmchips button.active{background:var(--accent);border-color:var(--accent);
     color:var(--accent-text)}
+  /* Probehören: zurückhaltend, aber überall gleich – auf der Startseite,
+     im Metronom-Dialog und unter dem Regler für das eigene Tempo. */
+  .testbtn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;
+    background:var(--bg3);border:1px solid var(--line-stark);border-radius:var(--radius-xs);
+    color:var(--text);font:inherit;font-size:.85rem;font-weight:660;
+    min-height:46px;padding:8px 12px;cursor:pointer;margin:8px 0 2px;
+    transition:background .13s, border-color .13s}
+  .testbtn:hover{background:var(--bg4)}
+  .testbtn:active{transform:scale(.99)}
+  .testbtn .ic{width:19px;height:19px;color:var(--accent)}
+  .testbtn .wert{color:var(--text2);font-variant-numeric:tabular-nums;font-weight:600}
+  /* Während die Probe läuft, pulsiert der Knopf im Takt mit. */
+  .testbtn.laeuft{border-color:var(--accent-rand);background:var(--accent-soft)}
   /* ---------- CPR-Ring ---------- */
   .ringwrap{position:relative;width:min(64vw,250px);margin:2px auto}
   .ringwrap svg{display:block;width:100%;height:auto;transform:rotate(-90deg)}
@@ -695,14 +708,17 @@
       Die App trifft <b>keine Therapieentscheidungen</b> – verantwortlich
       bleibt das behandelnde Team.
     </div>
-    <ul class="startliste">
-      <li><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-        <div data-i18n-html="st_p1"><b>2-Minuten-Zyklen</b> mit Warnung vor dem Analysefenster und Erinnerung an den Helferwechsel</div></li>
-      <li><svg class="ic" viewBox="0 0 24 24"><path d="M12 6v6M9 9h6"/><rect x="3" y="3" width="18" height="18" rx="5"/></svg>
-        <div data-i18n-html="st_p2"><b>Adrenalin &amp; Amiodaron</b> als verständlicher Status statt roher Timer</div></li>
-      <li><svg class="ic" viewBox="0 0 24 24"><path d="M2 12H7.2C7.6 9.8 9.2 9.8 9.6 12H10.6L11.1 13.4L12.1 5L13.1 16.6L13.8 12H15.2C15.8 8.9 17.8 8.9 18.4 12H22"/></svg>
-        <div data-i18n-html="st_p3"><b>Rhythmus, Schocks, ROSC, 4H/HITS</b> – jede Aktion einen Tipp entfernt, alles mit Zeitstempel</div></li>
-    </ul>
+    <!-- Der Start steht ganz oben: Wer die App im Einsatz öffnet, darf nicht
+         erst scrollen müssen. Alles Erklärende kommt darunter. -->
+    <button class="btn block" id="btn-start">
+      <svg class="ic" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+      <span data-i18n="st_starten">Reanimation starten</span>
+    </button>
+    <p class="muted" style="text-align:center;margin:10px 0 2px;font-size:.78rem"
+       data-i18n="st_starten_sub">
+      Startet Zyklus-Timer, Protokoll und – falls eingeschaltet – das Metronom.
+    </p>
+
     <!-- Vorwahl: gilt für den nächsten Einsatz und wird gespeichert. -->
     <div class="vorwahl">
       <div class="switchrow">
@@ -716,6 +732,12 @@
         <button type="button" data-bpm="110">110</button>
         <button type="button" data-bpm="120">120</button>
       </div>
+      <!-- Bewusst außerhalb der Chips: Probehören muss auch dann gehen,
+           wenn das Metronom (noch) abgeschaltet ist. -->
+      <button class="testbtn" id="vw-metro-test">
+        <svg class="ic" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 010 7"/><path d="M19 5a9 9 0 010 14"/></svg>
+        <span data-i18n="me_test">Takt probehören</span>
+      </button>
       <div class="switchrow">
         <div class="txt"><b data-i18n="se_ton">Hinweistöne</b><span data-i18n="se_ton_sub">Analyse fällig, Adrenalin fällig</span></div>
         <label class="switch" data-i18n-aria="se_ton" aria-label="Hinweistöne">
@@ -732,14 +754,14 @@
       </div>
     </div>
 
-    <button class="btn block" id="btn-start">
-      <svg class="ic" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-      <span data-i18n="st_starten">Reanimation starten</span>
-    </button>
-    <p class="muted" style="text-align:center;margin-top:12px;font-size:.78rem"
-       data-i18n="st_starten_sub">
-      Startet Zyklus-Timer, Protokoll und – falls eingeschaltet – das Metronom.
-    </p>
+    <ul class="startliste">
+      <li><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <div data-i18n-html="st_p1"><b>2-Minuten-Zyklen</b> mit Warnung vor dem Analysefenster und Erinnerung an den Helferwechsel</div></li>
+      <li><svg class="ic" viewBox="0 0 24 24"><path d="M12 6v6M9 9h6"/><rect x="3" y="3" width="18" height="18" rx="5"/></svg>
+        <div data-i18n-html="st_p2"><b>Adrenalin &amp; Amiodaron</b> als verständlicher Status statt roher Timer</div></li>
+      <li><svg class="ic" viewBox="0 0 24 24"><path d="M2 12H7.2C7.6 9.8 9.2 9.8 9.6 12H10.6L11.1 13.4L12.1 5L13.1 16.6L13.8 12H15.2C15.8 8.9 17.8 8.9 18.4 12H22"/></svg>
+        <div data-i18n-html="st_p3"><b>Rhythmus, Schocks, ROSC, 4H/HITS</b> – jede Aktion einen Tipp entfernt, alles mit Zeitstempel</div></li>
+    </ul>
 
     <!-- Unterstützung: bewusst am Ende der Startseite, nie im Einsatz. -->
     <div class="spendenbox" id="spendenbox">
@@ -937,6 +959,14 @@
         <svg class="ic mark" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></button>
     </div>
 
+    <!-- Probehören, ohne das Metronom einzuschalten: Man soll den Takt
+         hören dürfen, bevor man sich für einen entscheidet. -->
+    <button class="testbtn" id="metro-test">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 010 7"/><path d="M19 5a9 9 0 010 14"/></svg>
+      <span data-i18n="me_test">Takt probehören</span>
+      <span class="wert" id="metro-test-wert"></span>
+    </button>
+
     <!-- Eigene Tempi: Premium. Sichtbar auch ohne Kauf, damit klar ist,
          was Premium bringt – bedienen lässt es sich dann aber nicht. -->
     <ul class="tempiliste" id="tempi-liste"></ul>
@@ -950,6 +980,13 @@
       <input type="range" id="bpm-regler" min="100" max="120" step="1" value="110"
              data-i18n-aria="me_eigenes" aria-label="Eigenes Metronom-Tempo">
       <div class="reglerskala"><span>100</span><span>110</span><span>120</span></div>
+      <!-- Hört man den geschobenen Wert nicht, ist der Regler eine Zahl
+           ohne Bedeutung – deshalb steht das Probehören direkt darunter. -->
+      <button class="testbtn" id="regler-test" style="margin-top:8px">
+        <svg class="ic" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 010 7"/><path d="M19 5a9 9 0 010 14"/></svg>
+        <span data-i18n="me_test">Takt probehören</span>
+        <span class="wert" id="regler-test-wert"></span>
+      </button>
       <label class="field" for="tempo-name" style="margin-top:10px" data-i18n="g_name">Name</label>
       <input type="text" id="tempo-name" maxlength="20" data-i18n-ph="me_name_ph"
              placeholder="z. B. Team-Standard" autocomplete="off">
@@ -1177,6 +1214,11 @@
     <button class="settings-row" id="s-felder">
       <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 9v6M9 12h6"/></svg>
       <span class="t"><b data-i18n="fl_titel">Eigene Felder</b><span id="s-felder-sub">keine angelegt</span></span>
+    </button>
+
+    <button class="settings-row" id="s-metronom">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M10.4 3h3.2l4.4 18H6z"/><path d="M8.6 14.6h6.8"/><path d="M12 14.6L15.6 7.6"/></svg>
+      <span class="t"><b data-i18n="me_titel">Metronom</b><span id="s-metronom-sub">aus</span></span>
     </button>
 
     <button class="settings-row" id="s-toene">
@@ -1447,7 +1489,8 @@ const KONF = {
   LEITLINIEN: [
     { id: "erc",   titel: "ERC Guidelines for Resuscitation 2025",
       org: "European Resuscitation Council (ERC)",
-      stand: "2025", url: "https://www.cprguidelines.eu" },
+      stand: "2025",
+      url: "https://www.erc.edu/science-research/guidelines/guidelines-2025/guidelines-2025-english/" },
     { id: "grc",   titel: "Reanimation 2025 – Leitlinien des ERC in deutscher Übersetzung",
       org: "German Resuscitation Council (GRC) · Deutscher Rat für Wiederbelebung",
       stand: "2025", url: "https://www.grc-org.de/wissenschaft/leitlinien" },
@@ -1517,7 +1560,7 @@ de: {
   kopf_rosc: "Post-ROSC",
 
   /* Startseite */
-  st_hinweis: "<b>Erwachsenen-ALS · Leitlinien 2025 (GRC/ERC).</b> CPR Assist strukturiert Zyklen, Medikamente und Dokumentation. Die App trifft <b>keine Therapieentscheidungen</b> – verantwortlich bleibt das behandelnde Team.",
+  st_hinweis: "<b>Erwachsenen-ALS · Leitlinien 2025 (GRC/ERC).</b> Die App trifft <b>keine Therapieentscheidungen</b> – verantwortlich bleibt das behandelnde Team.",
   st_p1: "<b>2-Minuten-Zyklen</b> mit Warnung vor dem Analysefenster und Erinnerung an den Helferwechsel",
   st_p2: "<b>Adrenalin &amp; Amiodaron</b> als verständlicher Status statt roher Timer",
   st_p3: "<b>Rhythmus, Schocks, ROSC, 4H/HITS</b> – jede Aktion einen Tipp entfernt, alles mit Zeitstempel",
@@ -1682,6 +1725,8 @@ de: {
   me_100: "unteres Ende des Zielbereichs",
   me_110: "Standard – Mitte des Zielbereichs",
   me_120: "oberes Ende des Zielbereichs",
+  me_test: "Takt probehören",
+  me_test_laeuft: "Das Metronom läuft bereits – der Takt ist zu hören.",
   me_ziel: "aus · Ziel 100–120/min",
   me_pro_minute: "{n} pro Minute",
   me_eigenes: "Eigenes Metronom-Tempo",
@@ -1900,7 +1945,7 @@ en: {
   kopf_aktiv: "Resuscitation running",
   kopf_rosc: "Post-ROSC",
 
-  st_hinweis: "<b>Adult ALS · Guidelines 2025 (ERC/GRC).</b> CPR Assist structures cycles, drugs and documentation. The app makes <b>no treatment decisions</b> – the treating team stays responsible.",
+  st_hinweis: "<b>Adult ALS · Guidelines 2025 (ERC/GRC).</b> The app makes <b>no treatment decisions</b> – the treating team stays responsible.",
   st_p1: "<b>2-minute cycles</b> with a warning before the rhythm check and a reminder to change compressors",
   st_p2: "<b>Adrenaline &amp; amiodarone</b> as a clear status instead of a bare timer",
   st_p3: "<b>Rhythm, shocks, ROSC, 4H/4T</b> – every action one tap away, everything time-stamped",
@@ -2057,6 +2102,8 @@ en: {
   me_100: "lower end of the target range",
   me_110: "standard – middle of the target range",
   me_120: "upper end of the target range",
+  me_test: "Preview the beat",
+  me_test_laeuft: "The metronome is already running – you can hear the beat.",
   me_ziel: "off · target 100–120/min",
   me_pro_minute: "{n} per minute",
   me_eigenes: "Custom metronome rate",
@@ -2264,7 +2311,7 @@ fr: {
   kopf_aktiv: "Réanimation en cours",
   kopf_rosc: "Post-ROSC",
 
-  st_hinweis: "<b>ALS adulte · Recommandations 2025 (ERC/GRC).</b> CPR Assist structure les cycles, les médicaments et la documentation. L’application ne prend <b>aucune décision thérapeutique</b> – l’équipe soignante reste responsable.",
+  st_hinweis: "<b>ALS adulte · Recommandations 2025 (ERC/GRC).</b> L’application ne prend <b>aucune décision thérapeutique</b> – l’équipe soignante reste responsable.",
   st_p1: "<b>Cycles de 2 minutes</b> avec alerte avant l’analyse du rythme et rappel de relais du masseur",
   st_p2: "<b>Adrénaline et amiodarone</b> sous forme de statut clair plutôt que d’un simple minuteur",
   st_p3: "<b>Rythme, chocs, ROSC, 4H/4T</b> – chaque action à une pression, tout horodaté",
@@ -2421,6 +2468,8 @@ fr: {
   me_100: "borne basse de la plage cible",
   me_110: "standard – milieu de la plage cible",
   me_120: "borne haute de la plage cible",
+  me_test: "Écouter la cadence",
+  me_test_laeuft: "Le métronome fonctionne déjà – la cadence est audible.",
   me_ziel: "arrêt · cible 100–120/min",
   me_pro_minute: "{n} par minute",
   me_eigenes: "Cadence personnalisée",
@@ -2628,7 +2677,7 @@ es: {
   kopf_aktiv: "Reanimación en curso",
   kopf_rosc: "Post-ROSC",
 
-  st_hinweis: "<b>SVA adultos · Guías 2025 (ERC/GRC).</b> CPR Assist estructura los ciclos, la medicación y la documentación. La app <b>no toma decisiones terapéuticas</b>: la responsabilidad es del equipo asistencial.",
+  st_hinweis: "<b>SVA adultos · Guías 2025 (ERC/GRC).</b> La app <b>no toma decisiones terapéuticas</b>: la responsabilidad es del equipo asistencial.",
   st_p1: "<b>Ciclos de 2 minutos</b> con aviso antes del análisis del ritmo y recordatorio de relevo del reanimador",
   st_p2: "<b>Adrenalina y amiodarona</b> como estado comprensible en vez de un simple temporizador",
   st_p3: "<b>Ritmo, choques, ROSC, 4H/4T</b>: cada acción a un toque, todo con marca de tiempo",
@@ -2785,6 +2834,8 @@ es: {
   me_100: "extremo inferior del rango objetivo",
   me_110: "estándar: centro del rango objetivo",
   me_120: "extremo superior del rango objetivo",
+  me_test: "Escuchar el ritmo",
+  me_test_laeuft: "El metrónomo ya está en marcha; el ritmo se oye.",
   me_ziel: "apagado · objetivo 100–120/min",
   me_pro_minute: "{n} por minuto",
   me_eigenes: "Ritmo propio del metrónomo",
@@ -2992,7 +3043,7 @@ it: {
   kopf_aktiv: "Rianimazione in corso",
   kopf_rosc: "Post-ROSC",
 
-  st_hinweis: "<b>ALS adulti · Linee guida 2025 (ERC/GRC).</b> CPR Assist struttura cicli, farmaci e documentazione. L’app <b>non prende decisioni terapeutiche</b>: la responsabilità resta dell’équipe.",
+  st_hinweis: "<b>ALS adulti · Linee guida 2025 (ERC/GRC).</b> L’app <b>non prende decisioni terapeutiche</b>: la responsabilità resta dell’équipe.",
   st_p1: "<b>Cicli di 2 minuti</b> con avviso prima dell’analisi del ritmo e promemoria per il cambio del soccorritore",
   st_p2: "<b>Adrenalina e amiodarone</b> come stato comprensibile invece di un semplice timer",
   st_p3: "<b>Ritmo, shock, ROSC, 4H/4T</b>: ogni azione a un tocco, tutto con marca temporale",
@@ -3149,6 +3200,8 @@ it: {
   me_100: "estremo inferiore dell’intervallo obiettivo",
   me_110: "standard: centro dell’intervallo obiettivo",
   me_120: "estremo superiore dell’intervallo obiettivo",
+  me_test: "Ascolta la cadenza",
+  me_test_laeuft: "Il metronomo è già in funzione: la cadenza si sente.",
   me_ziel: "spento · obiettivo 100–120/min",
   me_pro_minute: "{n} al minuto",
   me_eigenes: "Cadenza personale del metronomo",
@@ -3356,7 +3409,7 @@ pt: {
   kopf_aktiv: "Reanimação em curso",
   kopf_rosc: "Pós-ROSC",
 
-  st_hinweis: "<b>SAV adultos · Recomendações 2025 (ERC/GRC).</b> O CPR Assist estrutura ciclos, fármacos e documentação. A aplicação <b>não toma decisões terapêuticas</b>: a responsabilidade é da equipa.",
+  st_hinweis: "<b>SAV adultos · Recomendações 2025 (ERC/GRC).</b> A aplicação <b>não toma decisões terapêuticas</b>: a responsabilidade é da equipa.",
   st_p1: "<b>Ciclos de 2 minutos</b> com aviso antes da análise do ritmo e lembrete para render o reanimador",
   st_p2: "<b>Adrenalina e amiodarona</b> como estado compreensível em vez de um simples temporizador",
   st_p3: "<b>Ritmo, choques, ROSC, 4H/4T</b>: cada ação a um toque, tudo com registo de hora",
@@ -3513,6 +3566,8 @@ pt: {
   me_100: "limite inferior do intervalo alvo",
   me_110: "padrão: centro do intervalo alvo",
   me_120: "limite superior do intervalo alvo",
+  me_test: "Ouvir a cadência",
+  me_test_laeuft: "O metrónomo já está a funcionar – a cadência ouve-se.",
   me_ziel: "desligado · alvo 100–120/min",
   me_pro_minute: "{n} por minuto",
   me_eigenes: "Cadência própria do metrónomo",
@@ -4373,6 +4428,26 @@ const Metronom = {
     Audio_.log("Metronom aus");
     UI.metronomAnzeigen();
   },
+  /* Probehören: ein paar Klicks im gewünschten Takt, ohne das Metronom
+     einzuschalten. So lässt sich vor dem Einsatz hören, wie 100, 110 oder
+     ein eigenes Tempo klingt. Läuft das Metronom bereits, wird nichts
+     zusätzlich gespielt – zwei versetzte Takte übereinander wären genau
+     das Gegenteil einer Hilfe. */
+  probe(bpm, knopf){
+    if (this.an){ toast(tText("me_test_laeuft")); return; }
+    if (!Audio_.init()){ toast(tText("ts_kein_ton")); return; }
+    const takt = 60 / Math.max(KONF.BPM_MIN, Math.min(KONF.BPM_MAX, bpm || this.bpm()));
+    const start = Audio_.ctx.currentTime + 0.06;
+    clearTimeout(this._probeEnde);
+    for (let i = 0; i < 6; i++){
+      Audio_.ton(1050, 32, start + i * takt, 0.32);
+      setTimeout(() => UI.metronomPuls(), Math.max(0, (start + i * takt - Audio_.ctx.currentTime) * 1000));
+    }
+    if (knopf){
+      knopf.classList.add("laeuft");
+      this._probeEnde = setTimeout(() => knopf.classList.remove("laeuft"), 6 * takt * 1000);
+    }
+  },
   planen(){
     const takt = 60 / this.bpm();
     const jetzt = Audio_.ctx.currentTime;
@@ -4956,6 +5031,17 @@ function massnahmenOeffnen(){
   openModal("modal-massnahme");
 }
 
+/* Kurzfassung der Metronom-Einstellung – gleich formuliert auf der
+   Startseite und in den Einstellungen. Ein eigenes Tempo steht mit Namen
+   da, sonst wäre nicht erkennbar, welches der gespeicherten gerade gilt. */
+function metronomText(){
+  const w = Einst.werte;
+  if (!w.metronomAn) return tText("me_ziel");
+  const eigen = (w.tempi || []).find(x => x.id === w.tempoId);
+  const tempo = t("me_pro_minute", { n: w.metronomBpm });
+  return eigen ? eigen.name + " · " + tempo : tempo;
+}
+
 /* ---------- Rendering: Vorwahl auf der Startseite ---------- */
 function renderVorwahl(){
   const w = Einst.werte;
@@ -4969,8 +5055,7 @@ function renderVorwahl(){
   $("vw-metro").checked = w.metronomAn;
   $("vw-ton").checked = w.ton;
   $("vw-autostart").checked = w.autostart;
-  $("vw-metro-sub").textContent = w.metronomAn
-    ? t("me_pro_minute", { n: w.metronomBpm }) : tText("me_ziel");
+  $("vw-metro-sub").textContent = metronomText();
   $("vw-bpm").classList.toggle("an", w.metronomAn);
   document.querySelectorAll("#vw-bpm button").forEach(b =>
     b.classList.toggle("active", Number(b.dataset.bpm) === w.metronomBpm));
@@ -4987,6 +5072,7 @@ function renderSettings(){
   $("s-massnahmen-sub").textContent = !Edition.isPremium()
     ? tText("ms_premium_sub")
     : anzMass ? tZahl("ms_anzahl", anzMass) : tText("ms_keine");
+  $("s-metronom-sub").textContent = metronomText();
   $("s-toene-sub").textContent = tText("to_" + Signale.variante().id)
     + (Edition.isPremium() ? "" : tText("to_premium_suffix"));
   $("s-premium-sub").textContent = Edition.isPremium()
@@ -5007,16 +5093,20 @@ function renderSettings(){
 }
 const UI = {
   metronomAnzeigen(){
-    const an = Metronom.an;
-    $("btn-metronom").classList.toggle("an", an);
-    $("metro-label").textContent = an ? String(Metronom.bpm()) : tText("me_aus_klein");
-    /* Im Dialog ist "Aus" die aktive Zeile, solange nichts läuft. */
+    /* Der kleine Eckknopf zeigt, was TATSÄCHLICH klingt. Der Dialog zeigt,
+       was GEWÄHLT ist – er lässt sich auch außerhalb eines Einsatzes über
+       die Einstellungen öffnen, wo naturgemäß nichts läuft. */
+    const laeuft = Metronom.an;
+    const gewaehlt = Einst.werte.metronomAn;
+    $("btn-metronom").classList.toggle("an", laeuft);
+    $("metro-label").textContent = laeuft ? String(Metronom.bpm()) : tText("me_aus_klein");
     const eigenes = !!Einst.werte.tempoId;
     document.querySelectorAll("#metro-wahl button").forEach(b => {
       const bpm = Number(b.dataset.bpm);
       b.classList.toggle("active",
-        an ? (!eigenes && bpm === Einst.werte.metronomBpm) : bpm === 0);
+        gewaehlt ? (!eigenes && bpm === Einst.werte.metronomBpm) : bpm === 0);
     });
+    $("metro-test-wert").textContent = Einst.werte.metronomBpm + "/min";
     if ($("regler-box")) renderRegler();
     if ($("tempi-liste")) renderTempi();
   },
@@ -5106,6 +5196,31 @@ function metronomNachWunsch(){
   document.addEventListener("pointerdown", nachziehen, { once: true });
 }
 
+/* Wendet die gewählte Metronom-Einstellung an. Außerhalb eines Einsatzes
+   bleibt es still: Wer die Einstellungen öffnet, um das Tempo für später
+   festzulegen, will nicht plötzlich ein tickendes Handy in der Hand haben.
+   Beim Start des Einsatzes zieht metronomNachWunsch() das nach. */
+function metronomAnwenden(){
+  if (Einst.werte.metronomAn && Einsatz.aktiv()){
+    if (!Metronom.an) Metronom.start(); else UI.metronomAnzeigen();
+  } else {
+    Metronom.stop();
+    UI.metronomAnzeigen();
+  }
+  renderVorwahl();
+  renderSettings();
+}
+
+/* Öffnet die Metronom-Auswahl – aus dem Einsatz über den Eckknopf und aus
+   den Einstellungen. Beides führt auf denselben Dialog, damit es nur eine
+   Stelle gibt, an der Tempo und eigene Tempi gepflegt werden. */
+function metronomOeffnen(){
+  UI.metronomAnzeigen();
+  tempoAbbrechen();                  /* frisches Formular bei jedem Öffnen */
+  renderTempi();
+  openModal("modal-metronom");
+}
+
 /* Gemeinsamer Weg in den Einsatz – von der Schaltfläche und vom Autostart. */
 function einsatzBeginnen(){
   Einsatz.starten(Date.now());
@@ -5126,13 +5241,13 @@ $("btn-start").addEventListener("click", () => {
 /* ---- Vorwahl auf der Startseite ---- */
 $("vw-metro").addEventListener("change", () => {
   Einst.set("metronomAn", $("vw-metro").checked);
-  renderVorwahl();
+  metronomAnwenden();
 });
 document.querySelectorAll("#vw-bpm button").forEach(b =>
   b.addEventListener("click", () => {
     Einst.set("metronomBpm", Number(b.dataset.bpm));
-    renderVorwahl();
-    UI.metronomAnzeigen();
+    Einst.set("tempoId", null);        /* feste Stufe schlägt ein eigenes Tempo */
+    metronomAnwenden();
   }));
 $("vw-ton").addEventListener("change", () => {
   Einst.set("ton", $("vw-ton").checked);
@@ -5289,11 +5404,19 @@ $("ende-ok").addEventListener("click", () => {
 });
 
 /* ---- Metronom: kleiner Knopf in der Ecke, Auswahl im Dialog ---- */
-$("btn-metronom").addEventListener("click", () => {
-  UI.metronomAnzeigen();
-  tempoAbbrechen();          /* frisches Formular bei jedem Öffnen */
-  renderTempi();
-  openModal("modal-metronom");
+/* Probehören an allen drei Stellen. Die Startseite und der Dialog spielen
+   das gewählte Tempo, der Regler das gerade geschobene. */
+$("vw-metro-test").addEventListener("click", () =>
+  Metronom.probe(Einst.werte.metronomBpm, $("vw-metro-test")));
+$("metro-test").addEventListener("click", () =>
+  Metronom.probe(Einst.werte.metronomBpm, $("metro-test")));
+$("regler-test").addEventListener("click", () =>
+  Metronom.probe(Number($("bpm-regler").value), $("regler-test")));
+
+$("btn-metronom").addEventListener("click", metronomOeffnen);
+$("s-metronom").addEventListener("click", () => {
+  closeModal("modal-settings");
+  metronomOeffnen();
 });
 document.querySelectorAll("#metro-wahl button").forEach(b =>
   b.addEventListener("click", () => {
@@ -5302,16 +5425,13 @@ document.querySelectorAll("#metro-wahl button").forEach(b =>
       Einst.set("metronomBpm", bpm);
       Einst.set("tempoId", null);      /* feste Stufe gewählt */
       Einst.set("metronomAn", true);
-      /* Läuft es schon, übernimmt der nächste geplante Klick die neue
-         Frequenz von selbst – sonst hier starten. */
-      if (!Metronom.an) Metronom.start(); else UI.metronomAnzeigen();
     } else {
       Einst.set("metronomAn", false);
-      Metronom.stop();
     }
+    /* Läuft es schon, übernimmt der nächste geplante Klick die neue
+       Frequenz von selbst – metronomAnwenden() startet bzw. stoppt nur. */
     closeModal("modal-metronom");
-    UI.metronomAnzeigen();
-    renderVorwahl();
+    metronomAnwenden();
   }));
 
 /* ---- Einstellungen ---- */
@@ -5426,7 +5546,7 @@ function renderTempi(){
   /* Absichtlich `tp` statt `t`: `t` ist die Übersetzungsfunktion und darf
      hier nicht verdeckt werden. */
   (w.tempi || []).forEach(tp => {
-    const aktiv = Metronom.an && w.tempoId === tp.id;
+    const aktiv = w.metronomAn && w.tempoId === tp.id;
     const li = document.createElement("li");
     if (aktiv) li.className = "aktiv";
     li.dataset.tempo = tp.id;
@@ -5449,10 +5569,8 @@ function renderTempi(){
       Einst.set("metronomBpm", tp.bpm);
       Einst.set("tempoId", tp.id);
       Einst.set("metronomAn", true);
-      if (!Metronom.an) Metronom.start();
       closeModal("modal-metronom");
-      UI.metronomAnzeigen();
-      renderVorwahl();
+      metronomAnwenden();
       toast(t("ts_tempo", { n: tp.name, bpm: tp.bpm }));
     });
     li.querySelector(".umbenennen").addEventListener("click", () => {
@@ -5482,6 +5600,7 @@ function renderRegler(){
   $("regler-box").classList.toggle("gesperrt", !premium);
   $("regler-marke").style.display = premium ? "none" : "";
   $("regler-wert").textContent = $("bpm-regler").value + "/min";
+  $("regler-test-wert").textContent = $("bpm-regler").value + "/min";
   $("regler-titel").textContent = tText(bearbeitet ? "me_bearbeiten" : "me_neu");
   $("regler-speichern").textContent = !premium ? tText("me_freischalten")
     : tText(bearbeitet ? "me_aendern" : "me_speichern");
@@ -5501,6 +5620,7 @@ function tempoAbbrechen(){
    man vorher, was man bekäme. */
 $("bpm-regler").addEventListener("input", () => {
   $("regler-wert").textContent = $("bpm-regler").value + "/min";
+  $("regler-test-wert").textContent = $("bpm-regler").value + "/min";
 });
 $("regler-abbrechen").addEventListener("click", tempoAbbrechen);
 
@@ -5526,13 +5646,11 @@ $("regler-speichern").addEventListener("click", () => {
   Einst.set("metronomBpm", bpm);
   Einst.set("tempoId", id);
   Einst.set("metronomAn", true);
-  if (!Metronom.an) Metronom.start();
   tempoBearbeitet = null;
   $("tempo-name").value = "";
   renderTempi();
   renderRegler();
-  UI.metronomAnzeigen();
-  renderVorwahl();
+  metronomAnwenden();
   toast(t("ts_tempo_neu", { n: name, bpm }));
 });
 

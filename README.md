@@ -34,7 +34,10 @@ Post-ROSC – und protokolliert jedes Ereignis mit Zeitstempel.
   SpO₂ 94–98 %, Normokapnie, Ursache erkennen und behandeln, 12-Kanal-EKG,
   hämodynamische Stabilisierung) und klarem **Re-Arrest**-Weg zurück in die CPR
 - **Metronom** 100 / 110 / 120 pro Minute (Standard 110), ein-/ausschaltbar,
-  mit optischem Puls
+  mit optischem Puls. Erreichbar an drei Stellen, die auf denselben Dialog
+  führen: Vorwahl auf der Startseite, kleiner Knopf in der Einsatz-Kopfzeile
+  und Einstellungen → Metronom. Außerhalb eines Einsatzes wird die Auswahl
+  nur gespeichert und klingt nicht
 - **Ereignis-Protokoll** im Hintergrund: jeder Schritt mit Zeitstempel
 - **Sechs Sprachen** – Deutsch, English, Français, Español, Italiano,
   Português. Beim ersten Start übernimmt die App die Gerätesprache, danach
@@ -118,12 +121,19 @@ Der Textkatalog wird zusätzlich ohne Browser geprüft:
 npm run texte
 ```
 
+Und die hinterlegten Leitlinien-Links – bewusst getrennt, weil ein Testlauf
+nicht davon abhängen soll, ob gerade Netz da ist:
+
+```
+npm run quellen
+```
+
 ## Quellen
 
 Die medizinischen Werte der App folgen den Reanimationsleitlinien 2025:
 
 - **ERC Guidelines for Resuscitation 2025**, European Resuscitation Council –
-  <https://www.cprguidelines.eu>
+  <https://www.erc.edu/science-research/guidelines/guidelines-2025/guidelines-2025-english/>
 - **Reanimation 2025 – Leitlinien des ERC in deutscher Übersetzung**,
   German Resuscitation Council (GRC) –
   <https://www.grc-org.de/wissenschaft/leitlinien>

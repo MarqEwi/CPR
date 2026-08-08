@@ -254,6 +254,98 @@ test("Metronom: kleiner Eckknopf öffnet die Auswahl, 110 als Standard", async (
   expect(await page.evaluate(() => window.CPRA.Einst.werte.metronomBpm)).toBe(120);
 });
 
+test("Startseite: „Reanimation starten“ ist ohne Scrollen erreichbar", async ({ page }) => {
+  await appOeffnen(page);
+  const sicht = page.viewportSize();
+  const knopf = await page.locator("#btn-start").boundingBox();
+  /* Vollständig im ersten Bildschirm – wer die App im Einsatz öffnet, darf
+     nicht erst scrollen müssen. */
+  expect(knopf.y + knopf.height).toBeLessThan(sicht.height);
+  expect(await page.evaluate(() => window.scrollY)).toBe(0);
+
+  /* Und er steht vor allem Erklärenden. */
+  const reihenfolge = await page.evaluate(() => {
+    const y = s => document.querySelector(s).getBoundingClientRect().top;
+    return { start: y("#btn-start"), vorwahl: y(".vorwahl"),
+             liste: y(".startliste"), spenden: y(".spendenbox") };
+  });
+  expect(reihenfolge.start).toBeLessThan(reihenfolge.vorwahl);
+  expect(reihenfolge.vorwahl).toBeLessThan(reihenfolge.liste);
+  expect(reihenfolge.liste).toBeLessThan(reihenfolge.spenden);
+});
+
+test("Probehören auf der Startseite – auch bei abgeschaltetem Metronom", async ({ page }) => {
+  await appOeffnen(page);
+  /* Der Knopf liegt bewusst außerhalb der Tempo-Chips: die sind gesperrt,
+     solange das Metronom aus ist – probehören muss trotzdem gehen. */
+  await expect(page.locator("#vw-metro")).not.toBeChecked();
+  await expect(page.locator("#vw-metro-test")).toBeEnabled();
+  await page.click("#vw-metro-test");
+  /* Es bleibt bei der Probe: nichts wird eingeschaltet. */
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.metronomAn)).toBe(false);
+  expect(await page.evaluate(() => window.CPRA.Metronom.an)).toBe(false);
+});
+
+test("Metronom ist auch über die Einstellungen erreichbar – ohne Einsatz still", async ({ page }) => {
+  await appOeffnen(page);
+
+  /* Ohne laufenden Einsatz: Einstellungen → Metronom öffnet dieselbe Auswahl. */
+  await page.click("#btn-settings");
+  await expect(page.locator("#s-metronom-sub")).toHaveText("aus · Ziel 100–120/min");
+  await page.click("#s-metronom");
+  await expect(page.locator("#modal-settings")).not.toHaveClass(/open/);
+  await expect(page.locator("#modal-metronom")).toHaveClass(/open/);
+  await expect(page.locator('#metro-wahl button[data-bpm="0"]')).toHaveClass(/active/);
+
+  /* 120 wählen: gespeichert und überall angezeigt – aber es klingt nichts,
+     solange kein Einsatz läuft. */
+  await page.click('#metro-wahl button[data-bpm="120"]');
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.metronomBpm)).toBe(120);
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.metronomAn)).toBe(true);
+  expect(await page.evaluate(() => window.CPRA.Metronom.an)).toBe(false);
+  await expect(page.locator("#vw-metro-sub")).toHaveText("120 pro Minute");
+  await expect(page.locator("#vw-metro")).toBeChecked();
+  await page.click("#btn-settings");
+  await expect(page.locator("#s-metronom-sub")).toHaveText("120 pro Minute");
+  await page.click('#modal-settings [data-close="modal-settings"]');
+
+  /* Erst der Einsatz lässt es tatsächlich ticken. */
+  await einsatzStarten(page);
+  expect(await page.evaluate(() => window.CPRA.Metronom.an)).toBe(true);
+  await expect(page.locator("#metro-label")).toHaveText("120");
+
+  /* Und der Weg über die Einstellungen funktioniert auch mitten im Einsatz. */
+  await page.click("#btn-settings-einsatz");
+  await page.click("#s-metronom");
+  await page.click('#metro-wahl button[data-bpm="100"]');
+  await expect(page.locator("#metro-label")).toHaveText("100");
+  expect(await page.evaluate(() => window.CPRA.Metronom.an)).toBe(true);
+});
+
+test("eigenes Tempo lässt sich über die Einstellungen anlegen und wählen", async ({ page }) => {
+  await appOeffnen(page);
+  await premiumFreischalten(page);
+
+  await page.click("#btn-settings");
+  await page.click("#s-metronom");
+  await page.locator("#bpm-regler").fill("117");
+  await page.fill("#tempo-name", "Team-Standard");
+  await page.click("#regler-speichern");
+
+  /* Gespeichert, ausgewählt und mit Namen sichtbar – ohne dass etwas klingt. */
+  await expect(page.locator("#tempi-liste li")).toHaveCount(1);
+  await expect(page.locator("#tempi-liste li").first()).toHaveClass(/aktiv/);
+  expect(await page.evaluate(() => window.CPRA.Metronom.an)).toBe(false);
+  await page.click('#modal-metronom [data-close="modal-metronom"]');
+  await page.click("#btn-settings");
+  await expect(page.locator("#s-metronom-sub")).toHaveText("Team-Standard · 117 pro Minute");
+  await page.click('#modal-settings [data-close="modal-settings"]');
+
+  /* Im Einsatz gilt es dann sofort. */
+  await einsatzStarten(page);
+  await expect(page.locator("#metro-label")).toHaveText("117");
+});
+
 test("Einsatz beenden: der Knopf unten erklärt nur den Weg", async ({ page }) => {
   await appOeffnen(page);
   await einsatzStarten(page);
