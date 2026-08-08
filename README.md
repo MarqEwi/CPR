@@ -9,8 +9,9 @@ Post-ROSC – und protokolliert jedes Ereignis mit Zeitstempel.
 > **CPR Assist trifft keine Therapieentscheidungen.** Die App ersetzt weder
 > Ausbildung noch klinisches Urteil; verantwortlich bleibt das behandelnde
 > Team. Alle Daten bleiben **lokal auf dem Gerät** – kein Konto, kein Server,
-> keine Cloud, kein Tracking. Die aktuelle Version (V1) enthält weder Werbung
-> noch Käufe.
+> keine Cloud, kein Tracking. **Werbung gibt es nicht** – auch nicht später.
+> Es gibt einen freiwilligen Einmalkauf („Premium“) für Komfortfunktionen;
+> alles Notwendige bleibt kostenlos.
 
 ## Funktionen (V1)
 
@@ -35,6 +36,10 @@ Post-ROSC – und protokolliert jedes Ereignis mit Zeitstempel.
 - **Metronom** 100 / 110 / 120 pro Minute (Standard 110), ein-/ausschaltbar,
   mit optischem Puls
 - **Ereignis-Protokoll** im Hintergrund: jeder Schritt mit Zeitstempel
+- **Premium (einmaliger Kauf, freiwillig):** eigene Hinweistöne (vier
+  Klangvarianten, Probehören immer möglich), frei einstellbares
+  Metronom-Tempo im Zielbereich 100–120/min, eigene Felder mit Timer
+  (z. B. BGA alle 10 min). Alles für die Reanimation selbst bleibt kostenlos
 - **Bildschirm bleibt im Einsatz an** – weder Abdunkeln noch automatisches
   Sperren; in den Einstellungen abschaltbar
 - Dunkles, kontrastreiches Einsatz-Design mit großen Touchflächen
@@ -59,9 +64,11 @@ Post-ROSC – und protokolliert jedes Ereignis mit Zeitstempel.
   Plugin `BildschirmWach` (`FLAG_KEEP_SCREEN_ON`, der verlässliche Weg in der
   App, ohne zusätzliche Berechtigung) und zusätzlich über die
   Screen-Wake-Lock-API, die die Web-Version trägt
-- AdMob-/Billing-Module liegen als ruhende Infrastruktur für spätere
-  Versionen bei, sind in V1 aber vollständig deaktiviert und nirgends
-  sichtbar; auf dem aktiven Einsatz-Screen wird es nie Werbung geben
+- Premium hängt an einer einzigen Wahrheit (`Edition.isPremium()`); jede
+  Premium-Funktion geht durch dasselbe Tor (`premiumTor()`) und landet sonst
+  im Premium-Dialog statt in einer stummen Sackgasse
+- Das AdMob-Modul liegt als ungenutzte Infrastruktur bei und ist
+  abgeschaltet – Werbung ist in dieser App nicht vorgesehen
 
 ## Tests
 

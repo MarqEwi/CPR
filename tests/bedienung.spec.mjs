@@ -417,3 +417,165 @@ test("Sofortstart ist auch in den Einstellungen abschaltbar", async ({ page }) =
   await expect(page.locator("#view-bereit")).toHaveClass(/active/);
   await expect(page.locator("#vw-autostart")).not.toBeChecked();
 });
+
+/* ---- Premium ---------------------------------------------------------- */
+
+/* Schaltet Premium frei. Bewusst über den Edition-Schalter statt über die
+   Oberfläche: Der Weg über die versteckte Diagnose hat seinen eigenen Test
+   weiter unten, hier soll es nur schnell und ohne Nebenwirkungen gehen. */
+async function premiumFreischalten(page){
+  await page.evaluate(() => {
+    document.querySelectorAll(".modal-back.open").forEach(m => m.classList.remove("open"));
+    window.CPRA.Edition.set("premium");
+  });
+  expect(await page.evaluate(() => window.CPRA.Edition.isPremium())).toBe(true);
+}
+
+/* Öffnet die Einstellungen über das jeweils sichtbare Zahnrad – im Einsatz
+   sitzt es in der Kopfzeile, sonst in der Titelleiste. */
+async function einstellungenOeffnen(page){
+  const imEinsatz = await page.evaluate(() => !!window.CPRA.Einsatz.e);
+  await page.click(imEinsatz ? "#btn-settings-einsatz" : "#btn-settings");
+  await expect(page.locator("#modal-settings")).toHaveClass(/open/);
+}
+
+test("Premium über die versteckte Diagnose freischalten (Entwicklung)", async ({ page }) => {
+  await appOeffnen(page);
+  await page.click("#btn-settings");
+  await expect(page.locator("#s-premium-test")).toBeHidden();
+  for (let i = 0; i < 5; i++) await page.click("#s-version");
+  await expect(page.locator("#s-premium-test")).toBeVisible();
+  await page.click("#s-premium-test");
+  expect(await page.evaluate(() => window.CPRA.Edition.isPremium())).toBe(true);
+  /* Nochmal tippen schaltet zurück */
+  await page.click("#s-premium-test");
+  expect(await page.evaluate(() => window.CPRA.Edition.isPremium())).toBe(false);
+});
+
+test("Startseite nennt Werbefreiheit, Premium und Spende", async ({ page }) => {
+  await appOeffnen(page);
+  const box = page.locator("#spendenbox");
+  await expect(box).toContainText("frei von Werbung");
+  await expect(box).toContainText("Premium");
+  await expect(box.locator('a[href="https://www.mercwerk.de"]').first()).toBeVisible();
+
+  /* Der Premium-Dialog erklärt alle drei Funktionen */
+  await page.click("#btn-premium");
+  await expect(page.locator("#modal-premium")).toHaveClass(/open/);
+  await expect(page.locator("#modal-premium")).toContainText("Eigene Hinweistöne");
+  await expect(page.locator("#modal-premium")).toContainText("Eigenes Metronom-Tempo");
+  await expect(page.locator("#modal-premium")).toContainText("Eigene Felder");
+  await expect(page.locator("#premium-kaufen")).toBeVisible();
+});
+
+test("Hinweistöne: Probehören immer, Umstellen erst mit Premium", async ({ page }) => {
+  await appOeffnen(page);
+  await page.click("#btn-settings");
+  await page.click("#s-toene");
+  const zeilen = page.locator("#tone-liste li");
+  await expect(zeilen).toHaveCount(4);
+  await expect(zeilen.first()).toHaveClass(/aktiv/);          // „Klar" ist Standard
+
+  /* Probehören funktioniert ohne Premium und plant echte Töne */
+  await page.evaluate(() => {
+    window.__toene = 0;
+    const echt = AudioContext.prototype.createOscillator;
+    AudioContext.prototype.createOscillator = function(){ window.__toene++; return echt.call(this); };
+  });
+  await zeilen.nth(2).locator(".probe").click();
+  expect(await page.evaluate(() => window.__toene)).toBeGreaterThan(0);
+
+  /* Umstellen ohne Premium führt in den Premium-Dialog, ändert nichts */
+  await zeilen.nth(2).locator(".waehlen").click();
+  await expect(page.locator("#modal-premium")).toHaveClass(/open/);
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.tonVariante)).toBe("klar");
+  await page.locator("#modal-premium .modal-x").click();
+
+  /* Mit Premium lässt sich der Klang wechseln */
+  await premiumFreischalten(page);
+  await einstellungenOeffnen(page);
+  await page.click("#s-toene");
+  await page.locator("#tone-liste li").nth(2).locator(".waehlen").click();
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.tonVariante)).toBe("tief");
+  await expect(page.locator("#tone-liste li").nth(2)).toHaveClass(/aktiv/);
+});
+
+test("Metronom-Regler: schieben frei, übernehmen erst mit Premium", async ({ page }) => {
+  await appOeffnen(page);
+  await einsatzStarten(page);
+  await page.click("#btn-metronom");
+  await expect(page.locator("#regler-box")).toHaveClass(/gesperrt/);
+  await expect(page.locator("#regler-uebernehmen")).toContainText("Premium");
+
+  /* Schieben zeigt den Wert, ändert aber nichts */
+  await page.locator("#bpm-regler").fill("117");
+  await expect(page.locator("#regler-wert")).toHaveText("117/min");
+  await page.click("#regler-uebernehmen");
+  await expect(page.locator("#modal-premium")).toHaveClass(/open/);
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.metronomBpm)).toBe(110);
+  await page.locator("#modal-premium .modal-x").click();
+
+  /* Mit Premium wird der Wert übernommen und das Metronom läuft damit */
+  await premiumFreischalten(page);
+  await page.click("#btn-metronom");
+  await expect(page.locator("#regler-box")).not.toHaveClass(/gesperrt/);
+  await page.locator("#bpm-regler").fill("117");
+  await page.click("#regler-uebernehmen");
+  await expect(page.locator("#modal-metronom")).not.toHaveClass(/open/);
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.metronomBpm)).toBe(117);
+  await expect(page.locator("#metro-label")).toHaveText("117");
+  expect(await page.evaluate(() => window.CPRA.Metronom.an)).toBe(true);
+
+  /* Der eigene Wert überlebt einen Neustart */
+  await page.reload();
+  await page.waitForFunction(() => !!window.CPRA);
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.metronomBpm)).toBe(117);
+});
+
+test("Eigene Felder: nur mit Premium, dann als Karte mit Timer im Einsatz", async ({ page }) => {
+  await appOeffnen(page);
+
+  /* Ohne Premium führt der Weg in den Premium-Dialog */
+  await page.click("#btn-settings");
+  await expect(page.locator("#s-felder-sub")).toContainText("Premium");
+  await page.click("#s-felder");
+  await expect(page.locator("#modal-premium")).toHaveClass(/open/);
+  await page.locator("#modal-premium .modal-x").click();
+
+  /* Mit Premium: zwei Felder anlegen */
+  await premiumFreischalten(page);
+  await einstellungenOeffnen(page);
+  await page.click("#s-felder");
+  await page.fill("#feld-name", "BGA");
+  await page.selectOption("#feld-intervall", "10");
+  await page.click("#feld-anlegen");
+  await page.fill("#feld-name", "Temperatur");
+  await page.selectOption("#feld-intervall", "0");
+  await page.click("#feld-anlegen");
+  await expect(page.locator("#felder-liste li")).toHaveCount(2);
+  await expect(page.locator("#felder-liste")).toContainText("Erinnerung nach 10 min");
+  await expect(page.locator("#felder-liste")).toContainText("ohne Intervall");
+  await page.locator("#modal-felder .modal-x").click();
+
+  /* Im Einsatz erscheinen sie als Karten */
+  await einsatzStarten(page);
+  const karten = page.locator("#feldgrid .feldcard");
+  await expect(karten).toHaveCount(2);
+  await expect(karten.first()).toContainText("BGA");
+  await expect(karten.first()).toContainText("offen");
+
+  /* Erfassen setzt die Uhr und schreibt ins Protokoll */
+  await karten.first().locator("button").click();
+  await expect(karten.first()).toContainText("1×");
+  const e = await page.evaluate(() => window.CPRA.Einsatz.e);
+  expect(Object.keys(e.felder)).toHaveLength(1);
+  expect(e.ereignisse.filter(x => x.typ === "feld").map(x => x.info)).toEqual(["BGA"]);
+
+  /* Ein Feld wieder entfernen */
+  await page.click("#btn-settings-einsatz");
+  await page.click("#s-felder");
+  await page.locator("#felder-liste li").first().locator(".weg").click();
+  await expect(page.locator("#felder-liste li")).toHaveCount(1);
+  await page.locator("#modal-felder .modal-x").click();
+  await expect(page.locator("#feldgrid .feldcard")).toHaveCount(1);
+});

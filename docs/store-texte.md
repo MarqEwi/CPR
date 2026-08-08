@@ -123,7 +123,7 @@ CPR Assist erhebt **keine** Daten. Das macht das Formular kurz:
 | Werden Daten verschlüsselt übertragen? | entfällt (es werden keine Daten übertragen) |
 | Können Nutzer die Löschung beantragen? | entfällt – gelöscht wird in der App bzw. durch Deinstallation |
 | Enthält die App Werbung? | **Nein** |
-| Enthält die App In-App-Käufe? | **Nein** |
+| Enthält die App In-App-Käufe? | **Ja** – ein einmaliger Kauf „Premium“ (kein Abo) |
 | Gesundheits-App? | **Nein** – keine Studie, keine Gesundheitsdaten, keine Patientendaten |
 
 Dass der Bildschirm im Einsatz anbleibt, macht das mitgelieferte Plugin
@@ -131,14 +131,36 @@ Dass der Bildschirm im Einsatz anbleibt, macht das mitgelieferte Plugin
 nötig; die App fordert außer Internet keine an. An der
 Datensicherheits-Erklärung ändert das nichts.
 
+## Premium (einmaliger Kauf)
+
+**Keine Werbung, kein Tracking, kein Abo** – daran ändert Premium nichts.
+Alles, was für die Reanimation selbst nötig ist, bleibt kostenlos. Premium
+ergänzt nur Komfort und unterstützt die Weiterentwicklung:
+
+- **Eigene Hinweistöne** – vier Klangvarianten (Klar, Sanft, Tief, Signal).
+  Probehören ist auch ohne Kauf möglich, nur das Umstellen nicht.
+- **Eigenes Metronom-Tempo** – frei wählbar im Zielbereich 100–120 pro
+  Minute statt der drei festen Stufen.
+- **Eigene Felder mit Timer** – z. B. BGA, Temperatur oder
+  Beatmungskontrolle, mit eigenem Intervall und Fälligkeits-Anzeige.
+
+Produkt-ID: `premium_unlock` (nicht konsumierbar). Wer nichts kaufen möchte,
+kann die Entwicklung über eine Spende auf www.mercwerk.de unterstützen –
+beides ist ausdrücklich freiwillig und wird in der App genau so beschrieben.
+
+Formulierung im Store-Eintrag (Absatz für die Beschreibung):
+
+```
+WERBEFREI – UND DAS BLEIBT SO
+Keine Anzeigen, kein Tracking, keine Konten. Im Einsatz darf nichts ablenken. Wer die Entwicklung unterstützen will, kann das freiwillig tun: mit der Premium-Version als einmaligem Kauf (eigene Hinweistöne, frei einstellbares Metronom-Tempo, eigene Felder mit Timer) oder mit einer Spende über www.mercwerk.de. Alles, was für die Reanimation selbst nötig ist, bleibt dauerhaft kostenlos.
+```
+
 ## Was in V1 bewusst fehlt
 
-Keine Werbung, keine Premium-Version, kein In-App-Produkt, keine Limits.
-Ebenfalls noch nicht enthalten: sichtbare Ereignis-Timeline und Export des
-Protokolls (die Daten dafür werden bereits mitgeschrieben), Sprachumschaltung
-und konfigurierbare Zeitfenster. Die Module für Werbung und Kauf liegen im
-Code vorbereitet, sind aber abgeschaltet – siehe `docs/veroeffentlichung.md`,
-Abschnitt „Später: Monetarisierung“.
+Noch nicht enthalten: sichtbare Ereignis-Timeline und Export des Protokolls
+(die Daten dafür werden bereits mitgeschrieben), Sprachumschaltung und
+konfigurierbare Zeitfenster.
 
-**Grundsatz für später:** Auf dem aktiven Einsatz-Screen wird es nie Werbung
-geben. Ein Banner käme höchstens auf die Bereit-Ansicht.
+**Grundsatz, der bleibt:** Werbung gibt es in dieser App nicht – auch nicht
+später und in keiner Version. Das AdMob-Modul liegt nur als ungenutzte
+Infrastruktur im Code und ist abgeschaltet.

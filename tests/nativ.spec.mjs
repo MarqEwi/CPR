@@ -118,17 +118,25 @@ test("appStateChange: Rückkehr in die App fordert den WakeLock neu an", async (
   expect(angefordert).toBe(1);
 });
 
-test("Werbung und Kauf bleiben in V1 vollständig abgeschaltet", async ({ page }) => {
+test("Werbung bleibt aus, der Kauf ist aktiv aber ohne Store nicht verfügbar", async ({ page }) => {
   const r = await page.evaluate(() => ({
     ads: window.CPRA.Ads.ENABLED,
     adsVerfuegbar: window.CPRA.Ads.available(),
     billing: window.CPRA.Billing.ENABLED,
+    /* Ohne das Store-Modul (CdvPurchase) darf kein Kauf versucht werden. */
     billingVerfuegbar: window.CPRA.Billing.available(),
     adbarSichtbar: getComputedStyle(document.getElementById("adbar")).display
   }));
   expect(r.ads).toBe(false);
   expect(r.adsVerfuegbar).toBe(false);
-  expect(r.billing).toBe(false);
+  expect(r.billing).toBe(true);
   expect(r.billingVerfuegbar).toBe(false);
   expect(r.adbarSichtbar).toBe("none");
+
+  /* Ein Kaufversuch ohne Store endet mit einem Hinweis, nicht mit einem Fehler */
+  const fehler = [];
+  page.on("pageerror", e => fehler.push(e.message));
+  await page.evaluate(() => window.CPRA.Billing.kaufen());
+  await expect(page.locator("#toast")).toContainText("Play Store");
+  expect(fehler).toEqual([]);
 });

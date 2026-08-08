@@ -130,6 +130,106 @@
   .startliste .ic{color:var(--accent);width:20px;height:20px;margin-top:2px}
   .startliste b{color:var(--text);font-weight:640}
   #btn-start{min-height:72px;font-size:1.22rem;margin-top:6px}
+  /* Unterstützung am Ende der Startseite */
+  .spendenbox{margin:22px 0 4px;padding:14px 15px;background:var(--bg2);
+    border:1px solid var(--line);border-radius:var(--radius)}
+  .spendenbox p{font-size:.85rem;color:var(--text2);line-height:1.55;margin:0 0 8px}
+  .spendenbox p b{color:var(--text)}
+  .spendenbox .klein{font-size:.79rem}
+  .spendenbox a{color:var(--accent)}
+  .spendenbox .btn-row{margin:12px 0 0}
+  .spendenbox .btn{font-size:.88rem;min-height:48px}
+  body.edition-premium .spendenbox .btn-row{display:none}
+  /* Eigene Felder im Einsatz */
+  .feldgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;
+    margin:0 0 8px}
+  .feldgrid:empty{display:none}
+  @media(max-width:355px){.feldgrid{grid-template-columns:minmax(0,1fr)}}
+  .feldcard{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius-s);
+    padding:9px 11px;display:flex;flex-direction:column;gap:4px;min-width:0;overflow:hidden}
+  .feldcard .kopf{display:flex;align-items:center;justify-content:space-between;gap:6px;
+    min-height:22px}
+  .feldcard .kopf b{font-size:.81rem;font-weight:700;letter-spacing:-.015em;min-width:0;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .feldcard .wert{font-size:1.2rem;font-weight:720;line-height:1.2;height:1.45em;
+    font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden}
+  .feldcard .sub{font-size:.7rem;color:var(--text2);height:1.5em;overflow:hidden}
+  .feldcard.f-faellig{border-color:var(--warn-rand)}
+  .feldcard.f-faellig .wert{color:var(--warn)}
+  .feldcard button{margin-top:auto;width:100%;background:var(--bg3);
+    border:1px solid var(--line-stark);color:var(--text);font:inherit;font-weight:700;
+    font-size:.8rem;border-radius:var(--radius-xs);padding:9px 6px;min-height:42px;
+    cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .feldcard.f-faellig button{background:var(--warn);border-color:var(--warn);color:#231a05}
+  /* Verwaltung der Felder */
+  .felderliste{list-style:none;margin:0 0 6px;padding:0}
+  .felderliste:empty{display:none}
+  .felderliste li{display:flex;align-items:center;gap:10px;padding:10px 0;
+    border-bottom:1px solid var(--line)}
+  .felderliste li:last-child{border-bottom:none}
+  .felderliste .t{flex:1;min-width:0}
+  .felderliste .t b{display:block;font-size:.92rem;font-weight:660}
+  .felderliste .t span{display:block;font-size:.76rem;color:var(--text2)}
+  .felderliste .weg{flex:none;background:none;border:none;color:var(--text2);
+    cursor:pointer;padding:9px;border-radius:9px;line-height:0}
+  .felderliste .weg:hover{color:var(--bad);background:var(--bad-soft)}
+  input[type=text],select{width:100%;background:var(--bg3);color:var(--text);
+    border:1px solid var(--line-stark);border-radius:var(--radius-s);padding:11px 13px;
+    font:inherit;font-size:.95rem}
+  input[type=text]:focus,select:focus{outline:none;border-color:var(--accent)}
+  /* Eigenes Metronom-Tempo (Premium) */
+  .reglerbox{margin:14px 0 0;padding:12px 13px;background:var(--bg3);
+    border:1px solid var(--line);border-radius:var(--radius-s)}
+  .reglerkopf{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .reglerkopf b{font-size:.92rem;font-weight:700}
+  .reglerwert{margin-left:auto;font-size:1.05rem;font-weight:750;color:var(--accent);
+    font-variant-numeric:tabular-nums}
+  .reglerskala{display:flex;justify-content:space-between;font-size:.7rem;
+    color:var(--text3);margin-top:2px;font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%;height:40px;margin:0;background:transparent;
+    -webkit-appearance:none;appearance:none;cursor:pointer}
+  input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:99px;
+    background:var(--bg4);border:1px solid var(--line-stark)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+    width:30px;height:30px;border-radius:50%;background:var(--accent);
+    border:3px solid var(--bg2);margin-top:-12px;box-shadow:0 1px 4px rgba(0,0,0,.5)}
+  input[type=range]::-moz-range-track{height:8px;border-radius:99px;background:var(--bg4);
+    border:1px solid var(--line-stark)}
+  input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;
+    background:var(--accent);border:3px solid var(--bg2)}
+  .reglerbox.gesperrt input[type=range]::-webkit-slider-thumb{background:var(--text3)}
+  .reglerbox.gesperrt input[type=range]::-moz-range-thumb{background:var(--text3)}
+  .reglerbox.gesperrt .reglerwert{color:var(--text2)}
+  /* Klangvarianten */
+  .toneliste{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+  .toneliste li{display:flex;align-items:center;gap:10px;background:var(--bg3);
+    border:1px solid var(--line-stark);border-radius:var(--radius-s);padding:11px 12px}
+  .toneliste li.aktiv{border-color:var(--accent);background:var(--accent-soft)}
+  .toneliste .txt{flex:1;min-width:0}
+  .toneliste .txt b{display:block;font-size.95rem;font-size:.95rem;font-weight:680;
+    letter-spacing:-.01em}
+  .toneliste .txt span{display:block;font-size:.76rem;color:var(--text2)}
+  .toneliste .probe,.toneliste .waehlen{flex:none;background:var(--bg2);
+    border:1px solid var(--line-stark);border-radius:var(--radius-xs);color:var(--text);
+    font:inherit;font-size:.8rem;font-weight:700;min-height:44px;padding:8px 12px;
+    cursor:pointer;transition:background .13s}
+  .toneliste .probe{width:44px;padding:0;display:grid;place-items:center}
+  .toneliste .probe:hover,.toneliste .waehlen:hover{background:var(--bg4)}
+  .toneliste li.aktiv .waehlen{background:var(--accent);border-color:var(--accent);
+    color:var(--accent-text)}
+  .toneliste .ic{width:19px;height:19px}
+  /* Premium-Dialog und -Tore */
+  .premiumliste{list-style:none;margin:10px 0 4px;padding:0;display:grid;gap:10px}
+  .premiumliste li{display:flex;gap:11px;align-items:flex-start;font-size:.88rem;
+    color:var(--text2);line-height:1.5}
+  .premiumliste .ic{color:var(--accent);width:20px;height:20px;margin-top:2px;flex:none}
+  .premiumliste b{color:var(--text);font-weight:660}
+  .premium-marke{display:inline-flex;align-items:center;gap:5px;font-size:.62rem;
+    font-weight:750;letter-spacing:.05em;text-transform:uppercase;
+    background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-rand);
+    border-radius:999px;padding:2px 7px;flex:none}
+  /* Gesperrte Zeilen bleiben sichtbar – man soll sehen, was Premium bringt. */
+  .gesperrt{opacity:.62}
   /* Vorwahl auf der Startseite: gilt für den nächsten Einsatz. */
   .vorwahl{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);
     padding:4px 14px 12px;margin:14px 0 12px}
@@ -541,6 +641,29 @@
     <p class="muted" style="text-align:center;margin-top:12px;font-size:.78rem">
       Startet Zyklus-Timer, Protokoll und – falls eingeschaltet – das Metronom.
     </p>
+
+    <!-- Unterstützung: bewusst am Ende der Startseite, nie im Einsatz. -->
+    <div class="spendenbox" id="spendenbox">
+      <p><b>Diese App bleibt frei von Werbung und Tracking.</b>
+        Keine Anzeigen, keine Datensammlung, keine Konten – auch nicht später.
+        Im Einsatz soll nichts ablenken.</p>
+      <p class="klein">Wenn du die Entwicklung unterstützen willst: mit der
+        <b>Premium-Version</b> als einmaligem Kauf oder mit einer Spende über
+        <a href="https://www.mercwerk.de" target="_blank" rel="noopener">www.mercwerk.de</a>.
+        Beides ist freiwillig – alle Funktionen für die Reanimation selbst
+        bleiben dauerhaft kostenlos.</p>
+      <div class="btn-row">
+        <button class="btn secondary" id="btn-premium" style="flex:1">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M12 3l2.4 5.5 6 .5-4.5 4 1.4 5.8L12 15.9 6.7 18.8 8.1 13 3.6 9l6-.5z"/></svg>
+          Premium ansehen
+        </button>
+        <a class="btn secondary" href="https://www.mercwerk.de" target="_blank" rel="noopener" style="flex:1">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 000-7.8z"/></svg>
+          Spenden
+        </a>
+      </div>
+      <p class="klein" id="premium-stand" style="display:none"></p>
+    </div>
   </section>
 
   <!-- ======================= Aktiver Einsatz ======================= -->
@@ -601,6 +724,9 @@
       Maßnahme dokumentieren
       <span class="unter" id="massnahme-unter"></span>
     </button>
+
+    <!-- Eigene Felder (Premium): leer und unsichtbar, solange keine da sind -->
+    <div class="feldgrid" id="feldgrid"></div>
 
     <!-- Beendet den Einsatz bewusst NICHT: Ein Fehlgriff hier wäre mitten in
          der Reanimation fatal. Der Knopf erklärt nur den Weg. -->
@@ -724,6 +850,22 @@
       <button data-bpm="120"><span><b>120 / min</b><span>oberes Ende des Zielbereichs</span></span>
         <svg class="ic mark" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></button>
     </div>
+
+    <!-- Eigenes Tempo: Premium. Sichtbar auch ohne Kauf, damit klar ist,
+         was Premium bringt – bedienen lässt es sich dann aber nicht. -->
+    <div class="reglerbox" id="regler-box">
+      <div class="reglerkopf">
+        <b>Eigenes Tempo</b>
+        <span class="premium-marke" id="regler-marke">Premium</span>
+        <span class="reglerwert" id="regler-wert">110/min</span>
+      </div>
+      <input type="range" id="bpm-regler" min="100" max="120" step="1" value="110"
+             aria-label="Eigenes Metronom-Tempo">
+      <div class="reglerskala"><span>100</span><span>110</span><span>120</span></div>
+      <div class="btn-row" style="margin:10px 0 0">
+        <button class="btn" id="regler-uebernehmen" style="flex:1">Tempo übernehmen</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -774,6 +916,84 @@
       <button class="btn danger" id="ende-ok" style="flex:1">Einsatz beenden</button>
       <button class="btn secondary" data-close="modal-ende">Abbrechen</button>
     </div>
+  </div>
+</div>
+
+<!-- ======================= Dialog: Eigene Felder ======================= -->
+<div class="modal-back" id="modal-felder">
+  <div class="modal">
+    <button class="modal-x" data-close="modal-felder" aria-label="Schließen">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <h3 class="mt"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 9v6M9 12h6"/></svg> Eigene Felder</h3>
+    <p class="frage">Eigene Erinnerungen mit eigenem Intervall – zum Beispiel
+      BGA alle 10 Minuten oder Temperatur alle 15. Sie erscheinen im Einsatz als
+      Karte und zählen die Zeit seit der letzten Bestätigung.
+      <span class="premium-marke">Premium</span></p>
+    <ul class="felderliste" id="felder-liste"></ul>
+    <div id="feld-neu">
+      <label class="field" for="feld-name">Name</label>
+      <input type="text" id="feld-name" maxlength="24" placeholder="z. B. BGA, Temperatur, Beatmung"
+             autocomplete="off">
+      <label class="field" for="feld-intervall">Erinnerung nach</label>
+      <select id="feld-intervall">
+        <option value="0">ohne Intervall – nur mitzählen</option>
+        <option value="3">3 Minuten</option>
+        <option value="5">5 Minuten</option>
+        <option value="10" selected>10 Minuten</option>
+        <option value="15">15 Minuten</option>
+        <option value="20">20 Minuten</option>
+        <option value="30">30 Minuten</option>
+      </select>
+      <div class="btn-row">
+        <button class="btn block" id="feld-anlegen">Feld anlegen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= Dialog: Hinweistöne ======================= -->
+<div class="modal-back" id="modal-toene">
+  <div class="modal">
+    <button class="modal-x" data-close="modal-toene" aria-label="Schließen">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <h3 class="mt"><svg class="ic" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19 5a9 9 0 010 14"/></svg> Klang der Hinweistöne</h3>
+    <p class="frage">Probehören geht immer. Das Umstellen ist eine
+      <span class="premium-marke">Premium</span>-Funktion.</p>
+    <ul class="toneliste" id="tone-liste"></ul>
+  </div>
+</div>
+
+<!-- ======================= Dialog: Premium ======================= -->
+<div class="modal-back" id="modal-premium">
+  <div class="modal">
+    <button class="modal-x" data-close="modal-premium" aria-label="Schließen">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <h3 class="mt"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l2.4 5.5 6 .5-4.5 4 1.4 5.8L12 15.9 6.7 18.8 8.1 13 3.6 9l6-.5z"/></svg> Premium</h3>
+    <p class="frage" id="premium-text">Ein einmaliger Kauf, kein Abo. Alles, was für
+      die Reanimation nötig ist, bleibt kostenlos – Premium ergänzt nur
+      Komfort und unterstützt die Weiterentwicklung.</p>
+    <ul class="premiumliste">
+      <li><svg class="ic" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19 5a9 9 0 010 14"/></svg>
+        <div><b>Eigene Hinweistöne</b> – vier Klangvarianten, damit die Signale
+        zur Umgebung passen. Probehören ist immer möglich.</div></li>
+      <li><svg class="ic" viewBox="0 0 24 24"><path d="M4 12h16"/><circle cx="14" cy="12" r="3"/></svg>
+        <div><b>Eigenes Metronom-Tempo</b> – frei einstellbar im Zielbereich
+        100–120 pro Minute, statt der drei festen Stufen.</div></li>
+      <li><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 9v6M9 12h6"/></svg>
+        <div><b>Eigene Felder mit Timer</b> – z. B. BGA, Temperatur oder
+        Beatmungskontrolle, mit eigenem Intervall und Fälligkeits-Anzeige.</div></li>
+    </ul>
+    <p class="frage klein" id="premium-preis"></p>
+    <div class="btn-row">
+      <button class="btn" id="premium-kaufen" style="flex:1">Premium kaufen</button>
+      <button class="btn secondary" id="premium-restore">Käufe wiederherstellen</button>
+    </div>
+    <p class="frage klein">Kein Interesse an Premium? Eine Spende über
+      <a href="https://www.mercwerk.de" target="_blank" rel="noopener" style="color:var(--accent)">www.mercwerk.de</a>
+      hilft genauso – und die App bleibt so oder so vollständig nutzbar.</p>
   </div>
 </div>
 
@@ -834,6 +1054,21 @@
       <span class="t"><b>Einsatz beenden</b><span>stoppt alle Timer, Protokoll bleibt gespeichert</span></span>
     </button>
 
+    <button class="settings-row" id="s-felder">
+      <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 9v6M9 12h6"/></svg>
+      <span class="t"><b>Eigene Felder</b><span id="s-felder-sub">keine angelegt</span></span>
+    </button>
+
+    <button class="settings-row" id="s-toene">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19 5a9 9 0 010 14"/></svg>
+      <span class="t"><b>Klang der Hinweistöne</b><span id="s-toene-sub">Klar</span></span>
+    </button>
+
+    <button class="settings-row" id="s-premium">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M12 3l2.4 5.5 6 .5-4.5 4 1.4 5.8L12 15.9 6.7 18.8 8.1 13 3.6 9l6-.5z"/></svg>
+      <span class="t"><b>Premium</b><span id="s-premium-sub">Entwicklung unterstützen</span></span>
+    </button>
+
     <button class="settings-row" id="s-archiv">
       <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M5 9v10a1 1 0 001 1h12a1 1 0 001-1V9"/><path d="M10 13h4"/></svg>
       <span class="t"><b>Gespeicherte Einsätze</b><span id="s-archiv-sub">noch keine</span></span>
@@ -848,6 +1083,10 @@
       <span class="t"><b>Datenschutz &amp; Impressum</b><span>Alle Daten bleiben auf diesem Gerät</span></span>
     </a>
 
+    <button class="settings-row" id="s-premium-test" style="display:none">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M12 3l2.4 5.5 6 .5-4.5 4 1.4 5.8L12 15.9 6.7 18.8 8.1 13 3.6 9l6-.5z"/></svg>
+      <span class="t"><b>Premium zum Testen umschalten</b><span>nur für die Entwicklung, kein Kauf</span></span>
+    </button>
     <p class="diag" id="einsatz-status"></p>
     <p class="diag" id="audio-status"></p>
     <p class="diag" id="wakelock-status"></p>
@@ -930,6 +1169,7 @@ const KONF = {
   AMIODARON_SCHOCK_150: 5,      /* 150 mg nach dem 5. Schock bei VF/pVT */
   BPM_PRESETS: [100, 110, 120], /* Zielbereich 100–120/min */
   BPM_STANDARD: 110,
+  BPM_MIN: 100, BPM_MAX: 120,   /* eigener Regler bleibt im Zielbereich */
   DOPPELTIPP_SCHUTZ_MS: 10000,  /* Medikamenten-Knopf: Schutz vor Doppel-Tipp */
   EINSATZ_MAX_ALTER_MS: 12 * 3600000, /* älterer gespeicherter Einsatz gilt als beendet */
 
@@ -946,6 +1186,24 @@ const KONF = {
     { id: "intox",       name: "Intoxikation",                  info: "Anamnese/Umfeld, Antidote nach Substanz" },
     { id: "thrombose",   name: "Thrombose (koronar/pulmonal)",  info: "Lungenembolie/Infarkt? Lyse bzw. Koronarintervention erwägen" },
     { id: "spannung",    name: "Spannungspneumothorax",         info: "Thorax entlasten (Dekompression/Thorakostomie)" }
+  ],
+
+  /* Hinweistöne: Klangvarianten. Jede Variante beschreibt nur, WIE es
+     klingt – wann ein Signal kommt, entscheidet weiterhin die Logik.
+     `art` ist die Wellenform, `folgen` die Tonhöhen je Anlass. */
+  TOENE: [
+    { id: "klar",   name: "Klar",     info: "Kurz und trocken – der Standard",
+      art: "square", folgen: { analyse: [880, 880, 880], gleich: [660],
+                               adrFaellig: [740, 920], adrSpaet: [920, 740, 920] } },
+    { id: "sanft",  name: "Sanft",    info: "Weicher Sinus, weniger schrill",
+      art: "sine",   folgen: { analyse: [660, 780, 660], gleich: [520],
+                               adrFaellig: [620, 780], adrSpaet: [780, 620, 780] } },
+    { id: "tief",   name: "Tief",     info: "Dunkler, trägt durch Umgebungslärm",
+      art: "triangle", folgen: { analyse: [420, 420, 420], gleich: [330],
+                                 adrFaellig: [360, 480], adrSpaet: [480, 360, 480] } },
+    { id: "signal", name: "Signal",   info: "Hoher Doppelton, sehr auffällig",
+      art: "square", folgen: { analyse: [1180, 940, 1180], gleich: [860],
+                               adrFaellig: [1040, 1320], adrSpaet: [1320, 1040, 1320] } }
   ],
 
   /* Post-ROSC-Erinnerungen: Schlüssel der Checkliste (Texte im HTML). */
@@ -990,6 +1248,7 @@ const Kern = {
       roscZeit: null,
       reArrests: 0,
       massnahmen: [],            /* { id, t } – Dokumentation, mehrfach möglich */
+      felder: {},                /* Premium: { feldId: [Zeitstempel, …] } */
       ursachen,
       ursachenNotiz: "",
       postRosc,
@@ -1122,6 +1381,32 @@ const Kern = {
     this.ereignis(e, now, "rearrest", "Re-Arrest " + e.reArrests + " – CPR wieder aufgenommen");
   },
 
+  /* ---------------- Eigene Felder (Premium) ----------------
+     Reine Erinnerungshilfe: Der Nutzer legt fest, was er im Blick behalten
+     will (z. B. BGA alle 10 min). Die App zählt nur die Zeit seit der
+     letzten Bestätigung und meldet, wenn das eigene Intervall um ist –
+     keine medizinische Bewertung. */
+  feldZeit(e, id){
+    const liste = (e.felder && e.felder[id]) || [];
+    return liste.length ? liste[liste.length - 1] : null;
+  },
+  feldStatus(e, feld, now){
+    const letzte = this.feldZeit(e, feld.id);
+    if (letzte == null) return { code: "offen", seitMs: null, anzahl: 0 };
+    const seit = now - letzte;
+    const anzahl = (e.felder[feld.id] || []).length;
+    if (!feld.intervallMin) return { code: "erfasst", seitMs: seit, anzahl };
+    const grenze = feld.intervallMin * 60000;
+    if (seit < grenze) return { code: "laeuft", seitMs: seit, anzahl };
+    return { code: "faellig", seitMs: seit, anzahl };
+  },
+  feldEintrag(e, now, feld){
+    if (!e.felder) e.felder = {};
+    if (!Array.isArray(e.felder[feld.id])) e.felder[feld.id] = [];
+    e.felder[feld.id].push(now);
+    this.ereignis(e, now, "feld", feld.name);
+  },
+
   /* ---------------- Maßnahmen ----------------
      Reine Dokumentation ohne Auswirkung auf die Zustandsmaschine. Eine
      Maßnahme darf mehrfach vorkommen (z. B. zweiter Zugang); angezeigt
@@ -1185,7 +1470,9 @@ function load(key, fallback){
 const Einst = {
   KEY: "cpra_einstellungen",
   werte: { ton: true, vibration: true, bildschirmAn: true,
-           metronomAn: false, metronomBpm: KONF.BPM_STANDARD, autostart: false },
+           metronomAn: false, metronomBpm: KONF.BPM_STANDARD, autostart: false,
+           tonVariante: "klar",   /* Premium: Klang der Hinweistöne */
+           felder: [] },          /* Premium: eigene Felder [{id,name,intervallMin}] */
   laden(){
     const roh = load(this.KEY, {});
     if (roh && typeof roh === "object"){
@@ -1194,7 +1481,11 @@ const Einst = {
       if (typeof roh.bildschirmAn === "boolean") this.werte.bildschirmAn = roh.bildschirmAn;
       if (typeof roh.metronomAn === "boolean") this.werte.metronomAn = roh.metronomAn;
       if (typeof roh.autostart === "boolean") this.werte.autostart = roh.autostart;
-      if (KONF.BPM_PRESETS.indexOf(roh.metronomBpm) >= 0) this.werte.metronomBpm = roh.metronomBpm;
+      if (KONF.TOENE.some(t => t.id === roh.tonVariante)) this.werte.tonVariante = roh.tonVariante;
+      if (Array.isArray(roh.felder)) this.werte.felder = roh.felder.slice(0, 8);
+      if (Number.isFinite(roh.metronomBpm)
+          && roh.metronomBpm >= KONF.BPM_MIN && roh.metronomBpm <= KONF.BPM_MAX)
+        this.werte.metronomBpm = Math.round(roh.metronomBpm);
     }
   },
   set(k, v){ this.werte[k] = v; store(this.KEY, this.werte); }
@@ -1227,6 +1518,7 @@ const Einsatz = {
     /* Felder, die es in einer früheren Fassung noch nicht gab, ergänzen –
        ein laufender Einsatz soll ein App-Update überstehen. */
     if (!Array.isArray(roh.massnahmen)) roh.massnahmen = [];
+    if (!roh.felder || typeof roh.felder !== "object") roh.felder = {};
     this.e = roh;
     return true;
   },
@@ -1375,11 +1667,11 @@ const Audio_ = {
     return !!this.ctx;
   },
   /* Ein einzelner kurzer Ton zur Zeit t (WebAudio-Uhr) bzw. sofort. */
-  ton(freq, dauerMs, t, lautstaerke){
+  ton(freq, dauerMs, t, lautstaerke, art){
     if (!this.ctx) return;
     const wann = t == null ? this.ctx.currentTime : t;
     const o = this.ctx.createOscillator(), g = this.ctx.createGain();
-    o.type = "square"; o.frequency.value = freq;
+    o.type = art || "square"; o.frequency.value = freq;
     const spitze = lautstaerke == null ? 0.28 : lautstaerke;
     g.gain.setValueAtTime(0.0001, wann);
     g.gain.exponentialRampToValueAtTime(spitze, wann + 0.004);
@@ -1429,18 +1721,31 @@ const Metronom = {
 /* Hinweissignale: kurz, unterscheidbar, abschaltbar. Das Metronom läuft
    währenddessen weiter – die Hinweise liegen höher bzw. tiefer im Klang. */
 const Signale = {
+  variante(id){
+    return KONF.TOENE.find(t => t.id === (id || Einst.werte.tonVariante)) || KONF.TOENE[0];
+  },
   vibrieren(muster){
     if (!Einst.werte.vibration) return;
     try { if (navigator.vibrate) navigator.vibrate(muster); } catch(e){}
   },
-  _folge(frequenzen, abstandMs){
-    if (!Einst.werte.ton || !Audio_.init()) return;
-    frequenzen.forEach((f, i) => Audio_.ton(f, 90, Audio_.ctx.currentTime + i * (abstandMs / 1000), 0.34));
+  /* Spielt eine Tonfolge der gewählten Variante. `varianteId` nur zum
+     Probehören – dort soll auch klingen, was noch nicht ausgewählt ist. */
+  _folge(anlass, abstandMs, varianteId){
+    if (!varianteId && !Einst.werte.ton) return;
+    if (!Audio_.init()) return;
+    const v = this.variante(varianteId);
+    const frequenzen = v.folgen[anlass] || [];
+    frequenzen.forEach((f, i) =>
+      Audio_.ton(f, 90, Audio_.ctx.currentTime + i * (abstandMs / 1000), 0.34, v.art));
   },
-  analyseFaellig(){ this._folge([880, 880, 880], 180); this.vibrieren([250, 120, 250]); },
-  gleichAnalyse(){ this._folge([660], 0); this.vibrieren([120]); },
-  adrenalinFaellig(){ this._folge([740, 920], 160); this.vibrieren([150, 80, 150]); },
-  adrenalinUeberfaellig(){ this._folge([920, 740, 920], 160); this.vibrieren([250, 100, 250]); }
+  analyseFaellig(){ this._folge("analyse", 180); this.vibrieren([250, 120, 250]); },
+  gleichAnalyse(){ this._folge("gleich", 0); this.vibrieren([120]); },
+  adrenalinFaellig(){ this._folge("adrFaellig", 160); this.vibrieren([150, 80, 150]); },
+  adrenalinUeberfaellig(){ this._folge("adrSpaet", 160); this.vibrieren([250, 100, 250]); },
+  /* Probehören: unabhängig vom Ton-Schalter und von Premium. */
+  probe(varianteId){
+    this._folge("analyse", 180, varianteId || Einst.werte.tonVariante);
+  }
 };
 
 /* =========================================================================
@@ -1453,7 +1758,7 @@ const Signale = {
    ========================================================================= */
 const Edition = {
   KEY: "cpra_edition",
-  PREMIUM_VERFUEGBAR: false,       /* V1: keine Premium-Funktionen */
+  PREMIUM_VERFUEGBAR: true,        /* Premium-Funktionen sind freigeschaltet */
   get(){ return load(this.KEY, "free") === "premium" ? "premium" : "free"; },
   isPremium(){ return this.PREMIUM_VERFUEGBAR && this.get() === "premium"; },
   set(v){ store(this.KEY, v === "premium" ? "premium" : "free"); this.apply(); },
@@ -1528,7 +1833,7 @@ const Ads = {
 };
 
 const Billing = {
-  ENABLED: false,                  /* V1: keine Käufe */
+  ENABLED: true,                   /* Einmalkauf „Premium“ */
   PRODUCT: "premium_unlock",
   inited: false, product: null, statusLog: [],
   log(msg){
@@ -1551,10 +1856,64 @@ const Billing = {
       s.register([{ id: this.PRODUCT, type: ProductType.NON_CONSUMABLE, platform: Platform.GOOGLE_PLAY }]);
       s.when()
         .productUpdated(() => { this.product = s.get(this.PRODUCT); })
-        .approved(tr => { Edition.set("premium"); try { tr.finish(); } catch(e){} })
+        .approved(tr => {
+          Edition.set("premium");
+          this.log("Kauf bestätigt – Premium aktiv");
+          try { tr.finish(); } catch(e){}
+          if (typeof premiumFreigeschaltet === "function") premiumFreigeschaltet();
+        })
         .receiptUpdated(() => { try { if (s.owned(this.PRODUCT)) Edition.set("premium"); } catch(e){} });
       s.initialize([Platform.GOOGLE_PLAY]);
+      this.log("Kaufmodul gestartet");
     } catch(e){ this.log("Init-Fehler: " + (e && e.message ? e.message : e)); }
+  },
+
+  /* Angezeigter Preis, sobald der Store ihn geliefert hat. */
+  preis(){
+    try {
+      const o = this.product && this.product.getOffer && this.product.getOffer();
+      const pr = o && o.pricingPhases && o.pricingPhases[0];
+      return (pr && pr.price) || null;
+    } catch(e){ return null; }
+  },
+
+  async kaufen(){
+    if (!this.available()){
+      this.log("Kauf nur in der Play-Store-App möglich");
+      toast("Der Kauf ist nur in der App aus dem Play Store möglich.", 4000);
+      return false;
+    }
+    try {
+      const p = window.CdvPurchase.store.get(this.PRODUCT);
+      const o = p && p.getOffer && p.getOffer();
+      if (!o){
+        this.log("Produkt noch nicht geladen", true);
+        toast("Das Angebot ist noch nicht geladen – bitte kurz warten.", 4000);
+        return false;
+      }
+      this.log("Kauf gestartet");
+      await o.order();
+      return true;
+    } catch(e){
+      const msg = e && e.message ? e.message : String(e);
+      if (/cancel|abort/i.test(msg)){ this.log("Kauf abgebrochen"); return false; }
+      this.log("Kauf fehlgeschlagen: " + msg);
+      alert("Der Kauf konnte nicht abgeschlossen werden.\n\n" + msg);
+      return false;
+    }
+  },
+
+  async wiederherstellen(){
+    if (!this.available()){
+      toast("Nur in der App aus dem Play Store möglich.", 3600);
+      return;
+    }
+    try {
+      this.log("Käufe werden geprüft");
+      await window.CdvPurchase.store.restorePurchases();
+      toast(Edition.isPremium() ? "Premium ist freigeschaltet"
+                               : "Es wurde kein früherer Kauf gefunden", 3600);
+    } catch(e){ this.log("Wiederherstellen fehlgeschlagen: " + (e && e.message ? e.message : e)); }
   }
 };
 
@@ -1867,6 +2226,14 @@ function massnahmenOeffnen(){
 /* ---------- Rendering: Vorwahl auf der Startseite ---------- */
 function renderVorwahl(){
   const w = Einst.werte;
+  const pStand = $("premium-stand");
+  if (Edition.isPremium()){
+    pStand.style.display = "";
+    pStand.innerHTML = "<b>Premium ist freigeschaltet.</b> Danke, dass du die "
+      + "Entwicklung unterstützt.";
+  } else {
+    pStand.style.display = "none";
+  }
   $("vw-metro").checked = w.metronomAn;
   $("vw-ton").checked = w.ton;
   $("vw-autostart").checked = w.autostart;
@@ -1879,6 +2246,15 @@ function renderVorwahl(){
 
 /* ---------- Rendering: Einstellungen & Metronom ---------- */
 function renderSettings(){
+  const anzFelder = (Einst.werte.felder || []).length;
+  $("s-felder-sub").textContent = !Edition.isPremium()
+    ? "Premium – eigene Erinnerungen mit Timer"
+    : anzFelder ? anzFelder + (anzFelder === 1 ? " Feld" : " Felder") + " angelegt"
+                : "keine angelegt";
+  $("s-toene-sub").textContent = Signale.variante().name
+    + (Edition.isPremium() ? "" : " · Premium zum Wechseln");
+  $("s-premium-sub").textContent = Edition.isPremium()
+    ? "freigeschaltet – danke!" : "Entwicklung unterstützen";
   const anzahl = Einsatz.archiv().length;
   $("s-archiv-sub").textContent = anzahl
     ? anzahl + (anzahl === 1 ? " Einsatz" : " Einsätze") + " auf diesem Gerät"
@@ -1899,6 +2275,7 @@ const UI = {
       const bpm = Number(b.dataset.bpm);
       b.classList.toggle("active", an ? bpm === Einst.werte.metronomBpm : bpm === 0);
     });
+    if ($("regler-box")) renderRegler();
   },
   metronomPuls(){
     const p = $("metro-puls");
@@ -1918,7 +2295,7 @@ function vollRender(){
   if (Einsatz.aktiv()){
     renderKennzahlen(now);
     if (Einsatz.e.phase === "rosc") renderRosc(now);
-    else { renderRing(now); renderMedikamente(now); renderAktionen(); }
+    else { renderRing(now); renderMedikamente(now); renderAktionen(); renderFelder(now); }
   }
 }
 
@@ -1958,6 +2335,7 @@ function tick(){
     }
     renderRing(now);
     renderMedikamente(now);
+    renderFelder(now);
   } else {
     renderRosc(now);
   }
@@ -2182,6 +2560,7 @@ $("ende-ok").addEventListener("click", () => {
 /* ---- Metronom: kleiner Knopf in der Ecke, Auswahl im Dialog ---- */
 $("btn-metronom").addEventListener("click", () => {
   UI.metronomAnzeigen();
+  renderRegler();
   openModal("modal-metronom");
 });
 document.querySelectorAll("#metro-wahl button").forEach(b =>
@@ -2217,6 +2596,181 @@ $("s-ton").addEventListener("change", () => {
   renderVorwahl();
 });
 $("s-vibration").addEventListener("change", () => Einst.set("vibration", $("s-vibration").checked));
+
+/* ---------- Eigene Felder (Premium) ---------- */
+function feldIntervallText(f){
+  return f.intervallMin ? "Erinnerung nach " + f.intervallMin + " min" : "ohne Intervall";
+}
+/* Karten im Einsatz. Ohne Premium oder ohne angelegte Felder bleibt der
+   Bereich leer – er soll im Einsatz keinen Platz kosten. */
+function renderFelder(now){
+  const grid = $("feldgrid");
+  const e = Einsatz.e;
+  const felder = Einst.werte.felder || [];
+  if (!e || !Edition.isPremium() || !felder.length){ grid.innerHTML = ""; return; }
+  grid.innerHTML = "";
+  felder.forEach(f => {
+    const st = Kern.feldStatus(e, f, now);
+    const card = document.createElement("div");
+    card.className = "feldcard" + (st.code === "faellig" ? " f-faellig" : "");
+    card.dataset.feld = f.id;
+    const kopf = document.createElement("div"); kopf.className = "kopf";
+    const b = document.createElement("b"); b.textContent = f.name;
+    const pill = document.createElement("span");
+    pill.className = "pill " + (st.code === "faellig" ? "p-warn"
+                              : st.code === "offen" ? "p-neutral" : "p-ok");
+    pill.textContent = st.code === "faellig" ? "fällig"
+                     : st.code === "offen" ? "offen" : String(st.anzahl) + "×";
+    kopf.appendChild(b); kopf.appendChild(pill);
+    const wert = document.createElement("div"); wert.className = "wert";
+    wert.textContent = st.seitMs == null ? "–" : Kern.fmtUhr(st.seitMs);
+    const sub = document.createElement("div"); sub.className = "sub";
+    sub.textContent = st.seitMs == null ? feldIntervallText(f) : "seit der letzten Erfassung";
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = "jetzt erfasst";
+    btn.addEventListener("click", () => {
+      if (!Einsatz.aktiv()) return;
+      Kern.feldEintrag(Einsatz.e, Date.now(), f);
+      Einsatz.speichern();
+      vollRender();
+      toast(f.name + " erfasst");
+    });
+    card.appendChild(kopf); card.appendChild(wert); card.appendChild(sub); card.appendChild(btn);
+    grid.appendChild(card);
+  });
+}
+function renderFelderVerwaltung(){
+  const ul = $("felder-liste");
+  ul.innerHTML = "";
+  (Einst.werte.felder || []).forEach(f => {
+    const li = document.createElement("li");
+    li.innerHTML = '<span class="t"><b></b><span></span></span>'
+      + '<button class="weg" type="button" aria-label="Feld entfernen">'
+      + '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+      + 'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'
+      + '<path d="M4 7h16"/><path d="M9 7V5h6v2"/><path d="M6 7l1 13h10l1-13"/></svg></button>';
+    li.querySelector("b").textContent = f.name;
+    li.querySelector(".t span").textContent = feldIntervallText(f);
+    li.querySelector(".weg").addEventListener("click", () => {
+      Einst.set("felder", (Einst.werte.felder || []).filter(x => x.id !== f.id));
+      renderFelderVerwaltung();
+      vollRender();
+    });
+    ul.appendChild(li);
+  });
+  const grenze = (Einst.werte.felder || []).length >= 6;
+  $("feld-neu").style.display = grenze ? "none" : "";
+}
+function felderOeffnen(){
+  if (!premiumTor()) return;
+  renderFelderVerwaltung();
+  openModal("modal-felder");
+}
+$("feld-anlegen").addEventListener("click", () => {
+  const name = $("feld-name").value.trim().slice(0, 24);
+  if (!name){ toast("Bitte einen Namen eingeben"); return; }
+  const liste = (Einst.werte.felder || []).slice();
+  liste.push({ id: "f" + Date.now().toString(36),
+               name, intervallMin: Number($("feld-intervall").value) || 0 });
+  Einst.set("felder", liste);
+  $("feld-name").value = "";
+  renderFelderVerwaltung();
+  vollRender();
+  toast(name + " angelegt – erscheint im Einsatz");
+});
+
+/* ---------- Eigenes Metronom-Tempo (Premium) ---------- */
+function renderRegler(){
+  const premium = Edition.isPremium();
+  const box = $("regler-box");
+  box.classList.toggle("gesperrt", !premium);
+  $("regler-marke").style.display = premium ? "none" : "";
+  $("bpm-regler").value = String(Einst.werte.metronomBpm);
+  $("regler-wert").textContent = $("bpm-regler").value + "/min";
+  $("regler-uebernehmen").textContent = premium
+    ? "Tempo übernehmen" : "Mit Premium freischalten";
+}
+$("bpm-regler").addEventListener("input", () => {
+  /* Schieben darf jeder – erst das Übernehmen ist Premium. So hört und
+     sieht man vorher, was man bekäme. */
+  $("regler-wert").textContent = $("bpm-regler").value + "/min";
+});
+$("regler-uebernehmen").addEventListener("click", () => {
+  if (!premiumTor()) return;
+  const bpm = Math.max(KONF.BPM_MIN, Math.min(KONF.BPM_MAX, Number($("bpm-regler").value)));
+  Einst.set("metronomBpm", bpm);
+  Einst.set("metronomAn", true);
+  if (!Metronom.an) Metronom.start();
+  closeModal("modal-metronom");
+  UI.metronomAnzeigen();
+  renderVorwahl();
+  toast(bpm + " pro Minute übernommen");
+});
+
+/* ---------- Hinweistöne: Klang wählen ---------- */
+function renderToene(){
+  const ul = $("tone-liste");
+  ul.innerHTML = "";
+  KONF.TOENE.forEach(v => {
+    const aktiv = v.id === Einst.werte.tonVariante;
+    const li = document.createElement("li");
+    if (aktiv) li.className = "aktiv";
+    li.innerHTML =
+      '<button class="probe" type="button" aria-label="Probehören">'
+      + '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+      + 'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'
+      + '<polygon points="6 4 20 12 6 20 6 4"/></svg></button>'
+      + '<span class="txt"><b></b><span></span></span>'
+      + '<button class="waehlen" type="button"></button>';
+    li.querySelector("b").textContent = v.name;
+    li.querySelector(".txt span").textContent = v.info;
+    li.querySelector(".waehlen").textContent = aktiv ? "aktiv" : "wählen";
+    li.querySelector(".probe").addEventListener("click", () => {
+      Audio_.init();
+      Signale.probe(v.id);
+    });
+    li.querySelector(".waehlen").addEventListener("click", () => {
+      if (aktiv) return;
+      if (!premiumTor()) return;          /* ohne Premium: Premium-Dialog */
+      Einst.set("tonVariante", v.id);
+      Signale.probe(v.id);
+      renderToene();
+      renderSettings();
+      toast("Klang „" + v.name + "“ übernommen");
+    });
+    ul.appendChild(li);
+  });
+}
+function toeneOeffnen(){ renderToene(); openModal("modal-toene"); }
+
+/* ---------- Premium ----------
+   Ein einziges Tor: Wer eine Premium-Funktion antippt, ohne sie zu haben,
+   landet im Premium-Dialog statt in einer stummen Sackgasse. */
+function premiumTor(){
+  if (Edition.isPremium()) return true;
+  premiumOeffnen();
+  return false;
+}
+function premiumOeffnen(){
+  const preis = Billing.preis();
+  $("premium-preis").textContent = Edition.isPremium()
+    ? "Premium ist auf diesem Gerät freigeschaltet. Danke für die Unterstützung."
+    : (preis ? "Einmalig " + preis + " – kein Abo, keine Folgekosten."
+             : "Einmaliger Kauf, kein Abo. Der Preis wird vom Play Store geladen.");
+  $("premium-kaufen").style.display = Edition.isPremium() ? "none" : "";
+  $("premium-restore").style.display = Edition.isPremium() ? "none" : "";
+  openModal("modal-premium");
+}
+/* Wird nach einem erfolgreichen Kauf aufgerufen (siehe Billing). */
+function premiumFreigeschaltet(){
+  closeModal("modal-premium");
+  vollRender();
+  toast("Premium ist freigeschaltet – danke für die Unterstützung!", 4200);
+}
+$("btn-premium").addEventListener("click", premiumOeffnen);
+$("premium-kaufen").addEventListener("click", () => Billing.kaufen());
+$("premium-restore").addEventListener("click", () => Billing.wiederherstellen());
 
 /* ---------- Gespeicherte Einsätze ---------- */
 function fmtEinsatzDatum(t){
@@ -2295,6 +2849,9 @@ function renderArchivDetail(i){
   $("archiv-hinweis").textContent = "Einsatz vom " + fmtEinsatzDatum(e.startZeit);
   $("archiv-detail").style.display = "";
 }
+$("s-felder").addEventListener("click", () => { closeModal("modal-settings"); felderOeffnen(); });
+$("s-toene").addEventListener("click", () => { closeModal("modal-settings"); toeneOeffnen(); });
+$("s-premium").addEventListener("click", () => { closeModal("modal-settings"); premiumOeffnen(); });
 $("s-archiv").addEventListener("click", () => {
   closeModal("modal-settings");
   renderArchivListe();
@@ -2322,7 +2879,17 @@ $("s-version").addEventListener("click", () => {
     WakeLock.log("Diagnose aktiv");
     Ads.log("Diagnose aktiv");
     Billing.log("Diagnose aktiv");
+    /* Zum Prüfen der Premium-Funktionen, solange das Kaufprodukt im Play
+       Store noch nicht freigegeben ist. Nur über die versteckte Diagnose
+       erreichbar – im normalen Betrieb sieht das niemand. */
+    $("s-premium-test").style.display = "";
   }
+});
+$("s-premium-test").addEventListener("click", () => {
+  Edition.set(Edition.isPremium() ? "free" : "premium");
+  vollRender();
+  renderSettings();
+  toast(Edition.isPremium() ? "Premium zum Testen aktiv" : "Premium wieder aus", 3000);
 });
 
 /* ---------- Kurzeinführung ---------- */

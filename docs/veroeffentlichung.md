@@ -3,10 +3,12 @@
 Einfache Checkliste für alles, was außerhalb des Codes zu tun ist. Reihenfolge
 einhalten – jeder Block ist unabhängig abhakbar.
 
-**Wichtig für diese App:** CPR Assist V1 hat **keine Werbung und keine Käufe**.
-Die Schritte, die es bei den Fitness-Apps für AdMob und das Kaufprodukt gab,
-entfallen hier komplett. Was du dafür später bräuchtest, steht ganz unten unter
-„Später: Monetarisierung“ – jetzt ist dort nichts zu tun.
+**Wichtig für diese App:** CPR Assist hat **keine Werbung**, aber **einen
+einmaligen In-App-Kauf** („Premium“, Produkt-ID `premium_unlock`). Die
+AdMob-Schritte der Fitness-Apps entfallen also, das Kaufprodukt muss aber
+angelegt werden – siehe Abschnitt 3a. Ohne dieses Produkt läuft die App
+normal weiter; der Kauf-Knopf meldet dann nur, dass kein Angebot geladen
+werden konnte.
 
 ## 1. GitHub Pages aktivieren (Web-Version + Datenschutz-URL)
 
@@ -50,6 +52,7 @@ Hier ist CPR Assist schnell abgehakt, weil die App nichts sammelt:
 |---|---|
 | Datenschutzerklärung | die URL aus Schritt 1 |
 | Anzeigen | **Nein**, die App enthält keine Werbung |
+| In-App-Käufe | **Ja** – einmaliger Kauf „Premium“, kein Abo |
 | App-Zugriff | Alle Funktionen ohne Einschränkung verfügbar (kein Login) |
 | Inhaltseinstufung | Fragebogen ausfüllen, alles verneinen → „Ab 0 Jahren“ |
 | Zielgruppe | **18 und älter**; „Für Kinder gedacht“: **Nein** |
@@ -82,6 +85,37 @@ wenn die Werbung abgeschaltet ist. Damit die Angabe „keine Werbe-ID" stimmt,
 wird die Berechtigung im `AndroidManifest.xml` ausdrücklich wieder entfernt
 (`tools:node="remove"`). Ohne das verlangt die Play Console eine Erklärung zur
 Werbe-ID, und die Antwort „keine Datenerhebung" wäre nicht mehr stimmig.
+
+## 3a. Kaufprodukt „Premium“ anlegen
+
+Ohne dieses Produkt kann niemand Premium kaufen – die App bleibt sonst voll
+nutzbar, nur der Kauf schlägt fehl.
+
+1. Play Console → deine App → **Monetarisieren → Produkte →
+   In-App-Produkte** → **Produkt erstellen**
+2. Werte eintragen:
+   - Produkt-ID: **`premium_unlock`** (genau so, mit Unterstrich – **nach dem
+     Anlegen nicht mehr änderbar**)
+   - Name: **Premium**
+   - Beschreibung: z. B. *Eigene Hinweistöne, frei einstellbares
+     Metronom-Tempo und eigene Felder mit Timer. Einmaliger Kauf, kein Abo.*
+   - Preis: nach eigener Entscheidung (z. B. 2,99 €)
+3. Falls die Console nach einer **Kaufoption** fragt, dort die ID
+   **`premium-unlock`** verwenden (mit Bindestrich – Unterstriche sind an
+   dieser Stelle nicht erlaubt).
+4. Produkt **aktivieren**.
+5. **Lizenztester eintragen**, sonst kostet ein Testkauf echtes Geld:
+   Play Console → Haus-Symbol (Alle Apps) → **Einstellungen → Lizenztests**
+   → eigene Google-Adresse hinzufügen → **RESPOND_NORMALLY**.
+
+Der Kauf funktioniert nur in einer App, die **über den Play Store**
+installiert wurde (interner Test genügt) – nicht in einem seitlich
+installierten APK und nicht in der Web-Version.
+
+**Zum Prüfen der Premium-Funktionen ohne Kauf:** In den Einstellungen
+**5× auf die Versionsnummer tippen**, dann erscheint unter den
+Diagnosezeilen „Premium zum Testen umschalten“. Das ist nur für die
+Entwicklung gedacht und im normalen Betrieb unsichtbar.
 
 ## 4. Signieren & hochladen (Android Studio)
 
@@ -259,11 +293,15 @@ mit 12 Testern über 14 Tage** verlangt, betrifft das neuere private
 Entwicklerkonten. Dann zuerst diesen Test durchlaufen lassen; an der App selbst
 ändert sich dadurch nichts.
 
-## 7. Später: Monetarisierung (jetzt nichts zu tun)
+## 7. Werbung: bewusst nicht – und was das für die Formulare heißt
 
-V1 ist bewusst ohne Werbung und ohne Kauf. Der Code dafür liegt vorbereitet
-bereit und ist über je einen Schalter abgeschaltet. Wenn du das später
-aktivieren willst, sind das die Schritte – **erst dann**, nicht jetzt:
+Werbung ist in dieser App nicht vorgesehen, auch nicht später: Im Einsatz
+darf nichts ablenken. Das AdMob-Modul liegt nur als ungenutzte Infrastruktur
+im Code (`ADS_CONF.ENABLED = false`) und wird nie gestartet. Deshalb bleibt
+im Manifest auch die Zeile stehen, die die Werbe-ID entfernt.
+
+Nur zur Vollständigkeit – **falls** du es eines Tages doch anders willst,
+wären das die Schritte. Solange du nichts davon tust, ist alles korrekt:
 
 1. **AdMob:** auf [admob.google.com](https://admob.google.com) im selben Konto
    eine neue App **CPR Assist** anlegen. Die App-ID (`ca-app-pub-…~…`) ersetzt

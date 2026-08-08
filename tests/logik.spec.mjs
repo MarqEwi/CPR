@@ -250,3 +250,37 @@ test("Konfiguration entspricht der Leitlinie (Erwachsene)", async ({ page }) => 
   expect(k.BPM_STANDARD).toBe(110);
   expect(k.URSACHEN).toHaveLength(8);
 });
+
+test("Eigene Felder: Status hängt am selbst gewählten Intervall", async ({ page }) => {
+  const r = await page.evaluate(T => {
+    const { Kern } = window.CPRA;
+    const e = Kern.neuerEinsatz(T);
+    const bga = { id: "f1", name: "BGA", intervallMin: 10 };
+    const frei = { id: "f2", name: "Notiz", intervallMin: 0 };
+
+    const vorher = Kern.feldStatus(e, bga, T).code;
+    Kern.feldEintrag(e, T + 60000, bga);
+    const gleich = Kern.feldStatus(e, bga, T + 60000);
+    const knapp = Kern.feldStatus(e, bga, T + 60000 + 599999).code;   // 9:59,999
+    const faellig = Kern.feldStatus(e, bga, T + 60000 + 600000).code; // exakt 10:00
+    Kern.feldEintrag(e, T + 700000, bga);                             // erneut erfasst
+    const neu = Kern.feldStatus(e, bga, T + 700000);
+
+    Kern.feldEintrag(e, T + 90000, frei);
+    const ohne = Kern.feldStatus(e, frei, T + 90000 + 3600000).code;
+
+    return { vorher, gleich, knapp, faellig, neu, ohne,
+             protokoll: e.ereignisse.filter(x => x.typ === "feld").map(x => x.info),
+             zeit: Kern.feldZeit(e, "f1") - T };
+  }, T);
+  expect(r.vorher).toBe("offen");                 // noch nie erfasst
+  expect(r.gleich.code).toBe("laeuft");
+  expect(r.gleich.anzahl).toBe(1);
+  expect(r.knapp).toBe("laeuft");
+  expect(r.faellig).toBe("faellig");              // Grenze exakt beim Intervall
+  expect(r.neu.code).toBe("laeuft");              // zweite Erfassung setzt die Uhr
+  expect(r.neu.anzahl).toBe(2);
+  expect(r.ohne).toBe("erfasst");                 // ohne Intervall wird nie fällig
+  expect(r.protokoll).toEqual(["BGA", "BGA", "Notiz"]);
+  expect(r.zeit).toBe(700000);                    // jüngster Zeitstempel
+});
