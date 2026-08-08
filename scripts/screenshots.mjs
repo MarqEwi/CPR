@@ -125,10 +125,17 @@ await schuss("08-massnahmen", { aufbau: jetzt => {
   await p.click("#btn-massnahme");
 } });
 
-await schuss("23-standard", { schritte: async p => {
-  await p.click("#btn-settings");
-  await p.click("#s-standard");
-} });
+await schuss("23-standard", {
+  aufbau: () => {
+    const e = JSON.parse(localStorage.getItem("cpra_einstellungen") || "{}");
+    e.standard = "aha";
+    localStorage.setItem("cpra_einstellungen", JSON.stringify(e));
+  },
+  schritte: async p => {
+    await p.click("#btn-settings");
+    await p.click("#s-standard");
+  }
+});
 
 await schuss("24-ursachen-aha", {
   aufbau: jetzt => {

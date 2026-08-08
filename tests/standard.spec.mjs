@@ -145,11 +145,12 @@ test("die Quellen wechseln mit dem Standard", async ({ page }) => {
   await standardWaehlen(page, "aha");
   await page.click("#btn-quellen");
   const q = page.locator("#quellen-liste li");
-  await expect(q).toHaveCount(3);
-  await expect(q.nth(0)).toContainText("American Heart Association");
-  await expect(q.nth(1)).toContainText("Post–Cardiac Arrest Care");
+  await expect(q).toHaveCount(4);
+  await expect(q.nth(0)).toContainText("Highlights");
+  await expect(q.nth(1)).toContainText("Adult Advanced Life Support");
+  await expect(q.nth(2)).toContainText("Post–Cardiac Arrest Care");
   /* ILCOR bleibt in beiden – es ist die gemeinsame Grundlage. */
-  await expect(q.nth(2)).toContainText("ILCOR");
+  await expect(q.nth(3)).toContainText("ILCOR");
   /* Und die hinterlegten Werte zeigen die AHA-Schwelle. */
   await expect(page.locator("#quellen-werte")).toContainText("2. Schock");
 });
@@ -176,4 +177,69 @@ test("ein eigenes Profil setzt auf dem gewählten Standard auf", async ({ page }
   const k = await page.evaluate(() => window.CPRA.KONF);
   expect(k.ZYKLUS_MS).toBe(90000);
   expect(k.ADRENALIN_SCHOCK).toBe(2);          // vom Standard geerbt
+});
+
+test("Antiarrhythmikum: Amiodaron voreingestellt, Lidocain waehlbar", async ({ page }) => {
+  await appOeffnen(page);
+  /* Bei ERC gibt es die Wahl nicht – dort ist Amiodaron gesetzt. */
+  await einstellungenOeffnen(page);
+  await page.click("#s-standard");
+  await expect(page.locator("#aa-wahl")).toBeHidden();
+  await page.click('#standard-liste button[data-standard="aha"]');
+
+  await einstellungenOeffnen(page);
+  await page.click("#s-standard");
+  await expect(page.locator("#aa-wahl")).toBeVisible();
+  await expect(page.locator("#aa-liste li.aktiv b")).toHaveText("Amiodaron");
+  await expect(page.locator("#aa-liste li.aktiv")).toContainText("300 mg");
+
+  /* Umschalten auf Lidocain: Karte und Maßnahmenliste tauschen. */
+  await page.click('#aa-liste button[data-aa="lidocain"]');
+  await expect(page.locator("#aa-liste li.aktiv b")).toHaveText("Lidocain");
+  await page.click('#modal-standard [data-close="modal-standard"]');
+
+  await einsatzStarten(page);
+  await expect(page.locator("#card-amiodaron .kopf b")).toHaveText("Lidocain");
+  await expect(page.locator("#btn-amiodaron")).toContainText("1–1,5 mg/kg");
+  await page.click("#btn-massnahme");
+  await expect(page.locator("#massnahmen-wahl button").last()).toContainText("Amiodaron");
+  await page.click('#modal-massnahme [data-close="modal-massnahme"]');
+
+  /* Dosis erfassen: gespeichert wird die Dosisnummer, nicht eine mg-Zahl. */
+  await page.evaluate(() => {
+    const { Kern, Einsatz } = window.CPRA;
+    Kern.rhythmusSetzen(Einsatz.e, Date.now(), "schockbar");
+    Kern.schock(Einsatz.e, Date.now());
+    Kern.schock(Einsatz.e, Date.now());
+    Kern.schock(Einsatz.e, Date.now());
+    Einsatz.speichern();
+  });
+  await page.waitForTimeout(300);
+  await expect(page.locator("#ami-pill")).toHaveText("1–1,5 mg/kg fällig");
+  await page.click("#btn-amiodaron");
+  const gabe = await page.evaluate(() => window.CPRA.Einsatz.e.amiodaron[0]);
+  expect(gabe.dosis).toBe(1);
+  expect(gabe.mg).toBe(null);
+  /* Im Protokoll steht das Mittel mit seiner Dosisangabe, nicht "null mg". */
+  const protokoll = await page.evaluate(() =>
+    window.CPRA.Einsatz.e.ereignisse.filter(x => x.typ === "amiodaron").map(x => x.info));
+  expect(protokoll).toEqual(["Lidocain 1–1,5 mg/kg"]);
+});
+
+test("ein laufender Einsatz behaelt sein Antiarrhythmikum", async ({ page }) => {
+  await appOeffnen(page);
+  await standardWaehlen(page, "aha");
+  await einsatzStarten(page);
+  expect(await page.evaluate(() => window.CPRA.Einsatz.e.antiarrhythmikum)).toBe("amiodaron");
+
+  await einstellungenOeffnen(page);
+  await page.click("#s-standard");
+  await page.click('#aa-liste button[data-aa="lidocain"]');
+  await page.click('#modal-standard [data-close="modal-standard"]');
+
+  /* Die Einstellung ist umgestellt, der laufende Einsatz aber nicht –
+     bereits erfasste Dosen gehoeren zum bisherigen Mittel. */
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.antiarrhythmikum)).toBe("lidocain");
+  expect(await page.evaluate(() => window.CPRA.Einsatz.e.antiarrhythmikum)).toBe("amiodaron");
+  await expect(page.locator("#card-amiodaron .kopf b")).toHaveText("Amiodaron");
 });

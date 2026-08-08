@@ -1335,6 +1335,18 @@
       aus demselben ILCOR-Konsens und widersprechen sich nicht – sie setzen ihn
       nur unterschiedlich um.</p>
     <ul class="sprachliste" id="standard-liste"></ul>
+
+    <!-- Nur dort sichtbar, wo der Standard die Wahl zwischen zwei
+         gleichwertigen Antiarrhythmika vorsieht (AHA/ACLS). -->
+    <div id="aa-wahl" style="display:none">
+      <h3 class="qh" data-i18n="aa_titel">Antiarrhythmikum</h3>
+      <p class="frage" data-i18n="aa_frage">Amiodaron und Lidocain gelten als Alternativen
+        zueinander, nicht als Kombination. Die App führt deshalb genau eines als
+        Dosis-Status in der Medikamentenkarte – das andere steht in der
+        Maßnahmen-Schnellauswahl, falls es doch gegeben wird.</p>
+      <ul class="sprachliste" id="aa-liste"></ul>
+    </div>
+
     <h3 class="qh" data-i18n="sd_unterschiede">Was sich dadurch ändert</h3>
     <ul class="premiumliste" id="standard-unterschiede"></ul>
     <button class="quellenlink" data-quellen>
@@ -1531,6 +1543,11 @@ const KONF = {
      nichts über Speicher oder Kaufstatus wissen muss. */
   EIGENE_MASSNAHMEN: [],
 
+  /* Antiarrhythmika, zwischen denen gewählt werden kann. Sie sind
+     Alternativen zueinander, keine Kombination – die App führt immer genau
+     eines als Dosis-Status. */
+  ANTIARRHYTHMIKA: ["amiodaron", "lidocain"],
+
   /* Grenzen der eigenen Maßnahmen und Felder. */
   EIGENE_MAX: 8,
 
@@ -1615,13 +1632,20 @@ const STANDARDS = [
     ],
     massnahmen: [
       { id: "ivzugang" }, { id: "iozugang" }, { id: "sga" },
-      { id: "intubation" }, { id: "kapnographie" }, { id: "mechanisch" },
-      /* AHA führt Lidocain gleichwertig neben Amiodaron. Die Medikamenten-
-         karte kennt weiterhin nur Amiodaron mit Dosis-Status; Lidocain wird
-         hier als Ereignis mit Zeitstempel dokumentiert. */
-      { id: "lidocain" }
+      { id: "intubation" }, { id: "kapnographie" }, { id: "mechanisch" }
     ],
+    /* Die AHA nennt Amiodaron und Lidocain als gleichwertige Alternativen.
+       Beides zusammen ist nicht vorgesehen – deshalb wählt der Nutzer, was
+       die Medikamentenkarte führt; das andere landet automatisch in der
+       Maßnahmen-Schnellauswahl. */
+    aaWahl: true,
     leitlinien: [
+      /* Die Übersichtsseite zuerst: Von dort sind die „Highlights" in allen
+         Sprachen und der Volltext erreichbar – für die meisten der
+         nützlichere Einstieg als eine Journal-DOI. */
+      { id: "ahahub", titel: "2025 AHA Guidelines for CPR and ECC – Highlights und Volltext",
+        org: "American Heart Association (AHA)",
+        stand: "2025", url: "https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines" },
       { id: "aha9",  titel: "2025 AHA Guidelines for CPR and ECC – Part 9: Adult Advanced Life Support",
         org: "American Heart Association (AHA)",
         stand: "2025", url: "https://www.ahajournals.org/doi/10.1161/CIR.0000000000001376" },
@@ -1643,6 +1667,15 @@ const Standard = {
     return STANDARDS.some(x => x.id === s) ? s : "erc";
   },
   aktiv(){ return STANDARDS.find(x => x.id === this.id()) || STANDARDS[0]; },
+  /* Antiarrhythmikum der Medikamentenkarte. Nur wo der Standard die Wahl
+     vorsieht, gilt die Nutzerentscheidung – sonst immer Amiodaron. */
+  aaWahl(){ return !!this.aktiv().aaWahl; },
+  aa(){
+    if (!this.aaWahl()) return "amiodaron";
+    const w = Einst && Einst.werte ? Einst.werte.antiarrhythmikum : null;
+    return KONF.ANTIARRHYTHMIKA.indexOf(w) >= 0 ? w : "amiodaron";
+  },
+  aaAnderes(){ return this.aa() === "amiodaron" ? "lidocain" : "amiodaron"; },
   /* Grundwerte des Standards – darauf setzt ein eigenes Profil auf. */
   basis(){
     const b = {};
@@ -1653,8 +1686,12 @@ const Standard = {
   anwenden(){
     const s = this.aktiv();
     KONF.URSACHEN = s.ursachen;
-    KONF.MASSNAHMEN = s.massnahmen;
     KONF.LEITLINIEN = s.leitlinien;
+    /* Das nicht gewählte Antiarrhythmikum steht als Maßnahme bereit – falls
+       es doch gegeben wird, ist es wenigstens mit Zeitstempel dokumentiert. */
+    KONF.MASSNAHMEN = this.aaWahl()
+      ? s.massnahmen.concat([{ id: this.aaAnderes() }])
+      : s.massnahmen;
   },
   kurz(){ return tText("std_" + this.id() + "_kurz"); }
 };
@@ -1701,7 +1738,7 @@ de: {
   /* Startseite */
   st_hinweis: "<b>{d} · Leitlinien 2025 ({s}).</b> Die App trifft <b>keine Therapieentscheidungen</b> – verantwortlich bleibt das behandelnde Team.",
   st_p1: "<b>2-Minuten-Zyklen</b> mit Warnung vor dem Analysefenster und Erinnerung an den Helferwechsel",
-  st_p2: "<b>Adrenalin &amp; Amiodaron</b> als verständlicher Status statt roher Timer",
+  st_p2: "<b>Adrenalin &amp; Antiarrhythmikum</b> als verständlicher Status statt roher Timer",
   st_p3: "<b>Rhythmus, Schocks, ROSC, 4H/HITS</b> – jede Aktion einen Tipp entfernt, alles mit Zeitstempel",
   st_a_metro: "Metronom für den Einsatz vorwählen",
   st_autostart_sub: "Ab dann startet der Zyklus bei jedem Öffnen sofort – diese Startseite erscheint nicht mehr",
@@ -1975,7 +2012,7 @@ de: {
   al_f_ADRENALIN_SPAET_MS: "Adrenalin gilt ab dann als überfällig",
   al_f_ADRENALIN_SPAET_MS_i: "Zeit seit der letzten Gabe. Voreinstellung 5 Minuten.",
   al_f_ADRENALIN_SCHOCK: "Erstes Adrenalin bei VF/pVT",
-  al_f_ADRENALIN_SCHOCK_i: "Ab diesem Schock ist die erste Gabe fällig. Voreinstellung 3.",
+  al_f_ADRENALIN_SCHOCK_i: "Ab diesem Schock ist die erste Gabe fällig. ERC: 3. Schock. Die AHA nennt keine feste Zahl („nach erfolglosen ersten Defibrillationsversuchen“); der ACLS-Algorithmus führt sie nach dem 2.",
   al_f_AMIODARON_SCHOCK_300: "Amiodaron 300 mg ab Schock",
   al_f_AMIODARON_SCHOCK_300_i: "Voreinstellung: nach dem 3. Schock bei VF/pVT.",
   al_f_AMIODARON_SCHOCK_150: "Amiodaron 150 mg ab Schock",
@@ -2075,11 +2112,11 @@ de: {
   sd_titel: "Leitlinien-Standard",
   sd_frage: "Nach welcher Fassung soll die App rechnen? Beide stammen aus demselben ILCOR-Konsens und widersprechen sich nicht – sie setzen ihn nur unterschiedlich um.",
   sd_unterschiede: "Was sich dadurch ändert",
-  sd_u1: "<b>Erstes Adrenalin bei VF/pVT</b> – ERC nennt den 3. Schock, der ACLS-Algorithmus gibt nach dem 2.",
+  sd_u1: "<b>Erstes Adrenalin bei VF/pVT</b> – der ERC nennt ausdrücklich den 3. Schock. Die AHA schreibt „nach erfolglosen ersten Defibrillationsversuchen“ ohne feste Zahl; die App setzt dafür den 2. Schock an, weil der ACLS-Algorithmus ihn dort führt. In den Grundeinstellungen änderbar.",
   sd_u2: "<b>Reversible Ursachen</b> – 4 H’s und HITS (8 Punkte) gegenüber 5 H’s und 5 T’s (10 Punkte). Inhaltlich dasselbe, nur anders gruppiert.",
   sd_u3: "<b>Sauerstoff nach ROSC</b> – Ziel 94–98 % (ERC) gegenüber 90–98 % (AHA).",
   sd_u4: "<b>Blutdruck nach ROSC</b> – systolisch über 100 mmHg (ERC) gegenüber MAD ab 65 mmHg (AHA).",
-  sd_u5: "<b>Antiarrhythmikum</b> – die AHA nennt Lidocain gleichwertig neben Amiodaron; es steht dann in der Maßnahmen-Auswahl.",
+  sd_u5: "<b>Antiarrhythmikum</b> – die AHA nennt Lidocain gleichwertig neben Amiodaron. Welches die Medikamentenkarte führt, wählst du unten; das andere steht in der Maßnahmen-Auswahl.",
   std_erc: "ERC / GRC", std_erc_sub: "Europa", std_erc_kurz: "ERC/GRC",
   std_aha: "AHA / ACLS", std_aha_sub: "USA", std_aha_kurz: "AHA/ACLS",
   ak_ursachen_erc: "4H / HITS", ak_ursachen_aha: "5H / 5T",
@@ -2101,7 +2138,26 @@ de: {
   ev_standard: "Leitlinien-Standard: {n}",
   ts_standard: "Die App rechnet jetzt nach {n}.",
   std_erc_disziplin: "Erwachsenen-ALS", std_aha_disziplin: "Erwachsenen-ACLS",
-  ql_link: "Grundlage: {s} 2025 · <u>Quellen ansehen</u>"
+  ql_link: "Grundlage: {s} 2025 · <u>Quellen ansehen</u>",
+  /* Antiarrhythmikum */
+  md_lidocain: "Lidocain",
+  aa_titel: "Antiarrhythmikum",
+  aa_frage: "Amiodaron und Lidocain gelten als Alternativen zueinander, nicht als Kombination. Die App führt deshalb genau eines als Dosis-Status in der Medikamentenkarte – das andere steht in der Maßnahmen-Schnellauswahl, falls es doch gegeben wird.",
+  aa_amiodaron_d1: "300 mg", aa_amiodaron_d2: "150 mg",
+  aa_lidocain_d1: "1–1,5 mg/kg", aa_lidocain_d2: "0,5–0,75 mg/kg",
+  aa_btn: "{d} gegeben",
+  aa_p_faellig: "{d} fällig",
+  aa_p_moeglich: "{d} möglich",
+  aa_gegeben: "{d} gegeben",
+  aa_gegeben_beide: "{a} + {b} gegeben",
+  aa_sub_faellig: "{n}. Schock erreicht – {d} i.v. fällig",
+  aa_sub_gegeben1: "um {t} · {d} nach dem {n}. Schock möglich",
+  aa_sub_moeglich: "{n}. Schock erreicht – Folgegabe {d} möglich",
+  ms_amiodaron: "Amiodaron",
+  ev_aa: "{m} {d}",
+  ts_aa: "{m} {d} protokolliert",
+  ts_aa_gewaehlt: "{m} führt jetzt die Medikamentenkarte – {a} steht in der Maßnahmen-Auswahl.",
+  ts_aa_spaeter: "{m} gilt ab dem nächsten Einsatz. Der laufende Einsatz behält sein Mittel."
 },
 
 /* ------------------------------------------------------------------ en */
@@ -2117,7 +2173,7 @@ en: {
 
   st_hinweis: "<b>{d} · Guidelines 2025 ({s}).</b> The app makes <b>no treatment decisions</b> – the treating team stays responsible.",
   st_p1: "<b>2-minute cycles</b> with a warning before the rhythm check and a reminder to change compressors",
-  st_p2: "<b>Adrenaline &amp; amiodarone</b> as a clear status instead of a bare timer",
+  st_p2: "<b>Adrenaline &amp; antiarrhythmic</b> as a clear status instead of a bare timer",
   st_p3: "<b>Rhythm, shocks, ROSC, 4H/4T</b> – every action one tap away, everything time-stamped",
   st_a_metro: "Preselect the metronome for the next resuscitation",
   st_autostart_sub: "From then on the cycle starts immediately every time you open the app – this start screen no longer appears",
@@ -2376,7 +2432,7 @@ en: {
   al_f_ADRENALIN_SPAET_MS: "Adrenaline counts as overdue from",
   al_f_ADRENALIN_SPAET_MS_i: "Time since the last dose. Default 5 minutes.",
   al_f_ADRENALIN_SCHOCK: "First adrenaline in VF/pVT",
-  al_f_ADRENALIN_SCHOCK_i: "From this shock onwards the first dose is due. Default 3.",
+  al_f_ADRENALIN_SCHOCK_i: "From this shock onwards the first dose is due. ERC: 3rd shock. The AHA names no fixed number (“after initial defibrillation attempts have failed”); the ACLS algorithm places it after the 2nd.",
   al_f_AMIODARON_SCHOCK_300: "Amiodarone 300 mg from shock",
   al_f_AMIODARON_SCHOCK_300_i: "Default: after the 3rd shock in VF/pVT.",
   al_f_AMIODARON_SCHOCK_150: "Amiodarone 150 mg from shock",
@@ -2471,11 +2527,11 @@ en: {
   sd_titel: "Guideline standard",
   sd_frage: "Which edition should the app follow? Both come from the same ILCOR consensus and do not contradict each other – they only implement it differently.",
   sd_unterschiede: "What this changes",
-  sd_u1: "<b>First adrenaline in VF/pVT</b> – ERC names the 3rd shock, the ACLS algorithm gives it after the 2nd.",
+  sd_u1: "<b>First adrenaline in VF/pVT</b> – the ERC explicitly names the 3rd shock. The AHA says “after initial defibrillation attempts have failed” without a fixed number; the app uses the 2nd shock because the ACLS algorithm places it there. Adjustable in the base settings.",
   sd_u2: "<b>Reversible causes</b> – 4 H’s and 4 T’s (8 items) versus 5 H’s and 5 T’s (10 items). Same content, grouped differently.",
   sd_u3: "<b>Oxygen after ROSC</b> – target 94–98 % (ERC) versus 90–98 % (AHA).",
   sd_u4: "<b>Blood pressure after ROSC</b> – systolic above 100 mmHg (ERC) versus MAP from 65 mmHg (AHA).",
-  sd_u5: "<b>Antiarrhythmic</b> – the AHA names lidocaine alongside amiodarone; it then appears in the intervention list.",
+  sd_u5: "<b>Antiarrhythmic</b> – the AHA names lidocaine alongside amiodarone. You choose below which one carries the drug card; the other appears in the intervention list.",
   std_erc: "ERC / GRC", std_erc_sub: "Europe", std_erc_kurz: "ERC/GRC",
   std_aha: "AHA / ACLS", std_aha_sub: "USA", std_aha_kurz: "AHA/ACLS",
   ak_ursachen_erc: "4H / 4T", ak_ursachen_aha: "5H / 5T",
@@ -2497,7 +2553,25 @@ en: {
   ev_standard: "Guideline standard: {n}",
   ts_standard: "The app now follows {n}.",
   std_erc_disziplin: "Adult ALS", std_aha_disziplin: "Adult ACLS",
-  ql_link: "Based on {s} 2025 · <u>view sources</u>"
+  ql_link: "Based on {s} 2025 · <u>view sources</u>",
+  md_lidocain: "Lidocaine",
+  aa_titel: "Antiarrhythmic",
+  aa_frage: "Amiodarone and lidocaine are alternatives to each other, not a combination. The app therefore carries exactly one of them as a dose status on the drug card – the other appears in the quick intervention list in case it is given after all.",
+  aa_amiodaron_d1: "300 mg", aa_amiodaron_d2: "150 mg",
+  aa_lidocain_d1: "1–1.5 mg/kg", aa_lidocain_d2: "0.5–0.75 mg/kg",
+  aa_btn: "{d} given",
+  aa_p_faellig: "{d} due",
+  aa_p_moeglich: "{d} possible",
+  aa_gegeben: "{d} given",
+  aa_gegeben_beide: "{a} + {b} given",
+  aa_sub_faellig: "shock {n} reached – {d} i.v. due",
+  aa_sub_gegeben1: "at {t} · {d} possible after shock {n}",
+  aa_sub_moeglich: "shock {n} reached – follow-up dose {d} possible",
+  ms_amiodaron: "Amiodarone",
+  ev_aa: "{m} {d}",
+  ts_aa: "{m} {d} logged",
+  ts_aa_gewaehlt: "{m} now carries the drug card – {a} is in the intervention list.",
+  ts_aa_spaeter: "{m} applies from the next case. The running case keeps its agent."
 },
 
 /* ------------------------------------------------------------------ fr */
@@ -2513,7 +2587,7 @@ fr: {
 
   st_hinweis: "<b>{d} · Recommandations 2025 ({s}).</b> L’application ne prend <b>aucune décision thérapeutique</b> – l’équipe soignante reste responsable.",
   st_p1: "<b>Cycles de 2 minutes</b> avec alerte avant l’analyse du rythme et rappel de relais du masseur",
-  st_p2: "<b>Adrénaline et amiodarone</b> sous forme de statut clair plutôt que d’un simple minuteur",
+  st_p2: "<b>Adrénaline et antiarythmique</b> sous forme de statut clair plutôt que d’un simple minuteur",
   st_p3: "<b>Rythme, chocs, ROSC, 4H/4T</b> – chaque action à une pression, tout horodaté",
   st_a_metro: "Présélectionner le métronome pour la prochaine réanimation",
   st_autostart_sub: "À partir de là, le cycle démarre immédiatement à chaque ouverture – cet écran d’accueil n’apparaît plus",
@@ -2772,7 +2846,7 @@ fr: {
   al_f_ADRENALIN_SPAET_MS: "L’adrénaline est en retard à partir de",
   al_f_ADRENALIN_SPAET_MS_i: "Temps depuis la dernière dose. Par défaut 5 minutes.",
   al_f_ADRENALIN_SCHOCK: "Première adrénaline en FV/TVsp",
-  al_f_ADRENALIN_SCHOCK_i: "À partir de ce choc, la première dose est due. Par défaut 3.",
+  al_f_ADRENALIN_SCHOCK_i: "À partir de ce choc, la première dose est due. ERC : 3e choc. L’AHA ne donne pas de chiffre fixe (« après l’échec des premières tentatives de défibrillation ») ; l’algorithme ACLS la place après le 2e.",
   al_f_AMIODARON_SCHOCK_300: "Amiodarone 300 mg à partir du choc",
   al_f_AMIODARON_SCHOCK_300_i: "Par défaut : après le 3e choc en FV/TVsp.",
   al_f_AMIODARON_SCHOCK_150: "Amiodarone 150 mg à partir du choc",
@@ -2867,11 +2941,11 @@ fr: {
   sd_titel: "Référentiel",
   sd_frage: "Selon quelle version l’application doit-elle raisonner ? Les deux viennent du même consensus ILCOR et ne se contredisent pas – elles le mettent seulement en œuvre différemment.",
   sd_unterschiede: "Ce que cela change",
-  sd_u1: "<b>Première adrénaline en FV/TVsp</b> – l’ERC indique le 3e choc, l’algorithme ACLS l’administre après le 2e.",
+  sd_u1: "<b>Première adrénaline en FV/TVsp</b> – l’ERC indique explicitement le 3e choc. L’AHA écrit « après l’échec des premières tentatives de défibrillation » sans chiffre fixe ; l’application retient le 2e choc, car l’algorithme ACLS la place là. Modifiable dans les réglages de base.",
   sd_u2: "<b>Causes réversibles</b> – 4 H et 4 T (8 points) contre 5 H et 5 T (10 points). Même contenu, regroupé autrement.",
   sd_u3: "<b>Oxygène après ROSC</b> – objectif 94–98 % (ERC) contre 90–98 % (AHA).",
   sd_u4: "<b>Pression artérielle après ROSC</b> – systolique au-dessus de 100 mmHg (ERC) contre PAM à partir de 65 mmHg (AHA).",
-  sd_u5: "<b>Antiarythmique</b> – l’AHA place la lidocaïne au même niveau que l’amiodarone ; elle figure alors dans la liste des gestes.",
+  sd_u5: "<b>Antiarythmique</b> – l’AHA place la lidocaïne au même niveau que l’amiodarone. Vous choisissez ci-dessous laquelle occupe la carte médicament ; l’autre figure dans la liste des gestes.",
   std_erc: "ERC / GRC", std_erc_sub: "Europe", std_erc_kurz: "ERC/GRC",
   std_aha: "AHA / ACLS", std_aha_sub: "États-Unis", std_aha_kurz: "AHA/ACLS",
   ak_ursachen_erc: "4H / 4T", ak_ursachen_aha: "5H / 5T",
@@ -2893,7 +2967,25 @@ fr: {
   ev_standard: "Référentiel : {n}",
   ts_standard: "L’application suit désormais {n}.",
   std_erc_disziplin: "ALS adulte", std_aha_disziplin: "ACLS adulte",
-  ql_link: "Fondement : {s} 2025 · <u>voir les sources</u>"
+  ql_link: "Fondement : {s} 2025 · <u>voir les sources</u>",
+  md_lidocain: "Lidocaïne",
+  aa_titel: "Antiarythmique",
+  aa_frage: "L’amiodarone et la lidocaïne sont des alternatives l’une à l’autre, pas une association. L’application ne suit donc qu’un seul produit avec son statut de dose – l’autre figure dans la liste rapide des gestes, au cas où il serait tout de même administré.",
+  aa_amiodaron_d1: "300 mg", aa_amiodaron_d2: "150 mg",
+  aa_lidocain_d1: "1–1,5 mg/kg", aa_lidocain_d2: "0,5–0,75 mg/kg",
+  aa_btn: "{d} administré",
+  aa_p_faellig: "{d} à faire",
+  aa_p_moeglich: "{d} possible",
+  aa_gegeben: "{d} administré",
+  aa_gegeben_beide: "{a} + {b} administrés",
+  aa_sub_faellig: "choc {n} atteint – {d} i.v. à administrer",
+  aa_sub_gegeben1: "à {t} · {d} possible après le choc {n}",
+  aa_sub_moeglich: "choc {n} atteint – dose suivante {d} possible",
+  ms_amiodaron: "Amiodarone",
+  ev_aa: "{m} {d}",
+  ts_aa: "{m} {d} enregistré",
+  ts_aa_gewaehlt: "{m} occupe désormais la carte médicament – {a} figure dans la liste des gestes.",
+  ts_aa_spaeter: "{m} s’applique à partir de la prochaine intervention. L’intervention en cours garde son produit."
 },
 
 /* ------------------------------------------------------------------ es */
@@ -2909,7 +3001,7 @@ es: {
 
   st_hinweis: "<b>{d} · Guías 2025 ({s}).</b> La app <b>no toma decisiones terapéuticas</b>: la responsabilidad es del equipo asistencial.",
   st_p1: "<b>Ciclos de 2 minutos</b> con aviso antes del análisis del ritmo y recordatorio de relevo del reanimador",
-  st_p2: "<b>Adrenalina y amiodarona</b> como estado comprensible en vez de un simple temporizador",
+  st_p2: "<b>Adrenalina y antiarrítmico</b> como estado comprensible en vez de un simple temporizador",
   st_p3: "<b>Ritmo, choques, ROSC, 4H/4T</b>: cada acción a un toque, todo con marca de tiempo",
   st_a_metro: "Preseleccionar el metrónomo para la próxima reanimación",
   st_autostart_sub: "A partir de entonces el ciclo empieza de inmediato cada vez que abras la app; esta pantalla de inicio ya no aparece",
@@ -3168,7 +3260,7 @@ es: {
   al_f_ADRENALIN_SPAET_MS: "La adrenalina está atrasada a partir de",
   al_f_ADRENALIN_SPAET_MS_i: "Tiempo desde la última dosis. Por defecto 5 minutos.",
   al_f_ADRENALIN_SCHOCK: "Primera adrenalina en FV/TVsp",
-  al_f_ADRENALIN_SCHOCK_i: "A partir de este choque toca la primera dosis. Por defecto 3.",
+  al_f_ADRENALIN_SCHOCK_i: "A partir de este choque toca la primera dosis. ERC: 3.er choque. La AHA no da una cifra fija («tras fracasar los primeros intentos de desfibrilación»); el algoritmo ACLS la sitúa tras el 2.º.",
   al_f_AMIODARON_SCHOCK_300: "Amiodarona 300 mg desde el choque",
   al_f_AMIODARON_SCHOCK_300_i: "Por defecto: tras el 3.er choque en FV/TVsp.",
   al_f_AMIODARON_SCHOCK_150: "Amiodarona 150 mg desde el choque",
@@ -3263,11 +3355,11 @@ es: {
   sd_titel: "Estándar de guías",
   sd_frage: "¿Según qué versión debe calcular la app? Ambas proceden del mismo consenso ILCOR y no se contradicen: solo lo aplican de forma distinta.",
   sd_unterschiede: "Qué cambia con ello",
-  sd_u1: "<b>Primera adrenalina en FV/TVsp</b>: el ERC indica el 3.er choque; el algoritmo ACLS la administra tras el 2.º.",
+  sd_u1: "<b>Primera adrenalina en FV/TVsp</b>: el ERC nombra expresamente el 3.er choque. La AHA dice «tras fracasar los primeros intentos de desfibrilación», sin cifra fija; la app usa el 2.º choque porque el algoritmo ACLS la sitúa ahí. Modificable en los ajustes básicos.",
   sd_u2: "<b>Causas reversibles</b>: 4 H y 4 T (8 puntos) frente a 5 H y 5 T (10 puntos). El mismo contenido, agrupado de otra manera.",
   sd_u3: "<b>Oxígeno tras ROSC</b>: objetivo 94–98 % (ERC) frente a 90–98 % (AHA).",
   sd_u4: "<b>Presión arterial tras ROSC</b>: sistólica por encima de 100 mmHg (ERC) frente a PAM desde 65 mmHg (AHA).",
-  sd_u5: "<b>Antiarrítmico</b>: la AHA sitúa la lidocaína al mismo nivel que la amiodarona; entonces aparece en la lista de intervenciones.",
+  sd_u5: "<b>Antiarrítmico</b>: la AHA sitúa la lidocaína al mismo nivel que la amiodarona. Abajo eliges cuál ocupa la tarjeta de medicación; la otra aparece en la lista de intervenciones.",
   std_erc: "ERC / GRC", std_erc_sub: "Europa", std_erc_kurz: "ERC/GRC",
   std_aha: "AHA / ACLS", std_aha_sub: "EE. UU.", std_aha_kurz: "AHA/ACLS",
   ak_ursachen_erc: "4H / 4T", ak_ursachen_aha: "5H / 5T",
@@ -3289,7 +3381,25 @@ es: {
   ev_standard: "Estándar de guías: {n}",
   ts_standard: "La app sigue ahora {n}.",
   std_erc_disziplin: "SVA adultos", std_aha_disziplin: "ACLS adultos",
-  ql_link: "Base: {s} 2025 · <u>ver fuentes</u>"
+  ql_link: "Base: {s} 2025 · <u>ver fuentes</u>",
+  md_lidocain: "Lidocaína",
+  aa_titel: "Antiarrítmico",
+  aa_frage: "La amiodarona y la lidocaína son alternativas entre sí, no una combinación. Por eso la app lleva solo una de las dos como estado de dosis en la tarjeta de medicación; la otra aparece en la lista rápida de intervenciones por si se administra igualmente.",
+  aa_amiodaron_d1: "300 mg", aa_amiodaron_d2: "150 mg",
+  aa_lidocain_d1: "1–1,5 mg/kg", aa_lidocain_d2: "0,5–0,75 mg/kg",
+  aa_btn: "{d} administrada",
+  aa_p_faellig: "{d} pendiente",
+  aa_p_moeglich: "{d} posible",
+  aa_gegeben: "{d} administrada",
+  aa_gegeben_beide: "{a} + {b} administradas",
+  aa_sub_faellig: "choque {n} alcanzado: {d} i.v. indicada",
+  aa_sub_gegeben1: "a las {t} · {d} posible tras el choque {n}",
+  aa_sub_moeglich: "choque {n} alcanzado: dosis siguiente {d} posible",
+  ms_amiodaron: "Amiodarona",
+  ev_aa: "{m} {d}",
+  ts_aa: "{m} {d} registrada",
+  ts_aa_gewaehlt: "{m} ocupa ahora la tarjeta de medicación; {a} está en la lista de intervenciones.",
+  ts_aa_spaeter: "{m} se aplica a partir del próximo caso. El caso en curso mantiene su fármaco."
 },
 
 /* ------------------------------------------------------------------ it */
@@ -3305,7 +3415,7 @@ it: {
 
   st_hinweis: "<b>{d} · Linee guida 2025 ({s}).</b> L’app <b>non prende decisioni terapeutiche</b>: la responsabilità resta dell’équipe.",
   st_p1: "<b>Cicli di 2 minuti</b> con avviso prima dell’analisi del ritmo e promemoria per il cambio del soccorritore",
-  st_p2: "<b>Adrenalina e amiodarone</b> come stato comprensibile invece di un semplice timer",
+  st_p2: "<b>Adrenalina e antiaritmico</b> come stato comprensibile invece di un semplice timer",
   st_p3: "<b>Ritmo, shock, ROSC, 4H/4T</b>: ogni azione a un tocco, tutto con marca temporale",
   st_a_metro: "Preselezionare il metronomo per la prossima rianimazione",
   st_autostart_sub: "Da quel momento il ciclo parte subito a ogni apertura: questa schermata iniziale non compare più",
@@ -3564,7 +3674,7 @@ it: {
   al_f_ADRENALIN_SPAET_MS: "L’adrenalina è in ritardo a partire da",
   al_f_ADRENALIN_SPAET_MS_i: "Tempo dall’ultima dose. Predefinito 5 minuti.",
   al_f_ADRENALIN_SCHOCK: "Prima adrenalina in FV/TVsp",
-  al_f_ADRENALIN_SCHOCK_i: "Da questo shock in poi la prima dose è dovuta. Predefinito 3.",
+  al_f_ADRENALIN_SCHOCK_i: "Da questo shock in poi la prima dose è dovuta. ERC: 3° shock. L’AHA non indica un numero fisso («dopo il fallimento dei primi tentativi di defibrillazione»); l’algoritmo ACLS la colloca dopo il 2°.",
   al_f_AMIODARON_SCHOCK_300: "Amiodarone 300 mg dallo shock",
   al_f_AMIODARON_SCHOCK_300_i: "Predefinito: dopo il 3° shock in FV/TVsp.",
   al_f_AMIODARON_SCHOCK_150: "Amiodarone 150 mg dallo shock",
@@ -3659,11 +3769,11 @@ it: {
   sd_titel: "Standard delle linee guida",
   sd_frage: "Secondo quale versione deve ragionare l’app? Entrambe derivano dallo stesso consenso ILCOR e non si contraddicono: lo applicano solo in modo diverso.",
   sd_unterschiede: "Che cosa cambia",
-  sd_u1: "<b>Prima adrenalina in FV/TVsp</b>: l’ERC indica il 3° shock, l’algoritmo ACLS la somministra dopo il 2°.",
+  sd_u1: "<b>Prima adrenalina in FV/TVsp</b>: l’ERC indica esplicitamente il 3° shock. L’AHA scrive «dopo il fallimento dei primi tentativi di defibrillazione», senza un numero fisso; l’app usa il 2° shock perché l’algoritmo ACLS la colloca lì. Modificabile nelle impostazioni di base.",
   sd_u2: "<b>Cause reversibili</b>: 4 H e 4 T (8 voci) contro 5 H e 5 T (10 voci). Stesso contenuto, raggruppato diversamente.",
   sd_u3: "<b>Ossigeno dopo il ROSC</b>: obiettivo 94–98 % (ERC) contro 90–98 % (AHA).",
   sd_u4: "<b>Pressione dopo il ROSC</b>: sistolica sopra 100 mmHg (ERC) contro PAM da 65 mmHg (AHA).",
-  sd_u5: "<b>Antiaritmico</b>: l’AHA mette la lidocaina sullo stesso piano dell’amiodarone; compare allora nell’elenco delle procedure.",
+  sd_u5: "<b>Antiaritmico</b>: l’AHA mette la lidocaina sullo stesso piano dell’amiodarone. Qui sotto scegli quale occupa la scheda del farmaco; l’altro compare nell’elenco delle procedure.",
   std_erc: "ERC / GRC", std_erc_sub: "Europa", std_erc_kurz: "ERC/GRC",
   std_aha: "AHA / ACLS", std_aha_sub: "USA", std_aha_kurz: "AHA/ACLS",
   ak_ursachen_erc: "4H / 4T", ak_ursachen_aha: "5H / 5T",
@@ -3685,7 +3795,25 @@ it: {
   ev_standard: "Standard delle linee guida: {n}",
   ts_standard: "L’app segue ora {n}.",
   std_erc_disziplin: "ALS adulti", std_aha_disziplin: "ACLS adulti",
-  ql_link: "Base: {s} 2025 · <u>vedi le fonti</u>"
+  ql_link: "Base: {s} 2025 · <u>vedi le fonti</u>",
+  md_lidocain: "Lidocaina",
+  aa_titel: "Antiaritmico",
+  aa_frage: "Amiodarone e lidocaina sono alternative l’uno all’altra, non una combinazione. L’app segue quindi un solo farmaco con lo stato della dose nella scheda; l’altro compare nell’elenco rapido delle procedure, nel caso venga comunque somministrato.",
+  aa_amiodaron_d1: "300 mg", aa_amiodaron_d2: "150 mg",
+  aa_lidocain_d1: "1–1,5 mg/kg", aa_lidocain_d2: "0,5–0,75 mg/kg",
+  aa_btn: "{d} somministrato",
+  aa_p_faellig: "{d} dovuto",
+  aa_p_moeglich: "{d} possibile",
+  aa_gegeben: "{d} somministrato",
+  aa_gegeben_beide: "{a} + {b} somministrati",
+  aa_sub_faellig: "shock {n} raggiunto: {d} e.v. indicato",
+  aa_sub_gegeben1: "alle {t} · {d} possibile dopo lo shock {n}",
+  aa_sub_moeglich: "shock {n} raggiunto: dose successiva {d} possibile",
+  ms_amiodaron: "Amiodarone",
+  ev_aa: "{m} {d}",
+  ts_aa: "{m} {d} registrato",
+  ts_aa_gewaehlt: "{m} occupa ora la scheda del farmaco – {a} si trova nell’elenco delle procedure.",
+  ts_aa_spaeter: "{m} vale dal prossimo intervento. Quello in corso mantiene il suo farmaco."
 },
 
 /* ------------------------------------------------------------------ pt */
@@ -3701,7 +3829,7 @@ pt: {
 
   st_hinweis: "<b>{d} · Recomendações 2025 ({s}).</b> A aplicação <b>não toma decisões terapêuticas</b>: a responsabilidade é da equipa.",
   st_p1: "<b>Ciclos de 2 minutos</b> com aviso antes da análise do ritmo e lembrete para render o reanimador",
-  st_p2: "<b>Adrenalina e amiodarona</b> como estado compreensível em vez de um simples temporizador",
+  st_p2: "<b>Adrenalina e antiarrítmico</b> como estado compreensível em vez de um simples temporizador",
   st_p3: "<b>Ritmo, choques, ROSC, 4H/4T</b>: cada ação a um toque, tudo com registo de hora",
   st_a_metro: "Pré-selecionar o metrónomo para a próxima reanimação",
   st_autostart_sub: "A partir daí o ciclo começa imediatamente sempre que abrir a aplicação; este ecrã inicial deixa de aparecer",
@@ -3960,7 +4088,7 @@ pt: {
   al_f_ADRENALIN_SPAET_MS: "A adrenalina está atrasada a partir de",
   al_f_ADRENALIN_SPAET_MS_i: "Tempo desde a última dose. Predefinição 5 minutos.",
   al_f_ADRENALIN_SCHOCK: "Primeira adrenalina em FV/TVsp",
-  al_f_ADRENALIN_SCHOCK_i: "A partir deste choque a primeira dose é devida. Predefinição 3.",
+  al_f_ADRENALIN_SCHOCK_i: "A partir deste choque a primeira dose é devida. ERC: 3.º choque. A AHA não indica um número fixo («após falharem as primeiras tentativas de desfibrilhação»); o algoritmo ACLS coloca-a após o 2.º.",
   al_f_AMIODARON_SCHOCK_300: "Amiodarona 300 mg a partir do choque",
   al_f_AMIODARON_SCHOCK_300_i: "Predefinição: após o 3.º choque em FV/TVsp.",
   al_f_AMIODARON_SCHOCK_150: "Amiodarona 150 mg a partir do choque",
@@ -4055,11 +4183,11 @@ pt: {
   sd_titel: "Referencial de recomendações",
   sd_frage: "Segundo que versão deve a aplicação calcular? Ambas vêm do mesmo consenso ILCOR e não se contradizem: apenas o aplicam de forma diferente.",
   sd_unterschiede: "O que isso altera",
-  sd_u1: "<b>Primeira adrenalina em FV/TVsp</b>: o ERC indica o 3.º choque; o algoritmo ACLS administra-a após o 2.º.",
+  sd_u1: "<b>Primeira adrenalina em FV/TVsp</b>: o ERC indica expressamente o 3.º choque. A AHA escreve «após falharem as primeiras tentativas de desfibrilhação», sem número fixo; a aplicação usa o 2.º choque porque o algoritmo ACLS a coloca aí. Alterável nas definições de base.",
   sd_u2: "<b>Causas reversíveis</b>: 4 H e 4 T (8 pontos) frente a 5 H e 5 T (10 pontos). O mesmo conteúdo, agrupado de outra forma.",
   sd_u3: "<b>Oxigénio após ROSC</b>: objetivo 94–98 % (ERC) frente a 90–98 % (AHA).",
   sd_u4: "<b>Pressão arterial após ROSC</b>: sistólica acima de 100 mmHg (ERC) frente a PAM a partir de 65 mmHg (AHA).",
-  sd_u5: "<b>Antiarrítmico</b>: a AHA coloca a lidocaína ao mesmo nível da amiodarona; passa então a constar na lista de procedimentos.",
+  sd_u5: "<b>Antiarrítmico</b>: a AHA coloca a lidocaína ao mesmo nível da amiodarona. Em baixo escolhe qual ocupa o cartão do fármaco; a outra aparece na lista de procedimentos.",
   std_erc: "ERC / GRC", std_erc_sub: "Europa", std_erc_kurz: "ERC/GRC",
   std_aha: "AHA / ACLS", std_aha_sub: "EUA", std_aha_kurz: "AHA/ACLS",
   ak_ursachen_erc: "4H / 4T", ak_ursachen_aha: "5H / 5T",
@@ -4081,7 +4209,25 @@ pt: {
   ev_standard: "Referencial: {n}",
   ts_standard: "A aplicação segue agora {n}.",
   std_erc_disziplin: "SAV adultos", std_aha_disziplin: "ACLS adultos",
-  ql_link: "Base: {s} 2025 · <u>ver fontes</u>"
+  ql_link: "Base: {s} 2025 · <u>ver fontes</u>",
+  md_lidocain: "Lidocaína",
+  aa_titel: "Antiarrítmico",
+  aa_frage: "A amiodarona e a lidocaína são alternativas entre si, não uma associação. Por isso a aplicação segue apenas uma delas com estado de dose no cartão do fármaco – a outra aparece na lista rápida de procedimentos, caso seja mesmo administrada.",
+  aa_amiodaron_d1: "300 mg", aa_amiodaron_d2: "150 mg",
+  aa_lidocain_d1: "1–1,5 mg/kg", aa_lidocain_d2: "0,5–0,75 mg/kg",
+  aa_btn: "{d} administrada",
+  aa_p_faellig: "{d} devida",
+  aa_p_moeglich: "{d} possível",
+  aa_gegeben: "{d} administrada",
+  aa_gegeben_beide: "{a} + {b} administradas",
+  aa_sub_faellig: "choque {n} atingido: {d} e.v. indicada",
+  aa_sub_gegeben1: "às {t} · {d} possível após o choque {n}",
+  aa_sub_moeglich: "choque {n} atingido: dose seguinte {d} possível",
+  ms_amiodaron: "Amiodarona",
+  ev_aa: "{m} {d}",
+  ts_aa: "{m} {d} registada",
+  ts_aa_gewaehlt: "{m} ocupa agora o cartão do fármaco – {a} está na lista de procedimentos.",
+  ts_aa_spaeter: "{m} aplica-se a partir do próximo caso. O caso em curso mantém o seu fármaco."
 }
 
 };
@@ -4180,6 +4326,10 @@ const Kern = {
          null = Standard der Leitlinie. Gehört ins Protokoll, weil ein
          eigenes Profil die Zeiten verändert. */
       algo: null,
+      /* Welches Antiarrhythmikum die Medikamentenkarte führt. Wird beim
+         Start festgehalten, damit ein archivierter Einsatz später richtig
+         gelesen wird, auch wenn die Einstellung inzwischen anders ist. */
+      antiarrhythmikum: "amiodaron",
       ereignisse: [{ t: now, typ: "start", info: t("ev_start") }]
     };
   },
@@ -4266,12 +4416,27 @@ const Kern = {
     this.ereignis(e, now, "adrenalin", t("ev_adrenalin", { n: e.adrenalin.length }));
   },
 
-  /* ---------------- Amiodaron ----------------
-     Kein Wiederhol-Countdown, sondern ein Dosis-/Ereignisstatus:
-     300 mg nach dem 3. Schock bei VF/pVT, 150 mg nach dem 5. Schock. */
+  /* ---------------- Antiarrhythmikum ----------------
+     Kein Wiederhol-Countdown, sondern ein Dosis-/Ereignisstatus: erste Dosis
+     nach dem 3. Schock bei VF/pVT, Folgedosis nach dem 5.
+
+     Welches Mittel in der Karte steht, entscheidet der Leitlinien-Standard
+     bzw. die Wahl des Nutzers – Amiodaron (Voreinstellung) oder Lidocain.
+     Beide gelten als Alternativen zueinander, nicht als Kombination; die
+     App führt deshalb immer genau eines als Dosis-Status. Das andere steht
+     in der Maßnahmen-Schnellauswahl, falls es doch gegeben wird.
+
+     Gespeichert wird die DOSIS-Nummer (1 oder 2), nicht die Milligrammzahl:
+     Lidocain wird gewichtsbezogen dosiert und hat keine feste mg-Angabe.
+     `mg` bleibt für Amiodaron erhalten, damit ältere Protokolle unverändert
+     lesbar sind. */
+  aaDosis(d){ return d.dosis || (d.mg === 150 ? 2 : 1); },
+  aaMittel(e){
+    return (e && e.antiarrhythmikum) || "amiodaron";
+  },
   amiodaronStatus(e){
-    const d300 = e.amiodaron.find(d => d.mg === 300) || null;
-    const d150 = e.amiodaron.find(d => d.mg === 150) || null;
+    const d300 = e.amiodaron.find(d => this.aaDosis(d) === 1) || null;
+    const d150 = e.amiodaron.find(d => this.aaDosis(d) === 2) || null;
     if (d150) return { code: "gegeben150", d300, d150 };
     if (d300){
       return (e.rhythmus === "schockbar" && e.schocks.length >= KONF.AMIODARON_SCHOCK_150)
@@ -4283,9 +4448,22 @@ const Kern = {
       : { code: "keine", d300: null, d150: null };
   },
 
-  amiodaronGabe(e, now, mg){
-    e.amiodaron.push({ mg, t: now });
-    this.ereignis(e, now, "amiodaron", t("ev_amiodaron", { mg }));
+  /* `mg` bleibt der erste Parameter, damit bestehende Aufrufe (und die
+     Logiktests) unverändert funktionieren: 300 → erste Dosis, 150 → zweite.
+     Für Lidocain wird mg als null übergeben und die Dosis benannt. */
+  amiodaronGabe(e, now, mg, dosis){
+    const nr = dosis || (mg === 150 ? 2 : 1);
+    const mittel = this.aaMittel(e);
+    e.amiodaron.push({ mg: mg == null ? null : mg, dosis: nr, t: now });
+    this.ereignis(e, now, "amiodaron", mg != null
+      ? t("ev_amiodaron", { mg })
+      : t("ev_aa", { m: tText("md_" + mittel), d: tText("aa_" + mittel + "_d" + nr) }));
+  },
+  /* Anzeigetext einer gegebenen Dosis – „300 mg" bzw. „1–1,5 mg/kg". */
+  aaDosisText(e, d){
+    if (!d) return "";
+    return d.mg != null ? d.mg + " mg"
+      : tText("aa_" + this.aaMittel(e) + "_d" + this.aaDosis(d));
   },
 
   /* ---------------- ROSC / Re-Arrest / Ende ---------------- */
@@ -4457,6 +4635,7 @@ const Einst = {
            metronomAn: false, metronomBpm: KONF.BPM_STANDARD, autostart: false,
            sprache: null,         /* null = noch nie gewählt → Gerätesprache */
            standard: "erc",       /* Leitlinien-Standard: "erc" | "aha" */
+           antiarrhythmikum: "amiodaron",  /* nur wo der Standard die Wahl lässt */
            tonVariante: "klar",   /* Premium: Klang der Hinweistöne */
            tempi: [],             /* Premium: eigene Tempi [{id,name,bpm}] */
            tempoId: null,         /* welches eigene Tempo gerade gewählt ist */
@@ -4605,6 +4784,7 @@ const Einsatz = {
 
   starten(now){
     this.e = Kern.neuerEinsatz(now);
+    this.e.antiarrhythmikum = Standard.aa();
     /* Mit welchen Grundeinstellungen gerechnet wird, gehört ins Protokoll –
        sonst ist ein archivierter Einsatz später nicht mehr einzuordnen. */
     const p = Algo.aktiv();
@@ -5208,38 +5388,53 @@ function renderMedikamente(now){
     $("adr-sub").textContent = t("md_adr_keine", { s: a.label });
   }
 
-  /* Amiodaron */
+  /* Antiarrhythmikum – je nach Wahl Amiodaron oder Lidocain. Der Zustands-
+     ablauf ist derselbe; nur die Dosisangaben unterscheiden sich, weil
+     Lidocain gewichtsbezogen dosiert wird. */
   const m = Kern.amiodaronStatus(e);
+  const mittel = Kern.aaMittel(e);
+  const d1 = tText("aa_" + mittel + "_d1"), d2 = tText("aa_" + mittel + "_d2");
   const mcard = $("card-amiodaron"), mpill = $("ami-pill"), mbtn = $("btn-amiodaron");
   const s300 = KONF.AMIODARON_SCHOCK_300, s150 = KONF.AMIODARON_SCHOCK_150;
+  /* Milligramm nur bei Amiodaron im Knopf mitgeben – Lidocain hat keine
+     feste mg-Zahl, dort zählt allein die Dosisnummer. */
+  const mg1 = mittel === "amiodaron" ? "300" : "";
+  const mg2 = mittel === "amiodaron" ? "150" : "";
+  $("card-amiodaron").querySelector(".kopf b").textContent = tText("md_" + mittel);
   mcard.classList.toggle("m-warn", m.code === "faellig300" || m.code === "moeglich150");
   mcard.classList.remove("m-bad");
+  const setzeKnopf = (nr) => {
+    mbtn.textContent = t("aa_btn", { d: nr === 1 ? d1 : d2 });
+    mbtn.dataset.mg = nr === 1 ? mg1 : mg2;
+    mbtn.dataset.dosis = String(nr);
+  };
   if (m.code === "keine"){
     mpill.className = "pill p-neutral"; mpill.textContent = "–";
     $("ami-wert").textContent = tText("ami_nicht");
     $("ami-sub").textContent = t("ami_sub_keine", { n: s300 });
-    mbtn.textContent = tText("ami_btn300"); mbtn.dataset.mg = "300";
+    setzeKnopf(1);
   } else if (m.code === "faellig300"){
-    mpill.className = "pill p-warn"; mpill.textContent = tText("ami_p300");
+    mpill.className = "pill p-warn"; mpill.textContent = t("aa_p_faellig", { d: d1 });
     $("ami-wert").textContent = tText("ami_nicht");
-    $("ami-sub").textContent = t("ami_sub300", { n: s300 });
-    mbtn.textContent = tText("ami_btn300"); mbtn.dataset.mg = "300";
+    $("ami-sub").textContent = t("aa_sub_faellig", { n: s300, d: d1 });
+    setzeKnopf(1);
   } else if (m.code === "gegeben300"){
-    mpill.className = "pill p-ok"; mpill.textContent = tText("ami_p_300");
-    $("ami-wert").textContent = tText("ami_gegeben300");
-    $("ami-sub").textContent = t("ami_sub_gegeben300", { t: Kern.uhrzeit(m.d300.t), n: s150 });
-    mbtn.textContent = tText("ami_btn150"); mbtn.dataset.mg = "150";
+    mpill.className = "pill p-ok"; mpill.textContent = d1;
+    $("ami-wert").textContent = t("aa_gegeben", { d: d1 });
+    $("ami-sub").textContent = t("aa_sub_gegeben1",
+      { t: Kern.uhrzeit(m.d300.t), n: s150, d: d2 });
+    setzeKnopf(2);
   } else if (m.code === "moeglich150"){
-    mpill.className = "pill p-warn"; mpill.textContent = tText("ami_p150");
-    $("ami-wert").textContent = tText("ami_gegeben300");
-    $("ami-sub").textContent = t("ami_sub150", { n: s150 });
-    mbtn.textContent = tText("ami_btn150"); mbtn.dataset.mg = "150";
-  } else { /* gegeben150 */
+    mpill.className = "pill p-warn"; mpill.textContent = t("aa_p_moeglich", { d: d2 });
+    $("ami-wert").textContent = t("aa_gegeben", { d: d1 });
+    $("ami-sub").textContent = t("aa_sub_moeglich", { n: s150, d: d2 });
+    setzeKnopf(2);
+  } else { /* beide Dosen gegeben */
     mpill.className = "pill p-ok"; mpill.textContent = tText("ami_p_beide");
-    $("ami-wert").textContent = tText("ami_beide");
+    $("ami-wert").textContent = t("aa_gegeben_beide", { a: d1, b: d2 });
     $("ami-sub").textContent = t("ami_sub_beide",
       { a: Kern.uhrzeit(m.d300.t), b: Kern.uhrzeit(m.d150.t) });
-    mbtn.textContent = tText("ami_btn_fertig"); mbtn.dataset.mg = "";
+    mbtn.textContent = tText("ami_btn_fertig"); mbtn.dataset.mg = ""; mbtn.dataset.dosis = "";
   }
   mbtn.disabled = m.code === "gegeben150";
 }
@@ -5683,17 +5878,21 @@ $("btn-adrenalin").addEventListener("click", () => {
 $("btn-amiodaron").addEventListener("click", () => {
   if (!Einsatz.aktiv()) return;
   const e = Einsatz.e, now = Date.now();
-  const mg = Number($("btn-amiodaron").dataset.mg);
-  if (!mg) return;
+  const dosis = Number($("btn-amiodaron").dataset.dosis);
+  const mg = Number($("btn-amiodaron").dataset.mg) || null;
+  if (!dosis) return;
   const letzte = e.amiodaron[e.amiodaron.length - 1];
   if (letzte && now - letzte.t < KONF.DOPPELTIPP_SCHUTZ_MS){
     toast(t("ts_doppel", { t: Kern.fmtUhr(now - letzte.t) }));
     return;
   }
-  Kern.amiodaronGabe(e, now, mg);
+  Kern.amiodaronGabe(e, now, mg, dosis);
   Einsatz.speichern();
   vollRender();
-  toast(t("ts_amiodaron", { mg }));
+  toast(mg
+    ? t("ts_amiodaron", { mg })
+    : t("ts_aa", { m: tText("md_" + Kern.aaMittel(e)),
+                   d: tText("aa_" + Kern.aaMittel(e) + "_d" + dosis) }));
 });
 
 /* ---- ROSC ---- */
@@ -5743,7 +5942,8 @@ function endeOeffnen(){
     [tText("en_zyklen"), String(e.zyklusNr)],
     [tText("en_schocks"), String(e.schocks.length)],
     [tText("en_adrenalin"), t("en_adr_n", { n: e.adrenalin.length })],
-    [tText("en_amiodaron"), e.amiodaron.length ? e.amiodaron.map(d => d.mg + " mg").join(" + ") : "–"],
+    [tText("md_" + Kern.aaMittel(e)),
+      e.amiodaron.length ? e.amiodaron.map(d => Kern.aaDosisText(e, d)).join(" + ") : "–"],
     [tText("en_massnahmen"), e.massnahmen.length ? Kern.massnahmenNamen(e).join(", ") : "–"],
     [tText("en_rosc"), e.phase === "rosc" ? tText("en_ja")
       : (e.reArrests ? tText("en_ja_rearrest") : "–")],
@@ -6185,6 +6385,8 @@ function renderStandards(){
     ul.appendChild(li);
   });
 
+  renderAaWahl();
+
   /* Die Unterschiede beim Namen nennen – wer umschaltet, soll wissen,
      was sich dadurch ändert, statt es im Einsatz zu entdecken. */
   const ul2 = $("standard-unterschiede");
@@ -6198,6 +6400,50 @@ function renderStandards(){
     ul2.appendChild(li);
   });
 }
+/* Wahl des Antiarrhythmikums. Sichtbar nur, wo der Standard sie vorsieht.
+   Das nicht gewählte Mittel wandert in die Maßnahmen-Schnellauswahl, damit
+   es dokumentierbar bleibt, ohne zwei Dosis-Status nebeneinander zu führen. */
+function renderAaWahl(){
+  const box = $("aa-wahl");
+  if (!Standard.aaWahl()){ box.style.display = "none"; return; }
+  box.style.display = "";
+  const ul = $("aa-liste");
+  ul.innerHTML = "";
+  KONF.ANTIARRHYTHMIKA.forEach(id => {
+    const li = document.createElement("li");
+    if (id === Standard.aa()) li.className = "aktiv";
+    const b = document.createElement("button");
+    b.type = "button";
+    b.dataset.aa = id;
+    b.innerHTML = '<b></b><span class="eigen"></span>'
+      + '<svg class="ic mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+      + 'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'
+      + '<path d="M5 12l5 5L20 7"/></svg>';
+    b.querySelector("b").textContent = tText("md_" + id);
+    b.querySelector(".eigen").textContent =
+      tText("aa_" + id + "_d1") + " · " + tText("aa_" + id + "_d2");
+    b.addEventListener("click", () => aaSetzen(id));
+    li.appendChild(b);
+    ul.appendChild(li);
+  });
+}
+
+/* Ein Wechsel während eines laufenden Einsatzes wäre gefährlich: Die bereits
+   erfassten Dosen gehören zum vorherigen Mittel. Deshalb gilt die Änderung
+   dort erst ab dem nächsten Einsatz. */
+function aaSetzen(id){
+  if (id === Standard.aa()) return;
+  Einst.set("antiarrhythmikum", id);
+  Standard.anwenden();
+  renderAaWahl();
+  vollRender();
+  const laeuft = Einsatz.aktiv() && Einsatz.e.antiarrhythmikum !== id;
+  toast(laeuft
+    ? t("ts_aa_spaeter", { m: tText("md_" + id) })
+    : t("ts_aa_gewaehlt", { m: tText("md_" + id), a: tText("md_" + Standard.aaAnderes()) }),
+    laeuft ? 4600 : 3600);
+}
+
 function standardOeffnen(){ renderStandards(); openModal("modal-standard"); }
 
 /* Jeder Quellenhinweis führt auf denselben Dialog. Er legt sich über das
@@ -6607,7 +6853,8 @@ function renderArchivDetail(i){
     [tText("en_zyklen"), String(e.zyklusNr)],
     [tText("en_schocks"), String(e.schocks.length)],
     [tText("en_adrenalin"), e.adrenalin.length ? t("en_adr_n", { n: e.adrenalin.length }) : "–"],
-    [tText("en_amiodaron"), e.amiodaron.length ? e.amiodaron.map(d => d.mg + " mg").join(" + ") : "–"],
+    [tText("md_" + Kern.aaMittel(e)),
+      e.amiodaron.length ? e.amiodaron.map(d => Kern.aaDosisText(e, d)).join(" + ") : "–"],
     [tText("en_massnahmen"), (e.massnahmen || []).length ? Kern.massnahmenNamen(e).join(", ") : "–"],
     [tText("en_rosc"), e.roscZeit ? tText("en_ja") : (e.reArrests ? tText("en_ja_rearrest") : "–")],
     [tText("en_algo"), e.algo ? e.algo.name : tText("al_standard")]

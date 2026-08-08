@@ -45,10 +45,14 @@ protokolliert jedes Ereignis mit Zeitstempel.
   ILCOR-Konsens; der Wechsel stellt gleichzeitig um: erste Adrenalingabe bei
   VF/pVT (3. gegenüber 2. Schock), reversible Ursachen (4 H's & HITS
   gegenüber 5 H's & 5 T's), Zielwerte nach ROSC (SpO₂ 94–98 % gegenüber
-  90–98 %, systolisch &gt; 100 mmHg gegenüber MAD ≥ 65 mmHg), Lidocain als
-  gleichwertiges Antiarrhythmikum sowie die hinterlegten Quellen. Ein
-  Wechsel im laufenden Einsatz behält gesetzte Ursachen und wird
-  protokolliert
+  90–98 %, systolisch &gt; 100 mmHg gegenüber MAD ≥ 65 mmHg) sowie die
+  hinterlegten Quellen. Ein Wechsel im laufenden Einsatz behält gesetzte
+  Ursachen und wird protokolliert
+- **Antiarrhythmikum wählbar (nur AHA/ACLS):** Amiodaron (Voreinstellung)
+  oder Lidocain. Beide gelten als Alternativen zueinander, nicht als
+  Kombination – die App führt deshalb immer genau eines als Dosis-Status;
+  das andere steht in der Maßnahmen-Schnellauswahl. Ein laufender Einsatz
+  behält sein Mittel, weil bereits erfasste Dosen dazugehören
 - **Quellenhinweise in der App**: Unter den fachlichen Inhalten (4H/HITS,
   Post-ROSC, Metronom, Grundeinstellungen, Standardwahl) führt je ein
   Hinweis auf Herausgeber, Stand und Link der gerade gültigen Fassung

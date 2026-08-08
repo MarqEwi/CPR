@@ -71,7 +71,7 @@ METRONOM
 Optionaler Taktgeber mit 100, 110 oder 120 Kompressionen pro Minute, Standard 110. Er sitzt klein in der Ecke und ist mit einem Tipp umgestellt oder abgeschaltet. Als Unterstützung gedacht, nicht als Qualitätskontrolle.
 
 ZWEI LEITLINIEN-STANDARDS
-In den Einstellungen lässt sich wählen, nach welcher Fassung die App rechnet: ERC/GRC (Europa, ALS) oder AHA/ACLS (USA). Beide beruhen auf demselben ILCOR-Konsens. Der Wechsel stellt gleichzeitig um, worin sie sich unterscheiden: die erste Adrenalingabe bei VF/pVT (3. gegenüber 2. Schock), die reversiblen Ursachen (4 H's und HITS gegenüber 5 H's und 5 T's), die Zielwerte nach ROSC sowie Lidocain als gleichwertiges Antiarrhythmikum der AHA. Welche Fassung gerade gilt, steht in den Einstellungen und unter „Leitlinien und Quellen“. Diese Wahl ist kostenfrei – nach welcher Leitlinie gearbeitet wird, gehört zum Kern der Reanimation und nicht zum Komfort.
+In den Einstellungen lässt sich wählen, nach welcher Fassung die App rechnet: ERC/GRC (Europa, ALS) oder AHA/ACLS (USA). Beide beruhen auf demselben ILCOR-Konsens. Der Wechsel stellt gleichzeitig um, worin sie sich unterscheiden: die erste Adrenalingabe bei VF/pVT (3. gegenüber 2. Schock), die reversiblen Ursachen (4 H's und HITS gegenüber 5 H's und 5 T's) und die Zielwerte nach ROSC. Im ACLS-Standard lässt sich zusätzlich wählen, ob Amiodaron oder Lidocain die Medikamentenkarte führt – beide gelten als Alternativen zueinander, nicht als Kombination; das nicht gewählte Mittel steht in der Maßnahmen-Schnellauswahl. Welche Fassung gerade gilt, steht in den Einstellungen und unter „Leitlinien und Quellen“. Diese Wahl ist kostenfrei – nach welcher Leitlinie gearbeitet wird, gehört zum Kern der Reanimation und nicht zum Komfort.
 
 SECHS SPRACHEN
 Deutsch, Englisch, Französisch, Spanisch, Italienisch und Portugiesisch. Beim ersten Start übernimmt die App die Sprache des Geräts, danach ist sie in den Einstellungen jederzeit umstellbar. International gebräuchliche Kurzformen wie VF/pVT, PEA, ROSC oder etCO2 bleiben in jeder Sprache stehen.
@@ -188,13 +188,11 @@ Keine Anzeigen, kein Tracking, keine Konten. Im Einsatz darf nichts ablenken. Di
 ## Was in V1 bewusst fehlt
 
 Noch nicht enthalten: **Export des Protokolls** (die Daten dafür werden
-bereits mitgeschrieben und sind unter „Gespeicherte Einsätze" einsehbar) und
-eine **Dosis-Karte für Lidocain** – im ACLS-Standard wird es als Maßnahme
-mit Zeitstempel dokumentiert, aber ohne Dosis-Status wie bei Amiodaron.
+bereits mitgeschrieben und sind unter „Gespeicherte Einsätze" einsehbar).
 
 Inzwischen enthalten und daher hier gestrichen: Sprachumschaltung
-(sechs Sprachen), konfigurierbare Zeitfenster (Premium) und die Wahl des
-Leitlinien-Standards.
+(sechs Sprachen), konfigurierbare Zeitfenster (Premium), die Wahl des
+Leitlinien-Standards und die Wahl des Antiarrhythmikums.
 
 **Grundsatz, der bleibt:** Werbung gibt es in dieser App nicht – auch nicht
 später und in keiner Version. Das AdMob-Modul liegt nur als ungenutzte
