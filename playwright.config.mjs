@@ -4,8 +4,14 @@ import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
   testDir: "tests",
-  timeout: 30000,
-  use: { baseURL: "http://127.0.0.1:8931" },
+  // Großzügig: Mehrere Tests spulen mit der gefälschten Uhr ganze
+  // Reanimations-Abläufe durch und laufen dabei parallel. 30 s reichten
+  // dafür unter Last nicht zuverlässig.
+  timeout: 60000,
+  // Die App übernimmt beim ersten Start die Gerätesprache. Damit die Tests
+  // eine feste Sprache prüfen, ist der Browser hier deutsch eingestellt;
+  // das Umschalten selbst prüft tests/sprache.spec.mjs ausdrücklich.
+  use: { baseURL: "http://127.0.0.1:8931", locale: "de-DE" },
   webServer: {
     command: "python3 -m http.server 8931",
     url: "http://127.0.0.1:8931/",

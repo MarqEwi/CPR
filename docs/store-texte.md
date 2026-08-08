@@ -70,6 +70,12 @@ ROSC beendet den Einsatz nicht, sondern führt in einen eigenen Modus mit den Pu
 METRONOM
 Optionaler Taktgeber mit 100, 110 oder 120 Kompressionen pro Minute, Standard 110. Er sitzt klein in der Ecke und ist mit einem Tipp umgestellt oder abgeschaltet. Als Unterstützung gedacht, nicht als Qualitätskontrolle.
 
+SECHS SPRACHEN
+Deutsch, Englisch, Französisch, Spanisch, Italienisch und Portugiesisch. Beim ersten Start übernimmt die App die Sprache des Geräts, danach ist sie in den Einstellungen jederzeit umstellbar. International gebräuchliche Kurzformen wie VF/pVT, PEA, ROSC oder etCO2 bleiben in jeder Sprache stehen.
+
+QUELLEN OFFENGELEGT
+Unter „Leitlinien und Quellen“ stehen die Grundlagen mit Herausgeber, Stand und Link: ERC Guidelines for Resuscitation 2025, die deutsche Fassung des German Resuscitation Council und der ILCOR-Konsens. Daneben sind alle Zeiten und Schwellen aufgeführt, mit denen die App tatsächlich rechnet. Die App gibt keinen Leitlinientext wieder.
+
 FÜR DEN EINSATZ GEBAUT
 Sehr dunkle Oberfläche mit hohem Kontrast, große Schaltflächen, große Zahlen, keine Spielereien. Der Bildschirm bleibt während des Einsatzes an und sperrt nicht. Ein versehentlich geschlossener oder abgestürzter Einsatz wird beim nächsten Start weitergeführt, weil alle Zeiten als Zeitstempel gespeichert sind.
 
@@ -146,6 +152,20 @@ Weiterentwicklung:
   auswählbar.
 - **Eigene Felder mit Timer** – z. B. BGA, Temperatur oder
   Beatmungskontrolle, mit eigenem Intervall und Fälligkeits-Anzeige.
+- **Eigene Maßnahmen** – die Schnellauswahl im Einsatz um eigene Einträge
+  ergänzen (bis zu acht), benennen, ändern und löschen.
+- **Grundeinstellungen bearbeiten** – Zykluslänge, Vorwarnzeit,
+  Adrenalin-Fenster und Schock-Schwellen an einen eigenen Standard anpassen
+  und als benanntes Profil speichern (bis zu vier). Der Standard nach
+  Leitlinie steht immer an erster Stelle und lässt sich nicht löschen.
+
+**Heikel und deshalb ausdrücklich geregelt:** Sobald ein eigenes Profil aktiv
+ist, steht „Benutzerdefinierter Algorithmus“ dauerhaft oben in der App – auf
+der Startseite wie im Einsatz –, der Quellen-Dialog weist ausdrücklich auf die
+Abweichung hin, und jeder Einsatz speichert im Protokoll, nach welchem Profil
+er gerechnet wurde. Damit bleibt jederzeit erkennbar, dass nicht mehr die
+Voreinstellung der Leitlinie gilt. Ohne Premium wirken gespeicherte Profile
+nicht; dann rechnet die App immer nach dem Standard.
 
 Produkt-ID: `premium_unlock` (nicht konsumierbar). Wer nichts kaufen möchte,
 kann die Entwicklung über eine Spende auf www.mercwerk.de unterstützen –
@@ -159,7 +179,7 @@ Formulierung im Store-Eintrag (Absatz für die Beschreibung):
 
 ```
 WERBEFREI – UND DAS BLEIBT SO
-Keine Anzeigen, kein Tracking, keine Konten. Im Einsatz darf nichts ablenken. Die wichtigsten Funktionen für die Reanimation bleiben kostenfrei: 2-Minuten-Zyklen, Rhythmusauswahl, Schocks, Adrenalin- und Amiodaron-Status, 4H/HITS, Post-ROSC, Metronom und Protokoll. Wer die Entwicklung unterstützen will, kann das freiwillig tun: mit der Premium-Version als einmaligem Kauf (eigene Hinweistöne, eigene benannte Metronom-Tempi, eigene Felder mit Timer) oder mit einer Spende über www.mercwerk.de.
+Keine Anzeigen, kein Tracking, keine Konten. Im Einsatz darf nichts ablenken. Die wichtigsten Funktionen für die Reanimation bleiben kostenfrei: 2-Minuten-Zyklen, Rhythmusauswahl, Schocks, Adrenalin- und Amiodaron-Status, 4H/HITS, Post-ROSC, Metronom und Protokoll. Wer die Entwicklung unterstützen will, kann das freiwillig tun: mit der Premium-Version als einmaligem Kauf (eigene Hinweistöne, eigene benannte Metronom-Tempi, eigene Felder mit Timer, eigene Maßnahmen und bearbeitbare Grundeinstellungen) oder mit einer Spende über www.mercwerk.de.
 ```
 
 ## Was in V1 bewusst fehlt

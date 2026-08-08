@@ -44,6 +44,31 @@ und prüf, dass die Seite wirklich erscheint – Google prüft das auch.
 4. Datenschutz-URL eintragen:
    `https://marqewi.github.io/CPR/datenschutz.html`
 
+### 2a. Sprachen im Store-Eintrag
+
+Die App selbst spricht sechs Sprachen (Deutsch, Englisch, Französisch,
+Spanisch, Italienisch, Portugiesisch) und stellt sich beim ersten Start
+automatisch auf die Sprache des Geräts ein. **Das passiert unabhängig vom
+Store-Eintrag** – dafür ist nichts einzurichten.
+
+Der Store-Eintrag ist davon getrennt: Solange dort nur Deutsch hinterlegt
+ist, sehen Nutzerinnen und Nutzer im Ausland die deutsche Beschreibung, aber
+eine englische App. Das ist zulässig, verschenkt aber Installationen. Wer die
+Beschreibung übersetzen will:
+
+**Wachstum → Store-Präsenz → Haupt-Store-Eintrag → Übersetzungen verwalten →
+Eigene Übersetzungen hinzufügen** und dort nacheinander `en-GB`, `fr-FR`,
+`es-ES`, `it-IT` und `pt-PT` anlegen. Titel, Kurz- und Vollbeschreibung
+müssen dabei selbst übersetzt werden; die maschinelle Übersetzung von Google
+ist bei medizinischen Texten keine gute Idee. **Der Warnhinweis („kein
+Medizinprodukt, keine Diagnose, keine Therapieentscheidung, kein Ersatz für
+Ausbildung") muss in jeder Sprachfassung im ersten Absatz stehen** – sonst
+prüft das Review nur die deutsche Fassung wohlwollend und die englische
+fällt durch.
+
+Es spricht nichts dagegen, zunächst nur Deutsch und Englisch zu pflegen und
+die übrigen später nachzuziehen.
+
 ## 3. Die Formulare unter „Richtlinien → App-Inhalte“
 
 Hier ist CPR Assist schnell abgehakt, weil die App nichts sammelt:

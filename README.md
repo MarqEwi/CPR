@@ -36,11 +36,28 @@ Post-ROSC – und protokolliert jedes Ereignis mit Zeitstempel.
 - **Metronom** 100 / 110 / 120 pro Minute (Standard 110), ein-/ausschaltbar,
   mit optischem Puls
 - **Ereignis-Protokoll** im Hintergrund: jeder Schritt mit Zeitstempel
+- **Sechs Sprachen** – Deutsch, English, Français, Español, Italiano,
+  Português. Beim ersten Start übernimmt die App die Gerätesprache, danach
+  ist sie in den Einstellungen jederzeit umstellbar. International
+  gebräuchliche Kurzformen (VF/pVT, PEA, ROSC, etCO₂) bleiben stehen
+- **Uhrzeiten im Klartext:** jede Tageszeit erscheint mit dem sprachüblichen
+  Zusatz („14:44 Uhr“); das Protokoll führt jedes Ereignis mit der
+  verstrichenen Zeit **und** der tatsächlichen Uhrzeit auf die Sekunde
+- **Leitlinien &amp; Quellen** in der App hinterlegt: ERC, GRC und ILCOR mit
+  Herausgeber, Stand und Link – daneben die Werte, mit denen die App
+  tatsächlich rechnet
 - **Premium (einmaliger Kauf, freiwillig):** eigene Hinweistöne (vier
   Klangvarianten, Probehören immer möglich), eigene benannte Metronom-Tempi
   im Zielbereich 100–120/min (speichern, umbenennen, löschen, mit einem Tipp
-  wählen), eigene Felder mit Timer (z. B. BGA alle 10 min). Die wichtigsten
-  Funktionen für die Reanimation bleiben kostenfrei
+  wählen), eigene Felder mit Timer (z. B. BGA alle 10 min), eigene Maßnahmen
+  für die Schnellauswahl (anlegen, umbenennen, löschen) und **bearbeitbare
+  Grundeinstellungen** – Zykluslänge, Adrenalin-Fenster und Schock-Schwellen
+  als benanntes Profil speicherbar. Die wichtigsten Funktionen für die
+  Reanimation bleiben kostenfrei
+- **Sichtbarer Hinweis bei eigenem Algorithmus:** Sobald ein eigenes Profil
+  aktiv ist, steht „Benutzerdefinierter Algorithmus“ dauerhaft oben – auf der
+  Startseite wie im Einsatz. Der Standard der Leitlinie ist immer einen Tipp
+  entfernt und lässt sich nicht löschen
 - **Bildschirm bleibt im Einsatz an** – weder Abdunkeln noch automatisches
   Sperren; in den Einstellungen abschaltbar
 - Dunkles, kontrastreiches Einsatz-Design mit großen Touchflächen
@@ -68,6 +85,16 @@ Post-ROSC – und protokolliert jedes Ereignis mit Zeitstempel.
 - Premium hängt an einer einzigen Wahrheit (`Edition.isPremium()`); jede
   Premium-Funktion geht durch dasselbe Tor (`premiumTor()`) und landet sonst
   im Premium-Dialog statt in einer stummen Sackgasse
+- Alle sichtbaren Texte stehen in einem Katalog (`TEXTE`), Deutsch ist die
+  Leitfassung. Fest im HTML stehende Texte tragen `data-i18n`-Attribute,
+  alles Dynamische holt sich seinen Text über `t()`. `npm run texte` prüft,
+  dass jede Sprache dieselben Schlüssel und dieselben Platzhalter hat und
+  dass kein Schlüssel verlangt wird, den es nicht gibt
+- Die Grundeinstellungen der Leitlinie liegen unveränderlich in
+  `ALGO_STANDARD`; ein eigenes Profil überschreibt einzelne Werte in `KONF`.
+  Der Rechenkern weiß davon nichts und rechnet unverändert weiter. Werte
+  außerhalb der erlaubten Grenzen werden verworfen, und ohne Premium gilt
+  immer der Standard
 - Das AdMob-Modul liegt als ungenutzte Infrastruktur bei und ist
   abgeschaltet – Werbung ist in dieser App nicht vorgesehen
 
@@ -79,9 +106,34 @@ Playwright-Tests (vorinstalliertes Chromium, kein `playwright install`):
 npx playwright test
 ```
 
-Drei Ebenen: Rechenkern (jede Status- und Zeitgrenze der Leitlinienlogik),
-Smoke/Bedienung (kompletter Einsatzablauf ohne Konsolenfehler) und native
-Funktionen (nachgestellte Capacitor-Umgebung).
+Fünf Ebenen: Rechenkern (jede Status- und Zeitgrenze der Leitlinienlogik),
+Smoke/Bedienung (kompletter Einsatzablauf ohne Konsolenfehler), native
+Funktionen (nachgestellte Capacitor-Umgebung), Sprache (Umschalten,
+Vollständigkeit, Gerätesprache, Uhrzeit-Format) und Grundeinstellungen
+(eigene Maßnahmen, Algorithmus-Profile, Quellen, Protokoll-Uhrzeiten).
+
+Der Textkatalog wird zusätzlich ohne Browser geprüft:
+
+```
+npm run texte
+```
+
+## Quellen
+
+Die medizinischen Werte der App folgen den Reanimationsleitlinien 2025:
+
+- **ERC Guidelines for Resuscitation 2025**, European Resuscitation Council –
+  <https://www.cprguidelines.eu>
+- **Reanimation 2025 – Leitlinien des ERC in deutscher Übersetzung**,
+  German Resuscitation Council (GRC) –
+  <https://www.grc-org.de/wissenschaft/leitlinien>
+- **ILCOR CoSTR 2025**, International Liaison Committee on Resuscitation –
+  <https://www.ilcor.org>
+
+Dieselben Angaben stehen in der App unter „Leitlinien &amp; Quellen“, zusammen
+mit dem Datum, an dem die Werte zuletzt dagegen abgeglichen wurden
+(`KONF.LEITLINIEN_GEPRUEFT`). Die App gibt keinen Leitlinientext wieder,
+sondern bildet nur Zeiten und Reihenfolgen ab.
 
 ## Web-Version
 

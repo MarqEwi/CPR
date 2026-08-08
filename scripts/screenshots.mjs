@@ -125,6 +125,47 @@ await schuss("08-massnahmen", { aufbau: jetzt => {
   await p.click("#btn-massnahme");
 } });
 
+/* Sprache, Quellen und Grundeinstellungen – die drei neuen Bereiche. */
+await schuss("19-sprache", { schritte: async p => {
+  await p.click("#btn-settings");
+  await p.click("#s-sprache");
+} });
+
+await schuss("20-quellen", { schritte: async p => {
+  await p.click("#btn-quellen");
+} });
+
+await schuss("21-grundeinstellungen", {
+  aufbau: () => {
+    localStorage.setItem("cpra_edition", JSON.stringify("premium"));
+    const e = JSON.parse(localStorage.getItem("cpra_einstellungen") || "{}");
+    e.algoProfile = [{ id: "a1", name: "Standard Klinik Nord",
+      werte: { ZYKLUS_MS: 120000, WARN_MS: 15000, ADRENALIN_FRUEH_MS: 240000,
+               ADRENALIN_SPAET_MS: 300000, ADRENALIN_SCHOCK: 3,
+               AMIODARON_SCHOCK_300: 3, AMIODARON_SCHOCK_150: 5 } }];
+    e.algoId = "a1";
+    localStorage.setItem("cpra_einstellungen", JSON.stringify(e));
+  },
+  schritte: async p => {
+    await p.click("#btn-settings");
+    await p.click("#s-algo");
+  }
+});
+
+await schuss("22-eigene-massnahmen", {
+  aufbau: () => {
+    localStorage.setItem("cpra_edition", JSON.stringify("premium"));
+    const e = JSON.parse(localStorage.getItem("cpra_einstellungen") || "{}");
+    e.massnahmen = [{ id: "m1", name: "LUCAS angelegt" },
+                    { id: "m2", name: "Angehörige informiert" }];
+    localStorage.setItem("cpra_einstellungen", JSON.stringify(e));
+  },
+  schritte: async p => {
+    await p.click("#btn-settings");
+    await p.click("#s-massnahmen");
+  }
+});
+
 await schuss("06-rosc", { aufbau: jetzt => {
   const { Kern } = window.CPRA;
   const t0 = jetzt - 14 * 60000;
