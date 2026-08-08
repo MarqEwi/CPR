@@ -70,6 +70,12 @@ const einsatzAktiv = jetzt => {
 
 await schuss("01-bereit");
 
+/* Unterer Teil der Startseite: Vorwahl und Unterstützungs-Block. Der Text
+   dort ändert sich oft – deshalb gehört das Bild in den Regellauf. */
+await schuss("12-unterstuetzen", { schritte: async p => {
+  await p.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+} });
+
 await schuss("02-aktiv", { aufbau: einsatzAktiv });
 
 await schuss("03-analyse", { aufbau: jetzt => {
