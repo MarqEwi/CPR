@@ -52,11 +52,13 @@ protokolliert jedes Ereignis mit Zeitstempel.
   Zähler und Status rechnen danach ohne sie. Zyklen und Zustandswechsel
   tragen die Zeitstruktur und bleiben stehen. Das Maßnahmen-Fenster nennt
   zusätzlich die zuletzt dokumentierte Maßnahme mit eigener
-  Rückgängig-Zeile
+  Rückgängig-Zeile. Das Live-Protokoll ist doppelt erreichbar: als Taste
+  unten in der Einsatz-Ansicht und in den Einstellungen
 - **Medikamente jederzeit dokumentierbar:** Adrenalin und das
   Antiarrhythmikum lassen sich immer erfassen, auch vor dem empfohlenen
   Fenster – die App zeigt dann „zu früh", entscheidet aber nicht für das
-  Team. Ein Doppeltipp-Schutz fängt nur versehentliche Mehrfach-Tipps ab
+  Team. Ein Doppeltipp-Schutz von fünf Sekunden fängt nur versehentliche
+  Mehrfach-Tipps ab
 - **Einsatzberichte benennen und weitergeben:** Jeder gespeicherte Einsatz
   bekommt auf Wunsch einen eigenen Namen und führt danach die Liste damit an.
   Aus ihm entsteht auf dem Gerät ein Bericht mit Zusammenfassung und

@@ -945,6 +945,12 @@
       <span class="unter" data-i18n="ak_ende_sub">über Einstellungen</span>
     </button>
 
+    <button class="aktion breit" id="btn-protokoll">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
+      <span data-i18n="lp_titel">Live-Protokoll</span>
+      <span class="unter" data-i18n="lp_sub">mitlesen, Einträge entfernen</span>
+    </button>
+
   </section>
 
   <!-- ======================= Post-ROSC ======================= -->
@@ -1370,7 +1376,7 @@
 
     <button class="settings-row" id="s-protokoll" style="display:none">
       <svg class="ic" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
-      <span class="t"><b data-i18n="lp_titel">Live-Protokoll</b><span data-i18n="lp_sub">mitlesen, Maßnahmen entfernen</span></span>
+      <span class="t"><b data-i18n="lp_titel">Live-Protokoll</b><span data-i18n="lp_sub">mitlesen, Einträge entfernen</span></span>
     </button>
 
     <button class="settings-row" id="s-standard">
@@ -1662,7 +1668,7 @@ const KONF = {
   BPM_PRESETS: [100, 110, 120], /* Zielbereich 100–120/min */
   BPM_STANDARD: 110,
   BPM_MIN: 100, BPM_MAX: 120,   /* eigener Regler bleibt im Zielbereich */
-  DOPPELTIPP_SCHUTZ_MS: 10000,  /* Medikamenten-Knopf: Schutz vor Doppel-Tipp */
+  DOPPELTIPP_SCHUTZ_MS: 5000,   /* Medikamenten-Knopf: Schutz vor Doppel-Tipp */
   EINSATZ_MAX_ALTER_MS: 12 * 3600000, /* älterer gespeicherter Einsatz gilt als beendet */
 
   /* Reversible Ursachen: die 4 H's & HITS der deutschen Leitlinie
@@ -2164,7 +2170,7 @@ de: {
   ts_rueckgaengig: "Entfernt: {n}",
   ts_undo: "Zurückgenommen: {n}",
   lp_titel: "Live-Protokoll",
-  lp_sub: "mitlesen, Maßnahmen entfernen",
+  lp_sub: "mitlesen, Einträge entfernen",
   lp_frage: "Jedes Ereignis mit verstrichener Zeit und tatsächlicher Uhrzeit – während der Einsatz weiterläuft. Versehentliche Einträge – Maßnahmen, Schocks, Medikamentengaben, eigene Felder – lassen sich löschen; Zähler und Status rechnen danach ohne sie. Zyklen und Zustandswechsel tragen die Zeitstruktur und bleiben stehen.",
 
   /* Sprache */
@@ -2622,7 +2628,7 @@ en: {
   ts_rueckgaengig: "Removed: {n}",
   ts_undo: "Undone: {n}",
   lp_titel: "Live log",
-  lp_sub: "read along, remove interventions",
+  lp_sub: "read along, remove entries",
   lp_frage: "Every event with elapsed time and actual clock time – while the case is still running. Accidental entries – interventions, shocks, drug doses, custom fields – can be deleted; counters and status then calculate without them. Cycles and state changes carry the timeline and stay in place.",
 
   sp_titel: "Language",
@@ -3071,7 +3077,7 @@ fr: {
   ts_rueckgaengig: "Supprimé : {n}",
   ts_undo: "Annulé : {n}",
   lp_titel: "Journal en direct",
-  lp_sub: "suivre, supprimer des gestes",
+  lp_sub: "suivre, supprimer des entrées",
   lp_frage: "Chaque événement avec le temps écoulé et l’heure réelle – pendant que l’intervention continue. Les saisies faites par erreur – gestes, chocs, administrations de médicaments, champs personnels – peuvent être supprimées ; compteurs et statuts recalculent ensuite sans elles. Les cycles et changements d’état portent la chronologie et restent en place.",
 
   sp_titel: "Langue",
@@ -3520,7 +3526,7 @@ es: {
   ts_rueckgaengig: "Eliminado: {n}",
   ts_undo: "Deshecho: {n}",
   lp_titel: "Registro en vivo",
-  lp_sub: "seguir el registro, eliminar medidas",
+  lp_sub: "seguir el registro, eliminar entradas",
   lp_frage: "Cada evento con el tiempo transcurrido y la hora real, mientras la reanimación sigue en curso. Las entradas hechas por error – medidas, descargas, dosis de medicación, campos propios – se pueden eliminar; contadores y estados vuelven a calcularse sin ellas. Los ciclos y cambios de estado sostienen la cronología y se mantienen.",
 
   sp_titel: "Idioma",
@@ -3969,7 +3975,7 @@ it: {
   ts_rueckgaengig: "Rimosso: {n}",
   ts_undo: "Annullato: {n}",
   lp_titel: "Registro in diretta",
-  lp_sub: "seguire il registro, rimuovere interventi",
+  lp_sub: "seguire il registro, rimuovere voci",
   lp_frage: "Ogni evento con il tempo trascorso e l’orario reale, mentre l’intervento prosegue. Le voci registrate per errore – interventi, shock, somministrazioni di farmaci, campi personali – si possono eliminare; contatori e stati ricalcolano poi senza di esse. Cicli e cambi di stato reggono la cronologia e restano.",
 
   sp_titel: "Lingua",
@@ -4418,7 +4424,7 @@ pt: {
   ts_rueckgaengig: "Removido: {n}",
   ts_undo: "Anulado: {n}",
   lp_titel: "Registo ao vivo",
-  lp_sub: "acompanhar, remover medidas",
+  lp_sub: "acompanhar, remover registos",
   lp_frage: "Cada evento com o tempo decorrido e a hora real, enquanto o caso continua. Registos feitos por engano – medidas, choques, doses de medicação, campos próprios – podem ser apagados; contadores e estados passam a calcular sem eles. Ciclos e mudanças de estado sustentam a cronologia e permanecem.",
 
   sp_titel: "Idioma",
@@ -6124,6 +6130,11 @@ function renderProtokoll(){
 }
 $("s-protokoll").addEventListener("click", () => {
   closeModal("modal-settings");
+  renderProtokoll();
+  openModal("modal-protokoll");
+});
+$("btn-protokoll").addEventListener("click", () => {
+  if (!Einsatz.aktiv()) return;
   renderProtokoll();
   openModal("modal-protokoll");
 });

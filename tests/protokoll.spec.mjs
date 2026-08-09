@@ -266,3 +266,27 @@ test("im Live-Protokoll sind auch Schock und Adrenalin löschbar", async ({ page
   await page.click('#modal-protokoll [data-close="modal-protokoll"]');
   await expect(page.locator("#btn-undo")).toBeHidden();
 });
+
+test("die Live-Protokoll-Taste in der Einsatz-Ansicht öffnet das Protokoll", async ({ page }) => {
+  await appOeffnen(page);
+  await einsatzStarten(page);
+  await page.click("#btn-protokoll");
+  await expect(page.locator("#modal-protokoll")).toHaveClass(/open/);
+  await expect(page.locator("#protokoll-liste li")).toHaveCount(1);
+});
+
+test("der Doppeltipp-Schutz endet nach fünf Sekunden", async ({ page }) => {
+  await appOeffnen(page);
+  await page.clock.install();
+  await einsatzStarten(page);
+  await page.click("#btn-adrenalin");
+  /* Sofortiger zweiter Tipp wird abgefangen … */
+  await page.click("#btn-adrenalin");
+  let n = await page.evaluate(() => window.CPRA.Einsatz.e.adrenalin.length);
+  expect(n).toBe(1);
+  /* … nach etwas über fünf Sekunden zählt die Gabe. */
+  await page.clock.runFor(5200);
+  await page.click("#btn-adrenalin");
+  n = await page.evaluate(() => window.CPRA.Einsatz.e.adrenalin.length);
+  expect(n).toBe(2);
+});
