@@ -97,7 +97,8 @@ Alle Angaben ohne Gewähr. Maßgeblich sind die geltenden Leitlinien und die Ent
 |---|---|
 | App-Icon 512 × 512 | `icons/icon-512.png` |
 | Feature-Grafik 1024 × 500 | `docs/store-grafiken/feature-grafik-1024x500.png` |
-| Screenshots 1080 × 1920 (7 Stück) | `docs/store-grafiken/screenshot-1…7-1080x1920.png` |
+| Feature-Illustration (Quelle) | `docs/store-grafiken/feature-hintergrund.png` |
+| Screenshots 1080 × 1920 (8 Stück) | `docs/store-grafiken/screenshot-1…8-1080x1920.png` |
 
 Neu erzeugen lassen sie sich mit:
 
@@ -106,6 +107,15 @@ python3 -m http.server 8931 &
 node scripts/screenshots.mjs
 node scripts/store-grafiken.mjs
 ```
+
+Die Feature-Grafik ist bewusst hell und erzählend – zwei reanimieren, eine
+dritte Person dokumentiert am Handy – nach dem Vorbild etablierter
+Medizin-Einträge. Die Illustration stammt aus Higgsfield AI
+(`feature-hintergrund.png`, flacher Vektorstil, App-Teal als Akzent) und
+liegt rechtsbündig; Wortmarke und Untertitel stehen links. Weil Play die
+Feature-Grafik je nach Platzierung seitlich beschneidet, beginnt der Text
+erst bei 96 px und enden die Figuren mit gut 50 px Abstand vor der rechten
+Kante – ein Beschnitt von 40 px je Seite nimmt nichts Wichtiges mit.
 
 Die Überschriften der Store-Screenshots stehen in `scripts/store-grafiken.mjs`
 und sind bewusst anders formuliert als die Zwischenüberschriften im Text oben.

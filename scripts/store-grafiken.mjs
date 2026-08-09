@@ -27,6 +27,7 @@ const AUFNAHMEN = [
   { datei: "05-ursachen",    text: "4 H\u2019s &amp; HITS<br>strukturiert abarbeiten" },
   { datei: "08-massnahmen",  text: "Zugang, Atemweg, Kapnographie<br>mit Zeitstempel" },
   { datei: "06-rosc",        text: "Nach ROSC<br>geht es strukturiert weiter" },
+  { datei: "27-bericht-teilen", text: "Einsatzbericht benennen,<br>als PDF oder Bild teilen" },
   { datei: "01-bereit",      text: "Merkhilfe und Protokoll –<br>keine Therapieentscheidung" }
 ];
 
@@ -53,26 +54,41 @@ for (let i = 0; i < AUFNAHMEN.length; i++){
   console.log(name);
 }
 
-/* ---- Feature-Grafik 1024 × 500 ---- */
+/* ---- Feature-Grafik 1024 × 500 ----
+   Heller Illustrations-Stil nach dem Vorbild klassischer Medizin-Einträge:
+   links Symbol, Wortmarke und Untertitel, rechts die Szene – zwei
+   reanimieren, eine dritte Person dokumentiert am Handy. Die Illustration
+   (docs/store-grafiken/feature-hintergrund.png, 1584 × 672, erzeugt mit
+   Higgsfield AI) ist rechtsbündig auf volle Höhe gelegt; der Überschuss
+   läuft links aus dem Bild, wo ohnehin nur leerer Grund ist. So behalten
+   die Figuren rechts ihre Luft zum Rand.
+
+   Play beschneidet die Feature-Grafik je nach Platzierung links und rechts.
+   Deshalb beginnt der Textblock erst bei 96 px und endet die Szene mit
+   deutlichem Abstand vor der rechten Kante – in der Mitte darf nichts
+   Wichtiges fehlen, außen nichts Wichtiges stehen. */
 await page.setViewportSize({ width: 1024, height: 500 });
 await page.setContent(`<style>
   html,body{margin:0;padding:0}
   /* overflow:hidden ist Pflicht: Läuft der Text über, wächst sonst die
      Elementbreite mit, und der Screenshot wird breiter als 1024 px –
      Google verlangt die Maße aber auf den Pixel genau. */
-  #b{width:1024px;height:500px;background:${GRUND};font-family:${SCHRIFT};
-     display:flex;align-items:center;gap:52px;padding:0 76px;overflow:hidden;
-     box-sizing:border-box}
-  #s{width:190px;height:190px;flex:none}
+  #b{width:1024px;height:500px;font-family:${SCHRIFT};position:relative;
+     background:#F2F5FA url(${bild(`${ZIEL}/feature-hintergrund.png`)}) right bottom/auto 92% no-repeat;
+     overflow:hidden;box-sizing:border-box}
+  #t{position:absolute;left:96px;top:50%;transform:translateY(-50%)}
+  #s{width:78px;height:78px;margin-bottom:26px}
   #s svg{width:100%;height:100%;display:block;
-    filter:drop-shadow(0 12px 26px rgba(0,0,0,.5))}
-  #t{flex:1;min-width:0}
-  h1{color:#eef3f5;font-size:76px;font-weight:700;letter-spacing:-.03em;margin:0}
-  p{color:#93a0a9;font-size:33px;margin:14px 0 0;font-weight:500}
-  p b{color:${AKZENT};font-weight:600}
-</style><div id="b"><div id="s">${LOGO}</div>
-  <div id="t"><h1>CPR Assist</h1>
-  <p>Reanimation Erwachsene &middot; <b>Zyklen, Medikamente, Protokoll</b></p></div></div>`);
+    filter:drop-shadow(0 8px 18px rgba(16,32,40,.22))}
+  h1{color:#121c26;font-size:66px;font-weight:800;letter-spacing:-.03em;margin:0}
+  p{color:#54626e;font-size:27px;margin:12px 0 0;font-weight:500}
+  p.m{color:#0e8a7a;font-weight:700;font-size:22px;margin-top:10px}
+</style><div id="b"><div id="t">
+  <div id="s">${LOGO}</div>
+  <h1>CPR Assist</h1>
+  <p>Reanimation Erwachsener</p>
+  <p class="m">Zyklen &middot; Medikamente &middot; Protokoll</p>
+</div></div>`);
 writeFileSync(`${ZIEL}/feature-grafik-1024x500.png`, await page.locator("#b").screenshot());
 console.log(`${ZIEL}/feature-grafik-1024x500.png`);
 
