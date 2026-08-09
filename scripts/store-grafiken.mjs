@@ -74,10 +74,10 @@ await page.setContent(`<style>
      Elementbreite mit, und der Screenshot wird breiter als 1024 px –
      Google verlangt die Maße aber auf den Pixel genau. */
   #b{width:1024px;height:500px;font-family:${SCHRIFT};position:relative;
-     background:#F2F5FA url(${bild(`${ZIEL}/feature-hintergrund.png`)}) right bottom/auto 92% no-repeat;
+     background:#F1F1F6 url(${bild(`${ZIEL}/feature-hintergrund.png`)}) right bottom/auto 92% no-repeat;
      overflow:hidden;box-sizing:border-box}
   #t{position:absolute;left:96px;top:50%;transform:translateY(-50%)}
-  #s{width:78px;height:78px;margin-bottom:26px}
+  #s{width:112px;height:112px;margin-bottom:24px}
   #s svg{width:100%;height:100%;display:block;
     filter:drop-shadow(0 8px 18px rgba(16,32,40,.22))}
   h1{color:#121c26;font-size:66px;font-weight:800;letter-spacing:-.03em;margin:0}

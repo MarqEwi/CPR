@@ -28,10 +28,13 @@ const DICHTEN = { mdpi: 1, hdpi: 1.5, xhdpi: 2, xxhdpi: 3, xxxhdpi: 4 };
 function seite(px, { rund = false, anteil = 1, hintergrund = true } = {}){
   const inner = Math.round(px * anteil);
   const rand = Math.round((px - inner) / 2);
-  // Beim Vordergrund entfällt die Kachel: nur das Motiv, transparent umgeben.
+  // Beim Vordergrund entfällt der Kachel-Beschnitt: das Bild läuft als
+  // volle Fläche durch (die Ecken schneidet der Launcher selbst), und weil
+  // die Hintergrundfarbe aus demselben Bild gemessen wird, bleibt der
+  // Übergang nahtlos.
   const svg = hintergrund
     ? SVG
-    : SVG.replace(/<rect width="512" height="512" rx="112"[^/]*\/>/, "");
+    : SVG.replace(/ clip-path="url\(#kachel\)"/, "");
   return `<!doctype html><meta charset="utf-8"><style>
     html,body{margin:0;padding:0;background:transparent}
     #b{width:${px}px;height:${px}px;position:relative;overflow:hidden;
@@ -83,9 +86,10 @@ console.log("Adaptive-Icon-Hintergrund: " + farbe);
 /* ---- Web / PWA ---- */
 await schreibe("icons/icon-192.png", 192);
 await schreibe("icons/icon-512.png", 512);
-/* Maskierbar: Startbildschirme beschneiden bis zu 20 % Rand, deshalb das
-   Motiv kleiner und die Farbfläche darunter durchgehend. */
-await schreibe("icons/icon-maskable-512.png", 512, { anteil: 0.78 });
+/* Maskierbar: Startbildschirme beschneiden bis zu 20 % Rand. Das Logo-Bild
+   ist eine volle Farbfläche mit mittigem Motiv – ohne Kachel-Beschnitt ist
+   es genau die randlose Fläche, die maskierbare Icons brauchen. */
+await schreibe("icons/icon-maskable-512.png", 512, { hintergrund: false });
 
 /* ---- Android ---- */
 for (const [name, f] of Object.entries(DICHTEN)){
