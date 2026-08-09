@@ -86,8 +86,8 @@ await page.setContent(`<style>
 </style><div id="b"><div id="t">
   <div id="s">${LOGO}</div>
   <h1>CPR Assist</h1>
-  <p>Reanimation Erwachsener</p>
-  <p class="m">Zyklen &middot; Medikamente &middot; Protokoll</p>
+  <p>Adult resuscitation</p>
+  <p class="m">Cycles &middot; Medication &middot; Event log</p>
 </div></div>`);
 writeFileSync(`${ZIEL}/feature-grafik-1024x500.png`, await page.locator("#b").screenshot());
 console.log(`${ZIEL}/feature-grafik-1024x500.png`);

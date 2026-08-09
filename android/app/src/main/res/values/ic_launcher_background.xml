@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Aus icons/logo.svg gemessen (Mitte der Farbfläche). -->
-    <color name="ic_launcher_background">#EEF5FD</color>
+    <color name="ic_launcher_background">#EDFDFD</color>
 </resources>
