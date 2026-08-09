@@ -85,3 +85,18 @@ test("eine unbekannte Gerätesprache landet auf Deutsch", async ({ browser }) =>
   expect(await page.evaluate(() => window.CPRA.I18N.code)).toBe("de");
   await ctx.close();
 });
+
+test("Wirkstoffnamen auf der Startseite folgen der Sprache", async ({ page }) => {
+  await appOeffnen(page);
+  await page.evaluate(() => window.CPRA.standardSetzen("aha"));
+  const chips = () => page.locator("#vw-aa button");
+  await expect(chips().nth(0)).toHaveText("Amiodaron");
+  await expect(chips().nth(1)).toHaveText("Lidocain");
+
+  await page.evaluate(() => window.CPRA.spracheSetzen("en"));
+  await expect(chips().nth(0)).toHaveText("Amiodarone");
+  await expect(chips().nth(1)).toHaveText("Lidocaine");
+
+  await page.evaluate(() => window.CPRA.spracheSetzen("fr"));
+  await expect(chips().nth(0)).toHaveText(/Amiodarone/);
+});

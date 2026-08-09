@@ -345,3 +345,56 @@ test("der Rückgängig-Stapel überlebt einen Neustart mit mehreren Schritten", 
   const n = await page.evaluate(() => window.CPRA.Einsatz.e.ereignisse.length);
   expect(n).toBe(1);
 });
+
+test("Rückgängig verwirft keine spätere Rhythmuswahl", async ({ page }) => {
+  await appOeffnen(page);
+  await einsatzStarten(page);
+
+  /* Reihenfolge wie im echten Ablauf: erst Adrenalin, danach der
+     Rhythmus. Ein Rückgängig auf das Adrenalin darf den später
+     gesetzten Rhythmus nicht mitnehmen. */
+  await page.click("#btn-adrenalin");
+  await page.click("#btn-rhythmus");
+  await page.click('[data-rhythmus="schockbar"]');
+
+  /* Die Rhythmuswahl ist selbst ein Schritt und steht oben auf. */
+  await expect(page.locator("#btn-undo-was")).toContainText(/VF\/pVT|Rhythmus/);
+  await page.click("#btn-undo");           /* Rhythmus zurück */
+  let stand = await page.evaluate(() => ({
+    rhythmus: window.CPRA.Einsatz.e.rhythmus,
+    adrenalin: window.CPRA.Einsatz.e.adrenalin.length
+  }));
+  expect(stand.rhythmus).toBeFalsy();
+  expect(stand.adrenalin).toBe(1);
+
+  await page.click("#btn-undo");           /* Adrenalin zurück */
+  stand = await page.evaluate(() => window.CPRA.Einsatz.e.adrenalin.length);
+  expect(stand).toBe(0);
+  await expect(page.locator("#btn-undo")).toBeHidden();
+});
+
+test("ROSC und eine Notiz beenden den Rückgängig-Stapel", async ({ page }) => {
+  await appOeffnen(page);
+  await einsatzStarten(page);
+  await page.click("#btn-adrenalin");
+  await expect(page.locator("#btn-undo")).toBeVisible();
+
+  /* Notiz bei den Ursachen: Freitext gehört nicht auf den Stapel, darf
+     aber auch nicht von einem Rückgängig verworfen werden. */
+  await page.click("#btn-ursachen");
+  await page.fill("#ursachen-notiz", "Kalium 6,8 – Kalzium läuft");
+  await page.locator("#ursachen-notiz").blur();
+  await page.click('#modal-ursachen [data-close="modal-ursachen"]');
+  await expect(page.locator("#btn-undo")).toBeHidden();
+  const notiz = await page.evaluate(() => window.CPRA.Einsatz.e.ursachenNotiz);
+  expect(notiz).toContain("Kalium");
+
+  /* Nach ROSC ist die Taste ohnehin nicht erreichbar – der Stapel ist leer. */
+  await page.click("#btn-massnahme");
+  await page.locator("#massnahmen-wahl button").first().click();
+  await page.click("#btn-rosc");
+  await page.click("#rosc-ok");
+  await page.waitForSelector("#view-rosc.active");
+  const stapel = await page.evaluate(() => window.CPRA.Einsatz.undoStapel().length);
+  expect(stapel).toBe(0);
+});

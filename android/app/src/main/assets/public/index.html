@@ -4937,7 +4937,7 @@ const Kern = {
     const name = this.massnahmeEintragName(weg);
     /* Nach einem Eingriff von Hand passt die Sicherung nicht mehr zum
        Stand – ein Rückgängig danach würde Gelöschtes wiederbeleben. */
-    delete e.undo;
+    e.undo = [];
     const j = e.ereignisse.findIndex(ev =>
       ev.typ === "massnahme" && ev.t === zeit && (!weg.name || ev.info === weg.name));
     if (j >= 0) e.ereignisse.splice(j, 1);
@@ -4974,7 +4974,7 @@ const Kern = {
     }
     const info = e.ereignisse[j].info;
     e.ereignisse.splice(j, 1);
-    delete e.undo;   /* die Sicherung passt nach einem Hand-Eingriff nicht mehr */
+    e.undo = [];     /* die Sicherung passt nach einem Hand-Eingriff nicht mehr */
     return info;
   },
   massnahmeZeit(e, id){
@@ -5179,7 +5179,7 @@ function standardSetzen(id){
     const e = Einsatz.e;
     KONF.URSACHEN.forEach(u => { if (!(u.id in e.ursachen)) e.ursachen[u.id] = 0; });
     e.standard = id;
-    delete e.undo;   /* die Sicherung stammt aus der alten Fassung */
+    e.undo = [];     /* die Sicherungen stammen aus der alten Fassung */
     Kern.ereignis(e, Date.now(), "standard", t("ev_standard", { n: Standard.kurz() }));
     Einsatz.speichern();
   }
@@ -5248,6 +5248,10 @@ const Einsatz = {
     if (stapel.length > this.UNDO_MAX) stapel.shift();
     this.speichern();
   },
+  /* Verwirft alle Sicherungen. Nötig, sobald sich der Einsatz auf einem
+     Weg ändert, den der Stapel nicht kennt – sonst würde ein Rückgängig
+     diese Änderung stillschweigend mitnehmen. */
+  undoLeeren(){ if (this.e) this.e.undo = []; },
   rueckgaengig(){
     const stapel = this.undoStapel();
     if (!stapel.length) return null;
@@ -6028,8 +6032,7 @@ function renderUrsachen(){
       b.classList.toggle("active", Number(b.dataset.z) === zustand);
       b.addEventListener("click", () => {
         if (!Einsatz.aktiv()) return;
-        Kern.ursacheSetzen(Einsatz.e, Date.now(), u.id, Number(b.dataset.z));
-        Einsatz.speichern();
+        Einsatz.handlung(x => Kern.ursacheSetzen(x, Date.now(), u.id, Number(b.dataset.z)));
         li.querySelectorAll("button").forEach(x =>
           x.classList.toggle("active", x === b));
         renderAktionen();
@@ -6039,10 +6042,17 @@ function renderUrsachen(){
   });
   $("ursachen-notiz").value = e ? e.ursachenNotiz : "";
 }
-$("ursachen-notiz").addEventListener("change", () => {
+/* Bei jeder Eingabe sichern, nicht erst beim Verlassen des Feldes: Wird
+   die App mitten im Tippen beendet, wäre die Notiz sonst verloren. */
+$("ursachen-notiz").addEventListener("input", () => {
   if (!Einsatz.aktiv()) return;
   Einsatz.e.ursachenNotiz = $("ursachen-notiz").value.slice(0, 600);
+  /* Freitext gehört nicht auf den Rückgängig-Stapel – jeder Tastendruck
+     wäre ein Schritt. Stattdessen verfallen die älteren Sicherungen,
+     damit ein Rückgängig die Notiz nicht stillschweigend verwirft. */
+  Einsatz.undoLeeren();
   Einsatz.speichern();
+  renderAktionen();      /* die Rückgängig-Taste verschwindet sofort mit */
 });
 
 /* ---------- Rendering: Maßnahmen-Schnellauswahl ---------- */
@@ -6188,8 +6198,12 @@ function renderVorwahl(){
   if (Standard.aaWahl()){
     const aa = Standard.aa();
     $("vw-aa-sub").textContent = tText("aa_" + aa + "_d1") + " · " + tText("aa_" + aa + "_d2");
-    document.querySelectorAll("#vw-aa button").forEach(b =>
-      b.classList.toggle("active", b.dataset.aa === aa));
+    document.querySelectorAll("#vw-aa button").forEach(b => {
+      /* Der Wirkstoffname kommt aus dem Textkatalog, nicht aus dem HTML –
+         sonst stünde in jeder Sprache die deutsche Schreibweise. */
+      b.textContent = tText("md_" + b.dataset.aa);
+      b.classList.toggle("active", b.dataset.aa === aa);
+    });
   }
   $("vw-metro-sub").textContent = metronomText();
   $("vw-bpm").classList.toggle("an", w.metronomAn);
@@ -6425,8 +6439,7 @@ $("btn-rhythmus").addEventListener("click", () => openModal("modal-rhythmus"));
 document.querySelectorAll("#modal-rhythmus [data-rhythmus]").forEach(b =>
   b.addEventListener("click", () => {
     if (!Einsatz.aktiv()) return;
-    Kern.rhythmusSetzen(Einsatz.e, Date.now(), b.dataset.rhythmus);
-    Einsatz.speichern();
+    Einsatz.handlung(x => Kern.rhythmusSetzen(x, Date.now(), b.dataset.rhythmus));
     closeModal("modal-rhythmus");
     vollRender();
     const art = b.dataset.rhythmus;
@@ -6497,6 +6510,7 @@ $("btn-rosc").addEventListener("click", () => {
 $("rosc-ok").addEventListener("click", () => {
   if (!Einsatz.aktiv()) return;
   Kern.rosc(Einsatz.e, Date.now());
+  Einsatz.undoLeeren();     /* andere Ansicht – zurück führt der Re-Arrest */
   Einsatz.speichern();
   closeModal("modal-rosc");
   vollRender();
@@ -6507,6 +6521,7 @@ $("rosc-ok").addEventListener("click", () => {
 halteAktion($("btn-rearrest"), 600, () => {
   if (!Einsatz.aktiv() || Einsatz.e.phase !== "rosc") return;
   Kern.reArrest(Einsatz.e, Date.now());
+  Einsatz.undoLeeren();
   Einsatz.speichern();
   Merker.warnGemeldet = false; Merker.analyseGemeldet = false; Merker.adrCode = null;
   vollRender();
@@ -8136,7 +8151,8 @@ if (Ads.ENABLED) Ads.sync();
 window.CPRA = { KONF, ALGO_STANDARD, STANDARDS, Standard, standardSetzen,
                 Kern, Einst, Einsatz, Algo, Bridge, WakeLock,
                 Audio: Audio_, Metronom, Signale, Edition, Ads, Billing,
-                I18N, SPRACHEN, TEXTE, t, APP_VERSION, Bericht, Datei };
+                I18N, SPRACHEN, TEXTE, t, APP_VERSION, Bericht, Datei,
+                spracheSetzen };
 </script>
 </body>
 </html>
