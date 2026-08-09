@@ -28,6 +28,9 @@
     --radius:18px; --radius-s:14px; --radius-xs:10px;
     --adbar-h:0px;
     --schatten:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    /* Premium-Diamant, einmal als Bild hinterlegt und überall wiederverwendet.
+       Ohne Hintergrundfläche, damit er auf jedem Untergrund sitzt. */
+    --diamant:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 18' fill='none'%3E%3Cg stroke='%231d2536' stroke-width='.85' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M5.6 1.1H18.4L23 7.4 12 17.2 1 7.4Z' fill='%23a6c8f5'/%3E%3Cpath d='M1 7.4 5.6 1.1 6.4 7.4Z' fill='%238ab5ec'/%3E%3Cpath d='M18.4 1.1 23 7.4 17.6 7.4Z' fill='%238ab5ec'/%3E%3Cpath d='M5.6 1.1H18.4L12 7.4Z' fill='%23c3daf9'/%3E%3Cpath d='M1 7.4H6.4L12 17.2Z' fill='%236d9cd9'/%3E%3Cpath d='M17.6 7.4H23L12 17.2Z' fill='%236d9cd9'/%3E%3Cpath d='M12 7.4H17.6L12 17.2Z' fill='%238ab5ec'/%3E%3Cpath d='M1 7.4H23'/%3E%3Cpath d='M5.6 1.1 6.4 7.4M18.4 1.1 17.6 7.4M12 7.4V17.2'/%3E%3C/g%3E%3C/svg%3E");
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -247,6 +250,17 @@
     font-weight:750;letter-spacing:.05em;text-transform:uppercase;
     background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-rand);
     border-radius:999px;padding:2px 7px;flex:none}
+  /* Der Diamant ist das Premium-Zeichen der App. Er steckt als Hintergrundbild
+     in der Marke selbst – so trägt ihn jeder Premium-Hinweis, ohne dass ein
+     einziger Text im Katalog angefasst werden muss. Nur der Stein ist zu
+     sehen, der Grund bleibt durchsichtig. */
+  .premium-marke::before{content:"";width:13px;height:10px;flex:none;
+    background:var(--diamant) center/contain no-repeat}
+  .diamant{width:20px;height:15px;flex:none;
+    background:var(--diamant) center/contain no-repeat}
+  /* Steht ein Premium-Hinweis in einer Zeile, gehört er ans Ende. */
+  .settings-row .premium-marke{margin-left:auto}
+  body.edition-premium .nur-premium{display:none}
   /* Gesperrte Zeilen bleiben sichtbar – man soll sehen, was Premium bringt. */
   .gesperrt{opacity:.62}
   /* Vorwahl auf der Startseite: gilt für den nächsten Einsatz. */
@@ -989,6 +1003,7 @@
     <button class="settings-row" id="ms-verwalten">
       <svg class="ic" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
       <span class="t"><b data-i18n="ms_eigene">Eigene Maßnahmen</b><span data-i18n="ms_eigene_sub">anlegen, umbenennen, löschen</span></span>
+      <span class="premium-marke nur-premium">Premium</span>
     </button>
   </div>
 </div>
@@ -1166,7 +1181,7 @@
     <button class="modal-x" data-close="modal-premium" aria-label="Schließen">
       <svg class="ic" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
-    <h3 class="mt"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l2.4 5.5 6 .5-4.5 4 1.4 5.8L12 15.9 6.7 18.8 8.1 13 3.6 9l6-.5z"/></svg> Premium</h3>
+    <h3 class="mt"><span class="diamant" aria-hidden="true"></span> Premium</h3>
     <p class="frage" id="premium-text" data-i18n-html="pr_text">Ein einmaliger Kauf, kein Abo.
       <b>Die wichtigsten Funktionen für die Reanimation bleiben kostenfrei</b> –
       Premium ergänzt Komfort und unterstützt die Weiterentwicklung.</p>
@@ -1216,6 +1231,21 @@
         <svg class="ic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
         <span data-i18n="ar_zurueck">Zur Liste</span>
       </button>
+      <div class="reglerbox" style="margin:0 0 14px">
+        <label class="field" for="archiv-name" data-i18n="ar_name">Name des Berichts</label>
+        <input type="text" id="archiv-name" maxlength="40" data-i18n-ph="ar_name_ph"
+               placeholder="z. B. Übung Nachtschicht" autocomplete="off">
+        <div class="btn-row" style="margin:10px 0 0">
+          <button class="btn secondary" id="archiv-name-speichern" style="flex:1 1 100%" data-i18n="ar_name_speichern">Namen übernehmen</button>
+          <button class="btn" id="archiv-teilen" style="flex:1 1 100%">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 16V4"/><path d="M8 8l4-4 4 4"/><path d="M4 14v4a2 2 0 002 2h12a2 2 0 002-2v-4"/></svg>
+            <span data-i18n="bt_titel">Bericht teilen</span>
+          </button>
+        </div>
+        <p class="frage klein" style="margin:8px 0 0" data-i18n="ar_name_hinweis">Ein eigener Name macht den
+          Bericht wiedererkennbar. Er steht auch im PDF und im Bild – schreibe
+          deshalb nichts hinein, was auf die Patientin oder den Patienten zeigt.</p>
+      </div>
       <dl class="zusammen" id="archiv-zusammen"></dl>
       <h3 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.09em;
                  color:var(--text2);margin:16px 0 6px" data-i18n="ar_verlauf">Verlauf</h3>
@@ -1224,6 +1254,42 @@
     <div class="btn-row">
       <button class="btn danger" id="archiv-loeschen" style="flex:1" data-i18n="ar_loeschen">Alle löschen</button>
       <button class="btn secondary" data-close="modal-archiv" data-i18n="g_schliessen">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= Dialog: Bericht teilen ======================= -->
+<div class="modal-back" id="modal-bericht">
+  <div class="modal">
+    <button class="modal-x" data-close="modal-bericht" data-i18n-aria="g_schliessen" aria-label="Schließen">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <h3 class="mt"><svg class="ic" viewBox="0 0 24 24"><path d="M12 16V4"/><path d="M8 8l4-4 4 4"/><path d="M4 14v4a2 2 0 002 2h12a2 2 0 002-2v-4"/></svg>
+      <span data-i18n="bt_titel">Bericht teilen</span></h3>
+    <p class="frage" id="bericht-was" style="color:var(--text);font-weight:600"></p>
+    <p class="frage" data-i18n="bt_frage">Der Bericht enthält die Zusammenfassung und das
+      vollständige Protokoll mit Uhrzeiten – so, wie es hier steht. Er entsteht
+      auf diesem Gerät und wird erst verschickt, wenn du ein Ziel auswählst.</p>
+
+    <button class="settings-row" data-bericht="pdf-teilen">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>
+      <span class="t"><b data-i18n="bt_pdf_teilen">Als PDF teilen</b><span data-i18n="bt_pdf_sub">eine Datei, mehrseitig, zum Ausdrucken</span></span>
+    </button>
+    <button class="settings-row" data-bericht="bild-teilen">
+      <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-5 5-2-2-6 6"/></svg>
+      <span class="t"><b data-i18n="bt_bild_teilen">Als Bild teilen</b><span data-i18n="bt_bild_sub">PNG, eine Datei je Seite</span></span>
+    </button>
+    <button class="settings-row" data-bericht="pdf-speichern">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M12 4v12"/><path d="M8 12l4 4 4-4"/><path d="M4 20h16"/></svg>
+      <span class="t"><b data-i18n="bt_pdf_laden">PDF speichern</b><span data-i18n="bt_laden_sub">auf diesem Gerät ablegen</span></span>
+    </button>
+    <button class="settings-row" data-bericht="bild-speichern">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M12 4v12"/><path d="M8 12l4 4 4-4"/><path d="M4 20h16"/></svg>
+      <span class="t"><b data-i18n="bt_bild_laden">Bild speichern</b><span data-i18n="bt_laden_sub">auf diesem Gerät ablegen</span></span>
+    </button>
+
+    <div class="btn-row">
+      <button class="btn secondary" data-close="modal-bericht" style="flex:1" data-i18n="g_schliessen">Schließen</button>
     </div>
   </div>
 </div>
@@ -1272,16 +1338,19 @@
     <button class="settings-row" id="s-algo">
       <svg class="ic" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3"/><path d="M1 14h6M9 8h6M17 16h6"/></svg>
       <span class="t"><b data-i18n="al_titel">Grundeinstellungen bearbeiten</b><span id="s-algo-sub">Standard nach Leitlinie</span></span>
+      <span class="premium-marke nur-premium">Premium</span>
     </button>
 
     <button class="settings-row" id="s-massnahmen">
       <svg class="ic" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/><path d="M12 11v6M9 14h6"/></svg>
       <span class="t"><b data-i18n="ms_eigene">Eigene Maßnahmen</b><span id="s-massnahmen-sub">keine angelegt</span></span>
+      <span class="premium-marke nur-premium">Premium</span>
     </button>
 
     <button class="settings-row" id="s-felder">
       <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 9v6M9 12h6"/></svg>
       <span class="t"><b data-i18n="fl_titel">Eigene Felder</b><span id="s-felder-sub">keine angelegt</span></span>
+      <span class="premium-marke nur-premium">Premium</span>
     </button>
 
     <button class="settings-row" id="s-metronom">
@@ -1295,7 +1364,7 @@
     </button>
 
     <button class="settings-row" id="s-premium">
-      <svg class="ic" viewBox="0 0 24 24"><path d="M12 3l2.4 5.5 6 .5-4.5 4 1.4 5.8L12 15.9 6.7 18.8 8.1 13 3.6 9l6-.5z"/></svg>
+      <span class="diamant" aria-hidden="true"></span>
       <span class="t"><b>Premium</b><span id="s-premium-sub">Entwicklung unterstützen</span></span>
     </button>
 
@@ -1926,7 +1995,7 @@ de: {
   ms_keine: "keine angelegt",
   ms_anzahl_1: "1 Maßnahme angelegt",
   ms_anzahl: "{n} Maßnahmen angelegt",
-  ms_premium_sub: "Premium – Schnellauswahl selbst ergänzen",
+  ms_premium_sub: "Schnellauswahl selbst ergänzen",
 
   /* Einsatz beenden */
   en_titel: "Einsatz beenden",
@@ -1974,7 +2043,7 @@ de: {
   fl_keine: "keine angelegt",
   fl_anzahl_1: "1 Feld angelegt",
   fl_anzahl: "{n} Felder angelegt",
-  fl_premium_sub: "Premium – eigene Erinnerungen mit Timer",
+  fl_premium_sub: "eigene Erinnerungen mit Timer",
 
   /* Hinweistöne */
   to_titel: "Klang der Hinweistöne",
@@ -2014,6 +2083,33 @@ de: {
   ar_anzahl_1: "1 Einsatz auf diesem Gerät",
   ar_anzahl: "{n} Einsätze auf diesem Gerät",
   ar_keine: "noch keine",
+  /* Bericht benennen, teilen, speichern */
+  ar_name: "Name des Berichts",
+  ar_name_ph: "z. B. Übung Nachtschicht",
+  ar_name_speichern: "Namen übernehmen",
+  ar_name_hinweis: "Ein eigener Name macht den Bericht wiedererkennbar. Er steht auch im PDF und im Bild – schreibe deshalb nichts hinein, was auf die Patientin oder den Patienten zeigt.",
+  bt_titel: "Bericht teilen",
+  bt_frage: "Der Bericht enthält die Zusammenfassung und das vollständige Protokoll mit Uhrzeiten – so, wie es hier steht. Er entsteht auf diesem Gerät und wird erst verschickt, wenn du ein Ziel auswählst.",
+  bt_pdf_teilen: "Als PDF teilen",
+  bt_pdf_sub: "eine Datei, mehrseitig, zum Ausdrucken",
+  bt_bild_teilen: "Als Bild teilen",
+  bt_bild_sub: "PNG, eine Datei je Seite",
+  bt_pdf_laden: "PDF speichern",
+  bt_bild_laden: "Bild speichern",
+  bt_laden_sub: "auf diesem Gerät ablegen",
+  bp_titel: "Einsatzbericht",
+  bp_zusammen: "Zusammenfassung",
+  bp_seite: "Seite {n} von {m}",
+  bp_seiten_1: "1 Seite",
+  bp_seiten: "{n} Seiten",
+  bp_grundlage: "Grundlage: {s} 2025 · Werte der App zuletzt abgeglichen am {d}.",
+  bp_fuss: "Erzeugt von CPR Assist – kognitive Unterstützung und Ereignis-Protokoll einer Reanimation. Der Bericht ersetzt weder die Patientenakte noch das klinische Urteil; verantwortlich bleibt das behandelnde Team.",
+  ts_bericht_name: "Bericht heißt jetzt „{n}“",
+  ts_bericht_name_weg: "Name entfernt",
+  ts_bericht_geteilt: "Bericht geteilt",
+  ts_bericht_gespeichert: "Gespeichert: {n}",
+  ts_bericht_ordner: "Im Ordner „Dokumente“ gespeichert: {n}",
+  ts_bericht_fehler: "Der Bericht ließ sich nicht erzeugen.",
 
   /* Sprache */
   sp_titel: "Sprache",
@@ -2355,7 +2451,7 @@ en: {
   ms_keine: "none created",
   ms_anzahl_1: "1 created",
   ms_anzahl: "{n} created",
-  ms_premium_sub: "Premium – extend the quick list yourself",
+  ms_premium_sub: "extend the quick list yourself",
 
   en_titel: "End case",
   en_frage_titel: "End case?",
@@ -2400,7 +2496,7 @@ en: {
   fl_keine: "none created",
   fl_anzahl_1: "1 field created",
   fl_anzahl: "{n} fields created",
-  fl_premium_sub: "Premium – your own reminders with a timer",
+  fl_premium_sub: "your own reminders with a timer",
 
   to_titel: "Sound of the alerts",
   to_frage: "Previewing is always possible. Switching is a <span class=\"premium-marke\">Premium</span> feature.",
@@ -2437,6 +2533,33 @@ en: {
   ar_anzahl_1: "1 case on this device",
   ar_anzahl: "{n} cases on this device",
   ar_keine: "none yet",
+  /* Naming, sharing and saving a report */
+  ar_name: "Report name",
+  ar_name_ph: "e.g. night shift drill",
+  ar_name_speichern: "Save name",
+  ar_name_hinweis: "Your own name makes the report easy to recognise. It also appears in the PDF and in the image, so do not put anything in it that points to the patient.",
+  bt_titel: "Share report",
+  bt_frage: "The report contains the summary and the complete log with clock times, exactly as shown here. It is created on this device and is only sent once you pick a destination.",
+  bt_pdf_teilen: "Share as PDF",
+  bt_pdf_sub: "one file, multiple pages, ready to print",
+  bt_bild_teilen: "Share as image",
+  bt_bild_sub: "PNG, one file per page",
+  bt_pdf_laden: "Save PDF",
+  bt_bild_laden: "Save image",
+  bt_laden_sub: "store on this device",
+  bp_titel: "Resuscitation report",
+  bp_zusammen: "Summary",
+  bp_seite: "Page {n} of {m}",
+  bp_seiten_1: "1 page",
+  bp_seiten: "{n} pages",
+  bp_grundlage: "Basis: {s} 2025 · app values last checked on {d}.",
+  bp_fuss: "Created by CPR Assist – cognitive aid and event log for a resuscitation. This report replaces neither the patient record nor clinical judgement; the treating team remains responsible.",
+  ts_bericht_name: "Report is now called “{n}”",
+  ts_bericht_name_weg: "Name removed",
+  ts_bericht_geteilt: "Report shared",
+  ts_bericht_gespeichert: "Saved: {n}",
+  ts_bericht_ordner: "Saved to the Documents folder: {n}",
+  ts_bericht_fehler: "The report could not be created.",
 
   sp_titel: "Language",
   sp_frage: "The language applies to the whole app and takes effect immediately. Internationally used abbreviations such as VF/pVT, PEA, ROSC or etCO₂ are kept as they are.",
@@ -2769,7 +2892,7 @@ fr: {
   ms_keine: "aucun créé",
   ms_anzahl_1: "1 geste créé",
   ms_anzahl: "{n} gestes créés",
-  ms_premium_sub: "Premium – compléter vous-même la liste rapide",
+  ms_premium_sub: "compléter vous-même la liste rapide",
 
   en_titel: "Terminer l’intervention",
   en_frage_titel: "Terminer l’intervention ?",
@@ -2814,7 +2937,7 @@ fr: {
   fl_keine: "aucun créé",
   fl_anzahl_1: "1 champ créé",
   fl_anzahl: "{n} champs créés",
-  fl_premium_sub: "Premium – vos propres rappels avec minuteur",
+  fl_premium_sub: "vos propres rappels avec minuteur",
 
   to_titel: "Son des alertes",
   to_frage: "L’écoute est toujours possible. Le changement est une fonction <span class=\"premium-marke\">Premium</span>.",
@@ -2851,6 +2974,33 @@ fr: {
   ar_anzahl_1: "1 intervention sur cet appareil",
   ar_anzahl: "{n} interventions sur cet appareil",
   ar_keine: "aucune",
+  /* Nommer, partager et enregistrer un rapport */
+  ar_name: "Nom du rapport",
+  ar_name_ph: "p. ex. exercice de nuit",
+  ar_name_speichern: "Enregistrer le nom",
+  ar_name_hinweis: "Un nom personnel rend le rapport reconnaissable. Il figure aussi dans le PDF et dans l’image : n’y écrivez donc rien qui désigne le patient.",
+  bt_titel: "Partager le rapport",
+  bt_frage: "Le rapport contient la synthèse et le journal complet avec les heures, tel qu’il apparaît ici. Il est créé sur cet appareil et n’est envoyé qu’une fois la destination choisie.",
+  bt_pdf_teilen: "Partager en PDF",
+  bt_pdf_sub: "un fichier, plusieurs pages, prêt à imprimer",
+  bt_bild_teilen: "Partager en image",
+  bt_bild_sub: "PNG, un fichier par page",
+  bt_pdf_laden: "Enregistrer le PDF",
+  bt_bild_laden: "Enregistrer l’image",
+  bt_laden_sub: "conserver sur cet appareil",
+  bp_titel: "Rapport d’intervention",
+  bp_zusammen: "Synthèse",
+  bp_seite: "Page {n} sur {m}",
+  bp_seiten_1: "1 page",
+  bp_seiten: "{n} pages",
+  bp_grundlage: "Base : {s} 2025 · valeurs de l’application vérifiées le {d}.",
+  bp_fuss: "Établi par CPR Assist – aide cognitive et journal des événements d’une réanimation. Ce rapport ne remplace ni le dossier du patient ni le jugement clinique ; l’équipe soignante reste responsable.",
+  ts_bericht_name: "Le rapport s’appelle désormais « {n} »",
+  ts_bericht_name_weg: "Nom supprimé",
+  ts_bericht_geteilt: "Rapport partagé",
+  ts_bericht_gespeichert: "Enregistré : {n}",
+  ts_bericht_ordner: "Enregistré dans le dossier Documents : {n}",
+  ts_bericht_fehler: "Le rapport n’a pas pu être créé.",
 
   sp_titel: "Langue",
   sp_frage: "La langue s’applique à toute l’application et prend effet immédiatement. Les abréviations internationales comme VF/pVT, AESP, ROSC ou etCO₂ restent inchangées.",
@@ -3183,7 +3333,7 @@ es: {
   ms_keine: "ninguna creada",
   ms_anzahl_1: "1 intervención creada",
   ms_anzahl: "{n} intervenciones creadas",
-  ms_premium_sub: "Premium: amplía tú mismo la lista rápida",
+  ms_premium_sub: "amplía tú mismo la lista rápida",
 
   en_titel: "Finalizar el caso",
   en_frage_titel: "¿Finalizar el caso?",
@@ -3228,7 +3378,7 @@ es: {
   fl_keine: "ninguno creado",
   fl_anzahl_1: "1 campo creado",
   fl_anzahl: "{n} campos creados",
-  fl_premium_sub: "Premium: tus propios recordatorios con temporizador",
+  fl_premium_sub: "tus propios recordatorios con temporizador",
 
   to_titel: "Sonido de los avisos",
   to_frage: "Escuchar la muestra siempre es posible. Cambiarlo es una función <span class=\"premium-marke\">Premium</span>.",
@@ -3265,6 +3415,33 @@ es: {
   ar_anzahl_1: "1 caso en este dispositivo",
   ar_anzahl: "{n} casos en este dispositivo",
   ar_keine: "ninguno",
+  /* Nombrar, compartir y guardar un informe */
+  ar_name: "Nombre del informe",
+  ar_name_ph: "p. ej. simulacro turno de noche",
+  ar_name_speichern: "Guardar nombre",
+  ar_name_hinweis: "Un nombre propio hace que el informe se reconozca enseguida. También aparece en el PDF y en la imagen, así que no escribas nada que señale a la persona atendida.",
+  bt_titel: "Compartir informe",
+  bt_frage: "El informe contiene el resumen y el registro completo con las horas, tal y como se ve aquí. Se crea en este dispositivo y solo se envía cuando eliges un destino.",
+  bt_pdf_teilen: "Compartir como PDF",
+  bt_pdf_sub: "un archivo, varias páginas, listo para imprimir",
+  bt_bild_teilen: "Compartir como imagen",
+  bt_bild_sub: "PNG, un archivo por página",
+  bt_pdf_laden: "Guardar PDF",
+  bt_bild_laden: "Guardar imagen",
+  bt_laden_sub: "guardar en este dispositivo",
+  bp_titel: "Informe de reanimación",
+  bp_zusammen: "Resumen",
+  bp_seite: "Página {n} de {m}",
+  bp_seiten_1: "1 página",
+  bp_seiten: "{n} páginas",
+  bp_grundlage: "Base: {s} 2025 · valores de la app comprobados por última vez el {d}.",
+  bp_fuss: "Creado por CPR Assist: apoyo cognitivo y registro de eventos de una reanimación. El informe no sustituye ni la historia clínica ni el juicio clínico; la responsabilidad es del equipo que atiende.",
+  ts_bericht_name: "El informe se llama ahora «{n}»",
+  ts_bericht_name_weg: "Nombre eliminado",
+  ts_bericht_geteilt: "Informe compartido",
+  ts_bericht_gespeichert: "Guardado: {n}",
+  ts_bericht_ordner: "Guardado en la carpeta Documentos: {n}",
+  ts_bericht_fehler: "No se ha podido crear el informe.",
 
   sp_titel: "Idioma",
   sp_frage: "El idioma se aplica a toda la app y tiene efecto inmediato. Las abreviaturas internacionales como VF/pVT, AESP, ROSC o etCO₂ se mantienen igual.",
@@ -3597,7 +3774,7 @@ it: {
   ms_keine: "nessuna creata",
   ms_anzahl_1: "1 procedura creata",
   ms_anzahl: "{n} procedure create",
-  ms_premium_sub: "Premium: amplia tu stesso l’elenco rapido",
+  ms_premium_sub: "amplia tu stesso l’elenco rapido",
 
   en_titel: "Chiudi l’intervento",
   en_frage_titel: "Chiudere l’intervento?",
@@ -3642,7 +3819,7 @@ it: {
   fl_keine: "nessuno creato",
   fl_anzahl_1: "1 campo creato",
   fl_anzahl: "{n} campi creati",
-  fl_premium_sub: "Premium: promemoria personali con timer",
+  fl_premium_sub: "promemoria personali con timer",
 
   to_titel: "Suono degli avvisi",
   to_frage: "L’ascolto di prova è sempre possibile. Cambiarlo è una funzione <span class=\"premium-marke\">Premium</span>.",
@@ -3679,6 +3856,33 @@ it: {
   ar_anzahl_1: "1 intervento su questo dispositivo",
   ar_anzahl: "{n} interventi su questo dispositivo",
   ar_keine: "nessuno",
+  /* Denominare, condividere e salvare un referto */
+  ar_name: "Nome del referto",
+  ar_name_ph: "per es. esercitazione turno di notte",
+  ar_name_speichern: "Salva nome",
+  ar_name_hinweis: "Un nome scelto da te rende il referto riconoscibile. Compare anche nel PDF e nell’immagine: non scrivere nulla che rimandi alla persona assistita.",
+  bt_titel: "Condividi il referto",
+  bt_frage: "Il referto contiene la sintesi e il registro completo con gli orari, esattamente come appare qui. Viene creato su questo dispositivo e viene inviato solo quando scegli una destinazione.",
+  bt_pdf_teilen: "Condividi come PDF",
+  bt_pdf_sub: "un file, più pagine, pronto da stampare",
+  bt_bild_teilen: "Condividi come immagine",
+  bt_bild_sub: "PNG, un file per pagina",
+  bt_pdf_laden: "Salva il PDF",
+  bt_bild_laden: "Salva l’immagine",
+  bt_laden_sub: "conserva su questo dispositivo",
+  bp_titel: "Referto dell’intervento",
+  bp_zusammen: "Sintesi",
+  bp_seite: "Pagina {n} di {m}",
+  bp_seiten_1: "1 pagina",
+  bp_seiten: "{n} pagine",
+  bp_grundlage: "Base: {s} 2025 · valori dell’app verificati l’ultima volta il {d}.",
+  bp_fuss: "Creato da CPR Assist: supporto cognitivo e registro degli eventi di una rianimazione. Il referto non sostituisce né la cartella clinica né il giudizio clinico; la responsabilità resta dell’équipe curante.",
+  ts_bericht_name: "Il referto ora si chiama «{n}»",
+  ts_bericht_name_weg: "Nome rimosso",
+  ts_bericht_geteilt: "Referto condiviso",
+  ts_bericht_gespeichert: "Salvato: {n}",
+  ts_bericht_ordner: "Salvato nella cartella Documenti: {n}",
+  ts_bericht_fehler: "Non è stato possibile creare il referto.",
 
   sp_titel: "Lingua",
   sp_frage: "La lingua vale per tutta l’app e viene applicata subito. Le sigle internazionali come VF/pVT, PEA, ROSC o etCO₂ restano invariate.",
@@ -4011,7 +4215,7 @@ pt: {
   ms_keine: "nenhum criado",
   ms_anzahl_1: "1 procedimento criado",
   ms_anzahl: "{n} procedimentos criados",
-  ms_premium_sub: "Premium: complete a lista rápida a seu gosto",
+  ms_premium_sub: "complete a lista rápida a seu gosto",
 
   en_titel: "Terminar o caso",
   en_frage_titel: "Terminar o caso?",
@@ -4056,7 +4260,7 @@ pt: {
   fl_keine: "nenhum criado",
   fl_anzahl_1: "1 campo criado",
   fl_anzahl: "{n} campos criados",
-  fl_premium_sub: "Premium: lembretes próprios com temporizador",
+  fl_premium_sub: "lembretes próprios com temporizador",
 
   to_titel: "Som dos avisos",
   to_frage: "Ouvir a amostra é sempre possível. Alterar é uma função <span class=\"premium-marke\">Premium</span>.",
@@ -4093,6 +4297,33 @@ pt: {
   ar_anzahl_1: "1 caso neste dispositivo",
   ar_anzahl: "{n} casos neste dispositivo",
   ar_keine: "nenhum",
+  /* Dar nome, partilhar e guardar um relatório */
+  ar_name: "Nome do relatório",
+  ar_name_ph: "p. ex. simulacro turno da noite",
+  ar_name_speichern: "Guardar nome",
+  ar_name_hinweis: "Um nome próprio torna o relatório reconhecível. Aparece também no PDF e na imagem, por isso não escrevas nada que aponte para a pessoa assistida.",
+  bt_titel: "Partilhar relatório",
+  bt_frage: "O relatório contém o resumo e o registo completo com as horas, tal como aparece aqui. É criado neste dispositivo e só é enviado quando escolhes um destino.",
+  bt_pdf_teilen: "Partilhar como PDF",
+  bt_pdf_sub: "um ficheiro, várias páginas, pronto a imprimir",
+  bt_bild_teilen: "Partilhar como imagem",
+  bt_bild_sub: "PNG, um ficheiro por página",
+  bt_pdf_laden: "Guardar PDF",
+  bt_bild_laden: "Guardar imagem",
+  bt_laden_sub: "guardar neste dispositivo",
+  bp_titel: "Relatório do caso",
+  bp_zusammen: "Resumo",
+  bp_seite: "Página {n} de {m}",
+  bp_seiten_1: "1 página",
+  bp_seiten: "{n} páginas",
+  bp_grundlage: "Base: {s} 2025 · valores da aplicação verificados pela última vez em {d}.",
+  bp_fuss: "Criado pelo CPR Assist – apoio cognitivo e registo de eventos de uma reanimação. O relatório não substitui o processo clínico nem o juízo clínico; a responsabilidade é da equipa que assiste.",
+  ts_bericht_name: "O relatório passa a chamar-se «{n}»",
+  ts_bericht_name_weg: "Nome removido",
+  ts_bericht_geteilt: "Relatório partilhado",
+  ts_bericht_gespeichert: "Guardado: {n}",
+  ts_bericht_ordner: "Guardado na pasta Documentos: {n}",
+  ts_bericht_fehler: "Não foi possível criar o relatório.",
 
   sp_titel: "Idioma",
   sp_frage: "O idioma aplica-se a toda a aplicação e é aplicado de imediato. As siglas internacionais como VF/pVT, AESP, ROSC ou etCO₂ mantêm-se inalteradas.",
@@ -4785,6 +5016,7 @@ function standardSetzen(id){
   if (Einsatz.aktiv()){
     const e = Einsatz.e;
     KONF.URSACHEN.forEach(u => { if (!(u.id in e.ursachen)) e.ursachen[u.id] = 0; });
+    e.standard = id;
     Kern.ereignis(e, Date.now(), "standard", t("ev_standard", { n: Standard.kurz() }));
     Einsatz.speichern();
   }
@@ -4829,6 +5061,9 @@ const Einsatz = {
   starten(now){
     this.e = Kern.neuerEinsatz(now);
     this.e.antiarrhythmikum = Standard.aa();
+    /* Nach welcher Fassung gerechnet wurde, gehört zum Bericht – sonst
+       steht später eine Grundlage darüber, die gar nicht galt. */
+    this.e.standard = Standard.id();
     /* Mit welchen Grundeinstellungen gerechnet wird, gehört ins Protokoll –
        sonst ist ein archivierter Einsatz später nicht mehr einzuordnen. */
     const p = Algo.aktiv();
@@ -4859,6 +5094,16 @@ const Einsatz = {
     const liste = this.archiv();
     liste.unshift(e);
     store(this.ARCHIV_KEY, liste.slice(0, this.ARCHIV_MAX));
+  },
+  /* Ein eigener Name macht aus dem Eintrag einen wiedererkennbaren Bericht.
+     Ein leerer Name führt zurück zur Bezeichnung nach Datum und Uhrzeit. */
+  archivBenennen(i, name){
+    const liste = this.archiv();
+    if (!liste[i]) return null;
+    const sauber = String(name || "").trim().slice(0, 40);
+    if (sauber) liste[i].name = sauber; else delete liste[i].name;
+    store(this.ARCHIV_KEY, liste);
+    return sauber;
   },
   archivLoeschen(){ localStorage.removeItem(this.ARCHIV_KEY); }
 };
@@ -6870,6 +7115,410 @@ $("s-quellen").addEventListener("click", () => { closeModal("modal-settings"); q
 $("btn-quellen").addEventListener("click", quellenOeffnen);
 $("algo-banner").addEventListener("click", algoOeffnen);
 
+/* =========================================================================
+   EINSATZBERICHT – eine Seitenbeschreibung, zwei Ausgaben
+
+   Der Bericht wird genau einmal gesetzt: `seiten()` rechnet den Umbruch aus
+   und liefert je Seite eine Liste einfacher Zeichenbefehle (Text, Fläche) in
+   PDF-Punkten. Daraus entsteht danach entweder ein PDF (die Befehle werden
+   zu PDF-Operatoren) oder ein Bild (dieselben Befehle auf ein Canvas). So
+   sehen beide Ausgaben zwangsläufig gleich aus.
+
+   Es gibt keinen Bundler in dieser App, also auch keine PDF-Bibliothek: die
+   Datei wird von Hand geschrieben. Das geht, weil ein Textdokument mit den
+   Standardschriften Helvetica und Helvetica-Bold auskommt – die stecken in
+   jedem PDF-Betrachter und müssen nicht eingebettet werden. Für den
+   Zeilenumbruch braucht es deren Zeichenbreiten; sie stehen unten.
+   ========================================================================= */
+const Bericht = {
+  B: 595.28, H: 841.89, RAND: 46,       /* A4 in Punkten */
+  SCHRIFT: '"Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif',
+
+  /* Gedruckt wird auf Weiß: der dunkle Einsatzlook der App wäre auf Papier
+     eine Zumutung und in einer Akte unbrauchbar. */
+  TEXT: "#151b22", GRAU: "#6b7683", LINIE: "#d4dae0", AKZENT: "#0e7c70",
+  ZART: "#f2f5f7",
+
+  /* Zeichenbreiten in 1/1000 em für die Codes 32–126, erst Helvetica,
+     dann Helvetica-Bold. Alles darüber wird über den Grundbuchstaben
+     abgeschätzt (ä ist so breit wie a), Sonderzeichen stehen einzeln. */
+  W_N: [278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,
+        556,556,556,556,556,556,556,556,556,556,
+        278,278,584,584,584,556,1015,
+        667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,
+        722,667,611,722,667,944,667,667,611,
+        278,278,278,469,556,333,
+        556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,
+        333,500,278,556,500,722,500,500,500,
+        334,260,334,584],
+  W_B: [278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,
+        556,556,556,556,556,556,556,556,556,556,
+        333,333,584,584,584,611,975,
+        722,722,722,722,667,611,778,722,278,556,722,611,833,722,778,667,778,
+        722,667,611,722,667,944,667,667,611,
+        333,278,333,584,556,333,
+        556,611,556,611,556,333,611,611,278,278,556,278,889,611,611,611,611,
+        389,556,333,611,556,778,556,556,500,
+        389,280,389,584],
+  SONDER: { "–":556, "—":1000, "„":500, "“":500, "”":500, "‚":278, "‘":278,
+            "’":278, "·":278, "°":400, "…":1000, "«":556, "»":556, "€":556,
+            "ß":556, "±":584, "§":556, "©":737, "®":737, "™":1000, "µ":556,
+            "×":584, "÷":584, "¿":611, "¡":333, "Æ":1000, "æ":889, "Ø":778,
+            "ø":611, "Œ":1000, "œ":944 },
+
+  /* Zeichen, die WinAnsi nicht kennt. Lieber lesbar ersetzen als im PDF
+     verschwinden lassen – „SpO₂" wird zu „SpO2", „≥" zu „>=". */
+  ERSATZ: { "₀":"0","₁":"1","₂":"2","₃":"3","₄":"4","≥":">=","≤":"<=",
+            "→":"->","←":"<-","−":"-","‑":"-","≈":"~",
+            "\u2009":" ", "\u202f":" ", "\u00a0":" " },
+  /* Die Zeichen, die WinAnsi zusätzlich zu Latin-1 in 0x80–0x9F führt. */
+  HOCH: { "€":128,"‚":130,"ƒ":131,"„":132,"…":133,"†":134,"‡":135,"ˆ":136,
+          "‰":137,"Š":138,"‹":139,"Œ":140,"Ž":142,"‘":145,"’":146,"“":147,
+          "”":148,"•":149,"–":150,"—":151,"˜":152,"™":153,"š":154,"›":155,
+          "œ":156,"ž":158,"Ÿ":159 },
+
+  /* Text so, wie er im PDF ankommt – danach ist jedes Zeichen darstellbar. */
+  pdfText(txt){
+    let s = String(txt == null ? "" : txt);
+    Object.keys(this.ERSATZ).forEach(z => { s = s.split(z).join(this.ERSATZ[z]); });
+    let raus = "";
+    for (const ch of s){
+      const c = ch.charCodeAt(0);
+      if (c < 256 || this.HOCH[ch] != null){ raus += ch; continue; }
+      const grund = ch.normalize("NFD").charAt(0);
+      raus += grund.charCodeAt(0) < 256 ? grund : "?";
+    }
+    return raus;
+  },
+
+  zBreite(ch, fett){
+    const tab = fett ? this.W_B : this.W_N;
+    const c = ch.charCodeAt(0);
+    if (c >= 32 && c <= 126) return tab[c - 32];
+    if (this.SONDER[ch] != null) return this.SONDER[ch];
+    const g = ch.normalize("NFD").charCodeAt(0);
+    return g >= 32 && g <= 126 ? tab[g - 32] : 556;
+  },
+  /* Breite in Punkten. Gemessen wird der Text nach der Ersetzung, damit ein
+     im PDF breiteres Ersatzzeichen den Rand nicht überläuft. */
+  breite(txt, groesse, fett){
+    const s = this.pdfText(txt);
+    let summe = 0;
+    for (let i = 0; i < s.length; i++) summe += this.zBreite(s[i], fett);
+    return summe * groesse / 1000;
+  },
+  zeilen(txt, groesse, fett, maxBreite){
+    const worte = String(txt == null ? "" : txt).split(/\s+/).filter(Boolean);
+    const raus = [];
+    let zeile = "";
+    worte.forEach(w => {
+      const versuch = zeile ? zeile + " " + w : w;
+      if (zeile && this.breite(versuch, groesse, fett) > maxBreite){ raus.push(zeile); zeile = w; }
+      else zeile = versuch;
+    });
+    if (zeile) raus.push(zeile);
+    return raus.length ? raus : [""];
+  },
+  kuerzen(txt, groesse, fett, maxBreite){
+    let s = String(txt == null ? "" : txt);
+    if (this.breite(s, groesse, fett) <= maxBreite) return s;
+    while (s.length > 1 && this.breite(s + "…", groesse, fett) > maxBreite) s = s.slice(0, -1);
+    return s + "…";
+  },
+
+  /* ---- Satz: aus einem Einsatz werden Seiten voller Zeichenbefehle ---- */
+  seiten(e){
+    const B = this.B, H = this.H, R = this.RAND, innen = B - 2 * R;
+    const UNTEN = H - R - 34;            /* darunter beginnt die Fußzeile */
+    const titel = (e.name || "").trim() || tText("bp_titel");
+    const alle = [];
+    let s = [], y = 0;
+
+    const txt = (x, yy, groesse, fett, farbe, inhalt) =>
+      s.push({ k: "t", x: x, y: yy, s: groesse, f: fett ? 1 : 0, c: farbe, txt: inhalt });
+    const flaeche = (x, yy, w, h, farbe) => s.push({ k: "r", x: x, y: yy, w: w, h: h, c: farbe });
+    const folgeKopf = () => {
+      txt(R, R + 9, 8.5, 1, this.GRAU, this.kuerzen(titel, 8.5, 1, innen - 60));
+      flaeche(R, R + 15, innen, .6, this.LINIE);
+      y = R + 34;
+    };
+    const umbruch = () => { alle.push(s); s = []; folgeKopf(); };
+    const platz = h => { if (y + h > UNTEN) umbruch(); };
+
+    /* --- Kopf der ersten Seite --- */
+    flaeche(R, R, innen, 3.2, this.AKZENT);
+    y = R + 24;
+    txt(R, y, 8, 1, this.AKZENT, "CPR ASSIST");
+    y += 24;
+    this.zeilen(titel, 19, 1, innen).forEach(z => { txt(R, y, 19, 1, this.TEXT, z); y += 23; });
+    y += 1;
+    txt(R, y, 9.5, 0, this.GRAU, this.kopfzeile(e));
+    y += 18;
+    flaeche(R, y, innen, .6, this.LINIE);
+    y += 22;
+
+    const abschnitt = label => {
+      platz(34);
+      txt(R, y, 8.5, 1, this.AKZENT, label.toUpperCase());
+      y += 6;
+      flaeche(R, y, innen, .6, this.LINIE);
+      y += 17;
+    };
+
+    /* --- Zusammenfassung --- */
+    abschnitt(tText("bp_zusammen"));
+    const SP = 150;
+    berichtZusammen(e).forEach(([k, v]) => {
+      const zl = this.zeilen(v, 9.5, 0, innen - SP);
+      const hoehe = zl.length * 13 + 3.5;
+      platz(hoehe);
+      txt(R, y, 9.5, 1, this.TEXT, this.kuerzen(k, 9.5, 1, SP - 10));
+      zl.forEach((z, i) => txt(R + SP, y + i * 13, 9.5, 0, this.TEXT, z));
+      y += hoehe;
+    });
+    y += 14;
+
+    /* --- Verlauf --- */
+    abschnitt(tText("ar_verlauf"));
+    const C2 = 44, C3 = 112;
+    e.ereignisse.forEach(ev => {
+      const zl = this.zeilen(ev.info, 9, 0, innen - C3);
+      const hoehe = zl.length * 12 + 4;
+      platz(hoehe);
+      txt(R, y, 9, 1, this.TEXT, Kern.fmtUhr(ev.t - e.startZeit));
+      txt(R + C2, y, 9, 0, this.GRAU, Kern.uhrzeitGenau(ev.t));
+      zl.forEach((z, i) => txt(R + C3, y + i * 12, 9, 0, this.TEXT, z));
+      y += hoehe;
+    });
+
+    /* --- Schlussvermerk --- */
+    const vermerk = [tText("bp_fuss")];
+    const grundlage = this.grundlage(e);
+    if (grundlage) vermerk.push(grundlage);
+    const vz = [];
+    vermerk.forEach(a => this.zeilen(a, 8, 0, innen - 24).forEach(z => vz.push(z)));
+    const kasten = vz.length * 11 + 18;
+    y += 16;
+    platz(kasten);
+    flaeche(R, y - 6, innen, kasten, this.ZART);
+    vz.forEach((z, i) => txt(R + 12, y + 7 + i * 11, 8, 0, this.GRAU, z));
+    y += kasten;
+
+    alle.push(s);
+
+    /* --- Fußzeile auf jeder Seite, erst wenn die Anzahl feststeht --- */
+    alle.forEach((seite, i) => {
+      const fy = H - R - 4;
+      seite.push({ k: "r", x: R, y: fy - 14, w: innen, h: .6, c: this.LINIE });
+      seite.push({ k: "t", x: R, y: fy, s: 7.4, f: 0, c: this.GRAU, txt: this.marke() });
+      const nr = t("bp_seite", { n: i + 1, m: alle.length });
+      seite.push({ k: "t", x: B - R - this.breite(nr, 7.4, 0), y: fy, s: 7.4, f: 0,
+                   c: this.GRAU, txt: nr });
+    });
+    return alle;
+  },
+
+  marke(){ return "CPR Assist " + APP_VERSION; },
+  /* Trägt der Bericht einen eigenen Namen, sagt die Unterzeile zusätzlich,
+     worum es sich handelt – sonst steht das schon in der Überschrift. */
+  kopfzeile(e){
+    const ende = e.ereignisse[e.ereignisse.length - 1];
+    const teile = [];
+    if ((e.name || "").trim()) teile.push(tText("bp_titel"));
+    teile.push(Kern.fmtDatum(e.startZeit) + " · " + Kern.uhrzeit(e.startZeit));
+    teile.push(t("ar_dauer", { t: Kern.fmtUhr((ende ? ende.t : e.startZeit) - e.startZeit) }));
+    return teile.join(" · ");
+  },
+  /* Nur nennen, was der Einsatz selbst festgehalten hat: ältere Berichte
+     kennen ihren Standard nicht, dann bleibt die Zeile weg. */
+  grundlage(e){
+    const s = STANDARDS.find(x => x.id === e.standard);
+    return s ? t("bp_grundlage", { s: tText("std_" + s.id + "_kurz"),
+                                   d: KONF.LEITLINIEN_GEPRUEFT }) : "";
+  },
+
+  /* ---- Ausgabe 1: PDF ---- */
+  z(n){ return (Math.round(n * 100) / 100).toString(); },
+  rgb(hex){
+    const n = parseInt(hex.slice(1), 16);
+    return [(n >> 16 & 255), (n >> 8 & 255), (n & 255)]
+      .map(v => (v / 255).toFixed(3)).join(" ");
+  },
+  esc(txt){
+    let raus = "";
+    for (const ch of this.pdfText(txt)){
+      const code = this.HOCH[ch] != null ? this.HOCH[ch] : ch.charCodeAt(0);
+      const c = String.fromCharCode(code);
+      raus += (c === "\\" || c === "(" || c === ")") ? "\\" + c : c;
+    }
+    return raus;
+  },
+  pdf(seiten){
+    const H = this.H;
+    const inhalte = seiten.map(seite => {
+      let strom = "", farbe = null;
+      seite.forEach(c => {
+        if (farbe !== c.c){ strom += this.rgb(c.c) + " rg\n"; farbe = c.c; }
+        if (c.k === "r"){
+          strom += this.z(c.x) + " " + this.z(H - c.y - c.h) + " "
+                 + this.z(c.w) + " " + this.z(c.h) + " re f\n";
+        } else {
+          strom += "BT /" + (c.f ? "F2" : "F1") + " " + this.z(c.s) + " Tf "
+                 + this.z(c.x) + " " + this.z(H - c.y) + " Td ("
+                 + this.esc(c.txt) + ") Tj ET\n";
+        }
+      });
+      return strom;
+    });
+    /* Objektnummern liegen fest: 1 Katalog, 2 Seitenbaum, 3+4 Schriften,
+       danach je Seite ein Seiten- und ein Inhaltsobjekt. */
+    const objs = [];
+    objs[1] = "<< /Type /Catalog /Pages 2 0 R >>";
+    objs[2] = "<< /Type /Pages /Count " + seiten.length + " /Kids ["
+            + seiten.map((_, i) => (5 + i * 2) + " 0 R").join(" ") + "] >>";
+    objs[3] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>";
+    objs[4] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>";
+    inhalte.forEach((inh, i) => {
+      objs[5 + i * 2] = "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 "
+        + this.z(this.B) + " " + this.z(H) + "] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >>"
+        + " /Contents " + (6 + i * 2) + " 0 R >>";
+      objs[6 + i * 2] = "<< /Length " + inh.length + " >>\nstream\n" + inh + "endstream";
+    });
+    let d = "%PDF-1.4\n";
+    const pos = [];
+    for (let i = 1; i < objs.length; i++){
+      pos[i] = d.length;
+      d += i + " 0 obj\n" + objs[i] + "\nendobj\n";
+    }
+    const xref = d.length;
+    d += "xref\n0 " + objs.length + "\n0000000000 65535 f \n";
+    for (let i = 1; i < objs.length; i++)
+      d += String(pos[i]).padStart(10, "0") + " 00000 n \n";
+    d += "trailer\n<< /Size " + objs.length + " /Root 1 0 R >>\nstartxref\n" + xref + "\n%%EOF";
+    const bytes = new Uint8Array(d.length);
+    for (let i = 0; i < d.length; i++) bytes[i] = d.charCodeAt(i) & 0xff;
+    return new Blob([bytes], { type: "application/pdf" });
+  },
+
+  /* ---- Ausgabe 2: Bild je Seite ----
+     Bewusst ohne toBlob: das Erzeugen bleibt synchron, damit der
+     anschließende Teilen-Dialog noch zur Nutzergeste gehört. */
+  bilder(seiten, skala){
+    const s = skala || 2;
+    return seiten.map(seite => {
+      const c = document.createElement("canvas");
+      c.width = Math.round(this.B * s);
+      c.height = Math.round(this.H * s);
+      const g = c.getContext("2d");
+      g.fillStyle = "#ffffff";
+      g.fillRect(0, 0, c.width, c.height);
+      g.scale(s, s);
+      g.textBaseline = "alphabetic";
+      seite.forEach(cmd => {
+        g.fillStyle = cmd.c;
+        if (cmd.k === "r") g.fillRect(cmd.x, cmd.y, cmd.w, cmd.h);
+        else {
+          g.font = (cmd.f ? "700 " : "400 ") + cmd.s + "px " + this.SCHRIFT;
+          g.fillText(cmd.txt, cmd.x, cmd.y);
+        }
+      });
+      return datenUrlBlob(c.toDataURL("image/png"));
+    });
+  },
+
+  /* Dateiname ohne Sonderzeichen – er landet auf fremden Systemen. */
+  dateiname(e){
+    const d = new Date(e.startZeit), zwei = n => String(n).padStart(2, "0");
+    const stempel = d.getFullYear() + "-" + zwei(d.getMonth() + 1) + "-" + zwei(d.getDate())
+                  + "_" + zwei(d.getHours()) + "-" + zwei(d.getMinutes());
+    const roh = String(e.name || "").replace(/ß/g, "ss").normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "").replace(/[^A-Za-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "").slice(0, 40);
+    return (roh || "CPR-Assist-Bericht") + "_" + stempel;
+  }
+};
+
+/* Ein Daten-URL in eine Datei umwandeln, ohne auf einen Rückruf zu warten. */
+function datenUrlBlob(url){
+  const typ = url.slice(5, url.indexOf(";"));
+  const roh = atob(url.slice(url.indexOf(",") + 1));
+  const bytes = new Uint8Array(roh.length);
+  for (let i = 0; i < roh.length; i++) bytes[i] = roh.charCodeAt(i);
+  return new Blob([bytes], { type: typ });
+}
+
+/* =========================================================================
+   DATEIEN – speichern und teilen, in der App wie im Browser
+
+   Im Browser: Download über einen Link bzw. die Web-Share-API.
+   In der App: die Datei wird über das Filesystem-Plugin abgelegt und dem
+   Teilen-Dialog als URI übergeben. Schlägt das Ablegen im Dokumente-Ordner
+   fehl – neuere Android-Fassungen sperren ihn –, führt der Teilen-Dialog
+   mit „In Dateien sichern" zum selben Ziel.
+   ========================================================================= */
+const Datei = {
+  async base64(blob){
+    return new Promise((ok, fehler) => {
+      const r = new FileReader();
+      r.onload = () => ok(String(r.result).split(",")[1]);
+      r.onerror = () => fehler(r.error || new Error("Datei nicht lesbar"));
+      r.readAsDataURL(blob);
+    });
+  },
+  async nativSchreiben(dateien, ordner){
+    const fs = Bridge.plugin("Filesystem");
+    if (!fs) throw new Error("Filesystem-Plugin fehlt");
+    const uris = [];
+    for (const d of dateien){
+      await fs.writeFile({ path: d.name, data: await this.base64(d.blob),
+                           directory: ordner, recursive: true });
+      const u = await fs.getUri({ path: d.name, directory: ordner });
+      uris.push(u.uri);
+    }
+    return uris;
+  },
+  async teilen(dateien, titel){
+    if (Bridge.isNative()){
+      const sh = Bridge.plugin("Share");
+      if (!sh) throw new Error("Share-Plugin fehlt");
+      const uris = await this.nativSchreiben(dateien, "CACHE");
+      await sh.share({ title: titel, files: uris });
+      return "geteilt";
+    }
+    const files = dateien.map(d => new File([d.blob], d.name, { type: d.blob.type }));
+    if (navigator.share && navigator.canShare && navigator.canShare({ files })){
+      await navigator.share({ files: files, title: titel });
+      return "geteilt";
+    }
+    /* Kein Teilen möglich – dann wenigstens die Datei herausgeben. */
+    await this.speichern(dateien, titel);
+    return "geladen";
+  },
+  async speichern(dateien, titel){
+    if (Bridge.isNative()){
+      try {
+        await this.nativSchreiben(dateien, "DOCUMENTS");
+        return "abgelegt";
+      } catch(e){
+        console.warn("[Datei] Dokumente-Ordner nicht beschreibbar:", e);
+        return this.teilen(dateien, titel);
+      }
+    }
+    dateien.forEach(d => {
+      const url = URL.createObjectURL(d.blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = d.name;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 6000);
+    });
+    return "geladen";
+  }
+};
+
 /* ---------- Gespeicherte Einsätze ---------- */
 function fmtEinsatzDatum(ms){
   return Kern.fmtDatum(ms) + " · " + Kern.uhrzeit(ms);
@@ -6899,16 +7548,19 @@ function renderArchivListe(){
       + '<svg class="ic pfeil" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
       + 'stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
       + '<path d="M9 6l6 6-6 6"/></svg>';
-    b.querySelector("b").textContent = fmtEinsatzDatum(e.startZeit);
-    b.querySelector(".wann span").textContent = archivKurz(e);
+    /* Ein selbst vergebener Name steht vorn – sonst führt Datum und Uhrzeit. */
+    b.querySelector("b").textContent = e.name || fmtEinsatzDatum(e.startZeit);
+    b.querySelector(".wann span").textContent = e.name
+      ? fmtEinsatzDatum(e.startZeit) + " · " + archivKurz(e)
+      : archivKurz(e);
     b.addEventListener("click", () => renderArchivDetail(i));
     li.appendChild(b);
     ul.appendChild(li);
   });
 }
-function renderArchivDetail(i){
-  const e = Einsatz.archiv()[i];
-  if (!e) return;
+/* Die Zusammenfassung eines Einsatzes – dieselbe Aufstellung im Dialog und
+   im Bericht, damit beide nie auseinanderlaufen. */
+function berichtZusammen(e){
   const ende = e.ereignisse[e.ereignisse.length - 1];
   const zeilen = [
     [tText("en_beginn"), fmtEinsatzDatum(e.startZeit)],
@@ -6922,6 +7574,16 @@ function renderArchivDetail(i){
     [tText("en_rosc"), e.roscZeit ? tText("en_ja") : (e.reArrests ? tText("en_ja_rearrest") : "–")],
     [tText("en_algo"), e.algo ? e.algo.name : tText("al_standard")]
   ];
+  const std = STANDARDS.find(x => x.id === e.standard);
+  if (std) zeilen.push([tText("sd_titel"), tText("std_" + std.id)]);
+  return zeilen;
+}
+function renderArchivDetail(i){
+  const e = Einsatz.archiv()[i];
+  if (!e) return;
+  archivOffen = i;
+  $("archiv-name").value = e.name || "";
+  const zeilen = berichtZusammen(e);
   const dl = $("archiv-zusammen");
   dl.innerHTML = "";
   zeilen.forEach(([k, v]) => {
@@ -6951,6 +7613,67 @@ function renderArchivDetail(i){
   $("archiv-hinweis").textContent = t("ar_vom", { d: fmtEinsatzDatum(e.startZeit) });
   $("archiv-detail").style.display = "";
 }
+
+/* ---------- Bericht benennen, teilen, speichern ---------- */
+let archivOffen = -1;          /* Platz des offenen Berichts im Archiv */
+
+$("archiv-name-speichern").addEventListener("click", () => {
+  const name = Einsatz.archivBenennen(archivOffen, $("archiv-name").value);
+  if (name == null) return;
+  toast(name ? t("ts_bericht_name", { n: name }) : tText("ts_bericht_name_weg"));
+  renderArchivDetail(archivOffen);
+});
+$("archiv-name").addEventListener("keydown", ev => {
+  if (ev.key === "Enter"){ ev.preventDefault(); $("archiv-name-speichern").click(); }
+});
+
+function berichtOeffnen(){
+  const e = Einsatz.archiv()[archivOffen];
+  if (!e) return;
+  $("bericht-was").textContent = (e.name || fmtEinsatzDatum(e.startZeit))
+    + " · " + tZahl("bp_seiten", Bericht.seiten(e).length);
+  openModal("modal-bericht");
+}
+$("archiv-teilen").addEventListener("click", berichtOeffnen);
+
+/* Eine Handlung, vier Wege: PDF oder Bild, teilen oder ablegen. Der Bericht
+   wird synchron erzeugt – der anschließende Teilen-Dialog gehört sonst in
+   manchen Browsern nicht mehr zur Nutzergeste und wird abgewiesen. */
+function berichtAusgeben(art, ziel){
+  const e = Einsatz.archiv()[archivOffen];
+  if (!e) return;
+  let dateien;
+  try {
+    const seiten = Bericht.seiten(e);
+    const basis = Bericht.dateiname(e);
+    dateien = art === "pdf"
+      ? [{ name: basis + ".pdf", blob: Bericht.pdf(seiten) }]
+      : Bericht.bilder(seiten).map((blob, i) => ({
+          name: basis + (seiten.length > 1 ? "_" + (i + 1) : "") + ".png", blob: blob }));
+  } catch(err){
+    console.error("[Bericht]", err);
+    toast(tText("ts_bericht_fehler"), 3600);
+    return;
+  }
+  const titel = e.name || tText("bp_titel");
+  const lauf = ziel === "teilen" ? Datei.teilen(dateien, titel) : Datei.speichern(dateien, titel);
+  lauf.then(weg => {
+    closeModal("modal-bericht");
+    if (weg === "geteilt") toast(tText("ts_bericht_geteilt"));
+    else if (weg === "abgelegt") toast(t("ts_bericht_ordner", { n: dateien[0].name }), 4200);
+    else toast(t("ts_bericht_gespeichert", { n: dateien[0].name }), 4200);
+  }).catch(err => {
+    /* Ein abgebrochener Teilen-Dialog ist kein Fehler. */
+    if (err && (err.name === "AbortError" || /abort|cancel/i.test(String(err.message || "")))) return;
+    console.error("[Bericht]", err);
+    toast(tText("ts_bericht_fehler"), 3600);
+  });
+}
+document.querySelectorAll("[data-bericht]").forEach(b =>
+  b.addEventListener("click", () => {
+    const [art, ziel] = b.dataset.bericht.split("-");
+    berichtAusgeben(art, ziel);
+  }));
 $("s-felder").addEventListener("click", () => { closeModal("modal-settings"); felderOeffnen(); });
 $("s-toene").addEventListener("click", () => { closeModal("modal-settings"); toeneOeffnen(); });
 $("s-premium").addEventListener("click", () => { closeModal("modal-settings"); premiumOeffnen(); });
@@ -7128,7 +7851,7 @@ if (Ads.ENABLED) Ads.sync();
 window.CPRA = { KONF, ALGO_STANDARD, STANDARDS, Standard, standardSetzen,
                 Kern, Einst, Einsatz, Algo, Bridge, WakeLock,
                 Audio: Audio_, Metronom, Signale, Edition, Ads, Billing,
-                I18N, SPRACHEN, TEXTE, t, APP_VERSION };
+                I18N, SPRACHEN, TEXTE, t, APP_VERSION, Bericht, Datei };
 </script>
 </body>
 </html>

@@ -201,6 +201,45 @@ await schuss("22-eigene-massnahmen", {
   }
 });
 
+/* Ein benannter Bericht im Archiv und der Weg zum Teilen. */
+const berichtImArchiv = jetzt => {
+  const { Kern, Einsatz } = window.CPRA;
+  const t0 = jetzt - 26 * 60000;
+  Einsatz.starten(t0);
+  const e = Einsatz.e;
+  Kern.rhythmusSetzen(e, t0 + 40000, "schockbar");
+  Kern.schock(e, t0 + 120000);
+  Kern.schock(e, t0 + 246000);
+  Kern.schock(e, t0 + 372000);
+  Kern.adrenalinGabe(e, t0 + 380000);
+  Kern.amiodaronGabe(e, t0 + 395000, 300);
+  Kern.ursacheSetzen(e, t0 + 430000, "hypoxie", 2);
+  Kern.massnahme(e, t0 + 460000, "ivzugang");
+  Kern.massnahme(e, t0 + 500000, "intubation");
+  Kern.rosc(e, t0 + 700000);
+  Einsatz.beenden(t0 + 780000);
+  Einsatz.archivBenennen(0, "Übung Nachtschicht");
+};
+
+await schuss("26-bericht-benennen", {
+  aufbau: berichtImArchiv,
+  schritte: async p => {
+    await p.click("#btn-settings");
+    await p.click("#s-archiv");
+    await p.click("#archiv-liste li button");
+  }
+});
+
+await schuss("27-bericht-teilen", {
+  aufbau: berichtImArchiv,
+  schritte: async p => {
+    await p.click("#btn-settings");
+    await p.click("#s-archiv");
+    await p.click("#archiv-liste li button");
+    await p.click("#archiv-teilen");
+  }
+});
+
 await schuss("06-rosc", { aufbau: jetzt => {
   const { Kern } = window.CPRA;
   const t0 = jetzt - 14 * 60000;

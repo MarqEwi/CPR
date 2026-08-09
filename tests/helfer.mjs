@@ -28,6 +28,24 @@ export function capacitorMock(){
       BildschirmWach: {
         an:  async () => { merke("BildschirmWach.an"); return {}; },
         aus: async () => { merke("BildschirmWach.aus"); return {}; }
+      },
+      /* Für den Einsatzbericht: ablegen und weitergeben. Die Daten selbst
+         werden mitgeschrieben, damit die Tests die Datei prüfen können. */
+      Filesystem: {
+        writeFile: async o => {
+          merke("Filesystem.writeFile", { path: o.path, directory: o.directory, laenge: (o.data || "").length });
+          if (o.directory === "DOCUMENTS" && window.__dokumenteGesperrt)
+            throw new Error("EACCES");
+          (window.__dateien ||= {})[o.path] = o.data;
+          return {};
+        },
+        getUri: async o => {
+          merke("Filesystem.getUri", { path: o.path, directory: o.directory });
+          return { uri: "file:///" + String(o.directory).toLowerCase() + "/" + o.path };
+        }
+      },
+      Share: {
+        share: async o => { merke("Share.share", o); return { activityType: "test" }; }
       }
     }
   };

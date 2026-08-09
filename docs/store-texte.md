@@ -82,8 +82,11 @@ Unter „Leitlinien und Quellen“ stehen die Grundlagen mit Herausgeber, Stand 
 FÜR DEN EINSATZ GEBAUT
 Sehr dunkle Oberfläche mit hohem Kontrast, große Schaltflächen, große Zahlen, keine Spielereien. Der Bildschirm bleibt während des Einsatzes an und sperrt nicht. Ein versehentlich geschlossener oder abgestürzter Einsatz wird beim nächsten Start weitergeführt, weil alle Zeiten als Zeitstempel gespeichert sind.
 
+BERICHT WEITERGEBEN
+Jeder gespeicherte Einsatz lässt sich benennen und als Bericht ausgeben: mehrseitiges PDF oder ein Bild je Seite, mit Zusammenfassung und vollständigem Protokoll samt Uhrzeiten. Der Bericht entsteht auf dem Gerät und verlässt es erst, wenn du selbst ein Ziel auswählst – teilen oder auf dem Gerät ablegen.
+
 KEINE PATIENTENDATEN, KEIN KONTO
-Die App erfasst weder Namen noch andere Angaben zu Patientinnen und Patienten. Protokoll und Einstellungen bleiben ausschließlich auf dem Gerät. Kein Konto, kein Server, keine Cloud, kein Tracking, keine Werbung, keine Käufe.
+Die App erfasst weder Namen noch andere Angaben zu Patientinnen und Patienten. Protokoll und Einstellungen bleiben ausschließlich auf dem Gerät. Kein Konto, kein Server, keine Cloud, kein Tracking, keine Werbung. Es gibt einen freiwilligen einmaligen Kauf, kein Abo.
 
 Alle Angaben ohne Gewähr. Maßgeblich sind die geltenden Leitlinien und die Entscheidung des behandelnden Teams.
 ```
@@ -139,6 +142,12 @@ Dass der Bildschirm im Einsatz anbleibt, macht das mitgelieferte Plugin
 `BildschirmWach` über `FLAG_KEEP_SCREEN_ON`. Dafür ist **keine Berechtigung**
 nötig; die App fordert außer Internet keine an. An der
 Datensicherheits-Erklärung ändert das nichts.
+
+**Zum Teilen des Einsatzberichts:** Die Antwort bleibt auch dann „Nein“. Google
+zählt eine Weitergabe, die der Nutzer selbst auslöst und deren Ziel er selbst
+auswählt, ausdrücklich nicht zum „Teilen“ im Sinne der Datensicherheit. Die App
+erzeugt den Bericht auf dem Gerät und übergibt ihn nur an den Teilen-Dialog des
+Systems; sie sendet nichts an den Anbieter und kennt das Ziel nicht.
 
 ## Premium (einmaliger Kauf)
 

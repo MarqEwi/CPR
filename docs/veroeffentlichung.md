@@ -108,6 +108,13 @@ Hier ist CPR Assist schnell abgehakt, weil die App nichts sammelt:
 die erforderlichen Nutzerdatentypen?“ antwortest du **Nein**. Danach ist das
 Formular fertig. Alles bleibt auf dem Gerät, es gibt keinen Server.
 
+Daran ändert auch der **Einsatzbericht** nichts, den man als PDF oder Bild
+teilen kann. Google rechnet eine Weitergabe, die der Nutzer selbst auslöst und
+deren Ziel er selbst auswählt, ausdrücklich nicht zum „Teilen“. Die App
+erzeugt die Datei auf dem Gerät und reicht sie an den Teilen-Dialog des
+Systems weiter – sie sendet nichts an den Anbieter und erfährt nicht, wohin
+der Bericht geht.
+
 **Gesundheits-Apps:** Die Frage nach „Gesundheits-Apps" zielt auf klinische
 Studien, Gesundheitsforschung und den Umgang mit Gesundheitsdaten. CPR Assist
 erhebt keine Patientendaten und führt keine Studie durch – die Antwort ist

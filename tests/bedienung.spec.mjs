@@ -700,9 +700,9 @@ test("Eigene Tempi: anlegen, wählen, umbenennen, löschen", async ({ page }) =>
 test("Eigene Felder: nur mit Premium, dann als Karte mit Timer im Einsatz", async ({ page }) => {
   await appOeffnen(page);
 
-  /* Ohne Premium führt der Weg in den Premium-Dialog */
+  /* Ohne Premium trägt die Zeile die Premium-Marke und führt in den Dialog */
   await page.click("#btn-settings");
-  await expect(page.locator("#s-felder-sub")).toContainText("Premium");
+  await expect(page.locator("#s-felder .premium-marke")).toBeVisible();
   await page.click("#s-felder");
   await expect(page.locator("#modal-premium")).toHaveClass(/open/);
   await page.locator("#modal-premium .modal-x").click();

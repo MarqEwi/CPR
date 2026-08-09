@@ -40,6 +40,15 @@ protokolliert jedes Ereignis mit Zeitstempel.
   und Einstellungen → Metronom. Außerhalb eines Einsatzes wird die Auswahl
   nur gespeichert und klingt nicht
 - **Ereignis-Protokoll** im Hintergrund: jeder Schritt mit Zeitstempel
+- **Einsatzberichte benennen und weitergeben:** Jeder gespeicherte Einsatz
+  bekommt auf Wunsch einen eigenen Namen und führt danach die Liste damit an.
+  Aus ihm entsteht auf dem Gerät ein Bericht mit Zusammenfassung und
+  vollständigem Protokoll (verstrichene Zeit **und** Uhrzeit), wahlweise als
+  mehrseitiges **PDF** oder als **PNG je Seite** – jeweils zum Teilen oder zum
+  Ablegen auf dem Gerät. Erzeugt wird ohne Fremdbibliothek: eine einzige
+  Seitenbeschreibung wird einmal für das PDF und einmal auf ein Canvas
+  gezeichnet, damit beide Ausgaben nicht auseinanderlaufen. Der Bericht
+  verlässt das Gerät erst, wenn ein Ziel gewählt wurde
 - **Leitlinien-Standard umschaltbar** (kostenfrei, direkt auf der Startseite
   und in den Einstellungen):
   **ERC / ALS** (Europa) oder **AHA / ACLS** (USA). Beide beruhen auf demselben
@@ -105,7 +114,15 @@ protokolliert jedes Ereignis mit Zeitstempel.
   Screen-Wake-Lock-API, die die Web-Version trägt
 - Premium hängt an einer einzigen Wahrheit (`Edition.isPremium()`); jede
   Premium-Funktion geht durch dasselbe Tor (`premiumTor()`) und landet sonst
-  im Premium-Dialog statt in einer stummen Sackgasse
+  im Premium-Dialog statt in einer stummen Sackgasse. Der Diamant ist das
+  Zeichen dafür: er liegt einmal als `--diamant` im Stylesheet und steckt im
+  Hintergrund der Premium-Marke – jeder Premium-Hinweis trägt ihn dadurch von
+  selbst, auch der im Maßnahmen-Fenster während des Einsatzes
+- Der Bericht wird von Hand gesetzt (`Bericht`): `seiten()` rechnet den
+  Umbruch mit den Zeichenbreiten von Helvetica aus und liefert reine
+  Zeichenbefehle; `pdf()` macht daraus PDF-Operatoren, `bilder()` zeichnet
+  dieselben Befehle auf ein Canvas. Ausgeben übernimmt `Datei` – im Browser
+  Download bzw. Web-Share, in der App Filesystem plus Share-Plugin
 - Alle sichtbaren Texte stehen in einem Katalog (`TEXTE`), Deutsch ist die
   Leitfassung. Fest im HTML stehende Texte tragen `data-i18n`-Attribute,
   alles Dynamische holt sich seinen Text über `t()`. `npm run texte` prüft,
@@ -127,11 +144,13 @@ Playwright-Tests (vorinstalliertes Chromium, kein `playwright install`):
 npx playwright test
 ```
 
-Fünf Ebenen: Rechenkern (jede Status- und Zeitgrenze der Leitlinienlogik),
+Sechs Ebenen: Rechenkern (jede Status- und Zeitgrenze der Leitlinienlogik),
 Smoke/Bedienung (kompletter Einsatzablauf ohne Konsolenfehler), native
 Funktionen (nachgestellte Capacitor-Umgebung), Sprache (Umschalten,
-Vollständigkeit, Gerätesprache, Uhrzeit-Format) und Grundeinstellungen
-(eigene Maßnahmen, Algorithmus-Profile, Quellen, Protokoll-Uhrzeiten).
+Vollständigkeit, Gerätesprache, Uhrzeit-Format), Grundeinstellungen
+(eigene Maßnahmen, Algorithmus-Profile, Quellen, Protokoll-Uhrzeiten) und
+Berichte (Benennen, PDF-Aufbau samt Querverweistabelle, Bild je Seite,
+Download, Teilen über das Share-Plugin).
 
 Der Textkatalog wird zusätzlich ohne Browser geprüft:
 
