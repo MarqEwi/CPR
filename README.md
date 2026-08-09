@@ -40,7 +40,8 @@ protokolliert jedes Ereignis mit Zeitstempel.
   und Einstellungen → Metronom. Außerhalb eines Einsatzes wird die Auswahl
   nur gespeichert und klingt nicht
 - **Ereignis-Protokoll** im Hintergrund: jeder Schritt mit Zeitstempel
-- **Leitlinien-Standard umschaltbar** (kostenfrei, in den Einstellungen):
+- **Leitlinien-Standard umschaltbar** (kostenfrei, direkt auf der Startseite
+  und in den Einstellungen):
   **ERC/GRC** (Europa) oder **AHA/ACLS** (USA). Beide beruhen auf demselben
   ILCOR-Konsens; der Wechsel stellt gleichzeitig um: erste Adrenalingabe bei
   VF/pVT (3. gegenüber 2. Schock), reversible Ursachen (4 H's & HITS

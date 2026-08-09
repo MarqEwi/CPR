@@ -70,6 +70,16 @@ const einsatzAktiv = jetzt => {
 
 await schuss("01-bereit");
 
+/* Startseite mit gewähltem ACLS-Standard: dort erscheint zusätzlich die
+   Wahl des Antiarrhythmikums. */
+await schuss("25-bereit-aha", {
+  aufbau: () => {
+    const e = JSON.parse(localStorage.getItem("cpra_einstellungen") || "{}");
+    e.standard = "aha";
+    localStorage.setItem("cpra_einstellungen", JSON.stringify(e));
+  }
+});
+
 /* Unterer Teil der Startseite: Vorwahl und Unterstützungs-Block. Der Text
    dort ändert sich oft – deshalb gehört das Bild in den Regellauf. */
 await schuss("12-unterstuetzen", { schritte: async p => {

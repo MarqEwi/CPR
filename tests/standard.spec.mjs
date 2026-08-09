@@ -11,11 +11,16 @@ async function einstellungenOeffnen(page){
   await page.click(zahnrad);
   await expect(page.locator("#modal-settings")).toHaveClass(/open/);
 }
+/* Der Dialog bleibt nach der Wahl absichtlich offen – sonst übersieht man
+   die darunter erscheinende Wahl des Antiarrhythmikums. Deshalb hier
+   ausdrücklich schließen. */
 async function standardWaehlen(page, id){
   await einstellungenOeffnen(page);
   await page.click("#s-standard");
   await expect(page.locator("#modal-standard")).toHaveClass(/open/);
   await page.click(`#standard-liste button[data-standard="${id}"]`);
+  await expect(page.locator("#modal-standard")).toHaveClass(/open/);
+  await page.click('#modal-standard [data-close="modal-standard"]');
   await expect(page.locator("#modal-standard")).not.toHaveClass(/open/);
 }
 
@@ -30,6 +35,49 @@ test("Voreinstellung ist Europa und die Auswahl nennt beide Standards", async ({
   /* Der Dialog nennt die Unterschiede, bevor jemand umschaltet. */
   await expect(page.locator("#standard-unterschiede li")).toHaveCount(5);
   await expect(page.locator("#standard-unterschiede")).toContainText("3. Schock");
+
+  /* Nach der Wahl bleibt der Dialog offen – sonst würde die darunter
+     erscheinende Wahl des Antiarrhythmikums schlicht übersehen. */
+  await page.click('#standard-liste button[data-standard="aha"]');
+  await expect(page.locator("#modal-standard")).toHaveClass(/open/);
+  await expect(page.locator("#aa-wahl")).toBeVisible();
+  await expect(page.locator("#standard-liste li.aktiv b")).toHaveText("AHA / ACLS");
+});
+
+test("der Leitlinien-Standard laesst sich schon auf der Startseite waehlen", async ({ page }) => {
+  await appOeffnen(page);
+  await expect(page.locator("#vw-standard-sub")).toHaveText("ERC / GRC · Europa");
+  await expect(page.locator("#vw-standard button[data-standard=\"erc\"]")).toHaveClass(/active/);
+  /* Ohne AHA gibt es nichts zu wählen – der Block bleibt weg. */
+  await expect(page.locator("#vw-aa-block")).toBeHidden();
+
+  await page.click('#vw-standard button[data-standard="aha"]');
+  await expect(page.locator("#vw-standard-sub")).toHaveText("AHA / ACLS · USA");
+  await expect(page.locator("#vw-standard button[data-standard=\"aha\"]")).toHaveClass(/active/);
+  expect(await page.evaluate(() => window.CPRA.KONF.ADRENALIN_SCHOCK)).toBe(2);
+
+  /* Und direkt darunter das Antiarrhythmikum, ohne Umweg über einen Dialog. */
+  await expect(page.locator("#vw-aa-block")).toBeVisible();
+  await expect(page.locator("#vw-aa-sub")).toHaveText("300 mg · 150 mg");
+  await page.click('#vw-aa button[data-aa="lidocain"]');
+  await expect(page.locator("#vw-aa-sub")).toHaveText("1–1,5 mg/kg · 0,5–0,75 mg/kg");
+  expect(await page.evaluate(() => window.CPRA.Einst.werte.antiarrhythmikum)).toBe("lidocain");
+
+  /* Der Hinweisknopf daneben öffnet die ausführliche Erklärung. */
+  await page.click("#vw-standard-info");
+  await expect(page.locator("#modal-standard")).toHaveClass(/open/);
+});
+
+test("der Zyklus-Knopf sagt, was er tut", async ({ page }) => {
+  await page.clock.install();
+  await appOeffnen(page);
+  await einsatzStarten(page);
+  await expect(page.locator("#cpr-label")).toHaveText("Zyklus neu starten");
+  /* Im Analysefenster wird daraus die Rückkehr in die Kompressionen. */
+  await page.clock.runFor(121000);
+  await expect(page.locator("#cpr-label")).toHaveText("CPR fortsetzen");
+  await page.click("#btn-cpr");
+  await expect(page.locator("#cpr-label")).toHaveText("Zyklus neu starten");
 });
 
 test("Umschalten auf AHA verschiebt die erste Adrenalingabe auf den 2. Schock", async ({ page }) => {
@@ -185,10 +233,10 @@ test("Antiarrhythmikum: Amiodaron voreingestellt, Lidocain waehlbar", async ({ p
   await einstellungenOeffnen(page);
   await page.click("#s-standard");
   await expect(page.locator("#aa-wahl")).toBeHidden();
-  await page.click('#standard-liste button[data-standard="aha"]');
 
-  await einstellungenOeffnen(page);
-  await page.click("#s-standard");
+  /* Nach dem Wechsel auf AHA erscheint die Wahl im selben, offen
+     bleibenden Dialog – genau dafür schließt er sich nicht mehr. */
+  await page.click('#standard-liste button[data-standard="aha"]');
   await expect(page.locator("#aa-wahl")).toBeVisible();
   await expect(page.locator("#aa-liste li.aktiv b")).toHaveText("Amiodaron");
   await expect(page.locator("#aa-liste li.aktiv")).toContainText("300 mg");

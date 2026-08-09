@@ -59,7 +59,7 @@ test("kompletter Einsatz: Zyklus → Analyse → Schocks → Medikamente", async
   await expect(page.locator("#ring-zeit")).toHaveText("Analyse");
   /* Der Zyklus-Knopf oben tritt im Analysefenster hervor */
   await expect(page.locator("#btn-cpr")).toHaveClass(/dran/);
-  await expect(page.locator("#cpr-label")).toHaveText("CPR");
+  await expect(page.locator("#cpr-label")).toHaveText("CPR fortsetzen");
   await expect(page.locator("#ring-status")).toContainText("Rhythmus prüfen");
   await expect(page.locator("#ring-status")).toContainText("Helfer wechseln");
   await page.clock.runFor(60000);

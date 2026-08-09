@@ -334,7 +334,7 @@
      Scrollen stehen und trägt alles, was jederzeit erreichbar sein muss –
      Kennzahlen, den Zyklus-Knopf, das Metronom und die Einstellungen. */
   .aktivkopf{position:sticky;top:0;z-index:28;
-    display:flex;align-items:center;gap:8px;
+    display:flex;flex-direction:column;align-items:stretch;gap:6px;
     margin:0 -16px 6px;padding:8px 16px;
     padding-top:calc(8px + env(safe-area-inset-top));
     background:color-mix(in srgb, var(--bg) 94%, transparent);
@@ -342,12 +342,22 @@
     -webkit-backdrop-filter:saturate(140%) blur(12px);
     border-bottom:1px solid transparent;transition:border-color .2s}
   body.gescrollt .aktivkopf{border-bottom-color:var(--line)}
-  /* Zwei bewusst gesetzte Zeilen statt eines zufälligen Umbruchs. */
-  .aktivkopf .kennzahlen{flex:1;min-width:0;font-size:.71rem;color:var(--text3);
-    font-variant-numeric:tabular-nums;line-height:1.3}
-  .aktivkopf .kennzahlen b{display:block;font-size:.86rem;font-weight:680;color:var(--text2)}
-  .aktivkopf .kennzahlen span{display:block;white-space:nowrap;overflow:hidden;
+  /* Kennzahlen in einer Zeile: Gesamtzeit fett, Zähler klein darunter –
+     nebeneinander statt untereinander, um Höhe zu sparen. */
+  .aktivkopf .kennzahlen{display:flex;align-items:baseline;gap:8px;min-width:0;
+    font-size:.71rem;color:var(--text3);font-variant-numeric:tabular-nums;line-height:1.3}
+  .aktivkopf .kennzahlen b{font-size:.86rem;font-weight:680;color:var(--text2);flex:none}
+  .aktivkopf .kennzahlen span{min-width:0;white-space:nowrap;overflow:hidden;
     text-overflow:ellipsis}
+  /* Knopfzeile: Der Zyklus-Knopf nimmt den freien Platz, damit seine volle
+     Beschriftung hineinpasst; Metronom und Einstellungen bleiben rechts. */
+  .kopfaktionen{display:flex;align-items:center;gap:8px}
+  /* Im Post-ROSC-Modus entfällt der Zyklus-Knopf – dann rücken Metronom und
+     Einstellungen nach rechts, statt links zu kleben. */
+  .kopfaktionen .metrobtn{margin-left:auto}
+  .kopfaktionen #btn-cpr{flex:1;min-width:0;justify-content:flex-start}
+  .kopfaktionen #btn-cpr span{min-width:0;overflow:hidden;text-overflow:ellipsis;
+    white-space:nowrap}
   /* Gemeinsame Form für die drei Knöpfe rechts in der Kopfzeile. */
   .kopfbtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:none;
     background:var(--bg2);border:1px solid var(--line);border-radius:999px;
@@ -689,17 +699,23 @@
        sein muss. Außerhalb eines Einsatzes ist sie ausgeblendet. -->
   <div class="aktivkopf" id="aktivkopf" style="display:none">
     <div class="kennzahlen" id="gesamtzeile"><b>Gesamt 0:00</b><span>noch keine Ereignisse</span></div>
-    <button class="kopfbtn" id="btn-cpr" title="Zyklus starten oder neu beginnen">
-      <svg class="ic" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-      <span id="cpr-label">Zyklus</span>
-    </button>
-    <button class="kopfbtn metrobtn" id="btn-metronom" data-i18n-aria="me_titel" aria-label="Metronom einstellen">
-      <span class="puls" id="metro-puls" aria-hidden="true"></span>
-      <span id="metro-label">aus</span>
-    </button>
-    <button class="kopfbtn nur-icon" id="btn-settings-einsatz" data-i18n-aria="se_titel" aria-label="Einstellungen">
-      <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 008 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H2a2 2 0 110-4h.09A1.65 1.65 0 004.6 8a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 3.68 1.65 1.65 0 0010 2.17V2a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 8v0a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-    </button>
+    <!-- Eigene Zeile für die Knöpfe: Der Zyklus-Knopf trägt seine
+         vollständige Beschriftung („Zyklus neu starten" bzw. „CPR
+         fortsetzen"), und die passt neben den Kennzahlen nicht mehr auf
+         eine Zeile. -->
+    <div class="kopfaktionen">
+      <button class="kopfbtn" id="btn-cpr" title="Zyklus starten oder neu beginnen">
+        <svg class="ic" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        <span id="cpr-label">Zyklus neu starten</span>
+      </button>
+      <button class="kopfbtn metrobtn" id="btn-metronom" data-i18n-aria="me_titel" aria-label="Metronom einstellen">
+        <span class="puls" id="metro-puls" aria-hidden="true"></span>
+        <span id="metro-label">aus</span>
+      </button>
+      <button class="kopfbtn nur-icon" id="btn-settings-einsatz" data-i18n-aria="se_titel" aria-label="Einstellungen">
+        <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 008 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H2a2 2 0 110-4h.09A1.65 1.65 0 004.6 8a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 3.68 1.65 1.65 0 0010 2.17V2a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 8v0a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      </button>
+    </div>
   </div>
 
   <!-- Weicht der Rechenkern von der Leitlinien-Voreinstellung ab, muss das
@@ -730,6 +746,31 @@
 
     <!-- Vorwahl: gilt für den nächsten Einsatz und wird gespeichert. -->
     <div class="vorwahl">
+      <!-- Der Leitlinien-Standard steht zuerst: Er bestimmt, wonach die App
+           rechnet, und gehört damit vor jede Komforteinstellung. -->
+      <div class="switchrow">
+        <div class="txt"><b data-i18n="sd_titel">Leitlinien-Standard</b>
+          <span id="vw-standard-sub">ERC / GRC · Europa</span></div>
+        <button class="kopfbtn nur-icon" id="vw-standard-info" data-i18n-aria="sd_unterschiede">
+          <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+        </button>
+      </div>
+      <div class="bpmchips an" id="vw-standard">
+        <button type="button" data-standard="erc">ERC / GRC</button>
+        <button type="button" data-standard="aha">AHA / ACLS</button>
+      </div>
+      <!-- Nur bei AHA/ACLS: dort sind Amiodaron und Lidocain gleichwertig. -->
+      <div id="vw-aa-block" style="display:none">
+        <div class="switchrow">
+          <div class="txt"><b data-i18n="aa_titel">Antiarrhythmikum</b>
+            <span id="vw-aa-sub"></span></div>
+        </div>
+        <div class="bpmchips an" id="vw-aa">
+          <button type="button" data-aa="amiodaron">Amiodaron</button>
+          <button type="button" data-aa="lidocain">Lidocain</button>
+        </div>
+      </div>
+
       <div class="switchrow">
         <div class="txt"><b data-i18n="me_titel">Metronom</b><span id="vw-metro-sub">aus · Ziel 100–120/min</span></div>
         <label class="switch" data-i18n-aria="st_a_metro" aria-label="Metronom für den Einsatz vorwählen">
@@ -1349,6 +1390,9 @@
 
     <h3 class="qh" data-i18n="sd_unterschiede">Was sich dadurch ändert</h3>
     <ul class="premiumliste" id="standard-unterschiede"></ul>
+    <div class="btn-row">
+      <button class="btn block" data-close="modal-standard" data-i18n="g_fertig">Fertig</button>
+    </div>
     <button class="quellenlink" data-quellen>
       <svg class="ic" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 016.5 3H12v16H6.5A2.5 2.5 0 004 21.5z"/><path d="M20 5.5A2.5 2.5 0 0017.5 3H12v16h5.5a2.5 2.5 0 012.5 2.5z"/></svg>
       <span data-i18n-html="ql_link">Grundlage</span>
@@ -1770,8 +1814,8 @@ de: {
   ak_ursachen_offen: "{n} offen",
   ak_ursachen_fertig: "alle bearbeitet",
   ak_ende_sub: "über Einstellungen",
-  ak_cpr: "CPR",
-  ak_zyklus_kurz: "Zyklus",
+  ak_cpr: "CPR fortsetzen",
+  ak_zyklus_kurz: "Zyklus neu starten",
   ak_cpr_title: "CPR fortsetzen – Zyklus {n}",
   ak_zyklus_title: "Laufenden Zyklus neu starten",
 
@@ -2204,8 +2248,8 @@ en: {
   ak_ursachen_offen: "{n} open",
   ak_ursachen_fertig: "all reviewed",
   ak_ende_sub: "via settings",
-  ak_cpr: "CPR",
-  ak_zyklus_kurz: "Cycle",
+  ak_cpr: "Resume CPR",
+  ak_zyklus_kurz: "Restart cycle",
   ak_cpr_title: "Resume CPR – cycle {n}",
   ak_zyklus_title: "Restart the running cycle",
 
@@ -2618,8 +2662,8 @@ fr: {
   ak_ursachen_offen: "{n} en attente",
   ak_ursachen_fertig: "tout est traité",
   ak_ende_sub: "via les réglages",
-  ak_cpr: "RCP",
-  ak_zyklus_kurz: "Cycle",
+  ak_cpr: "Reprendre la RCP",
+  ak_zyklus_kurz: "Redémarrer le cycle",
   ak_cpr_title: "Reprendre la RCP – cycle {n}",
   ak_zyklus_title: "Redémarrer le cycle en cours",
 
@@ -3032,8 +3076,8 @@ es: {
   ak_ursachen_offen: "{n} pendientes",
   ak_ursachen_fertig: "todo revisado",
   ak_ende_sub: "desde los ajustes",
-  ak_cpr: "RCP",
-  ak_zyklus_kurz: "Ciclo",
+  ak_cpr: "Reanudar la RCP",
+  ak_zyklus_kurz: "Reiniciar el ciclo",
   ak_cpr_title: "Reanudar la RCP – ciclo {n}",
   ak_zyklus_title: "Reiniciar el ciclo en curso",
 
@@ -3446,8 +3490,8 @@ it: {
   ak_ursachen_offen: "{n} aperte",
   ak_ursachen_fertig: "tutto valutato",
   ak_ende_sub: "dalle impostazioni",
-  ak_cpr: "RCP",
-  ak_zyklus_kurz: "Ciclo",
+  ak_cpr: "Riprendi la RCP",
+  ak_zyklus_kurz: "Riavvia il ciclo",
   ak_cpr_title: "Riprendi la RCP – ciclo {n}",
   ak_zyklus_title: "Riavvia il ciclo in corso",
 
@@ -3860,8 +3904,8 @@ pt: {
   ak_ursachen_offen: "{n} em aberto",
   ak_ursachen_fertig: "tudo avaliado",
   ak_ende_sub: "nas definições",
-  ak_cpr: "SBV",
-  ak_zyklus_kurz: "Ciclo",
+  ak_cpr: "Retomar a reanimação",
+  ak_zyklus_kurz: "Reiniciar o ciclo",
   ak_cpr_title: "Retomar a reanimação – ciclo {n}",
   ak_zyklus_title: "Reiniciar o ciclo em curso",
 
@@ -5613,6 +5657,19 @@ function renderVorwahl(){
   $("vw-metro").checked = w.metronomAn;
   $("vw-ton").checked = w.ton;
   $("vw-autostart").checked = w.autostart;
+  /* Leitlinien-Standard und – wo er die Wahl lässt – das Antiarrhythmikum
+     direkt auf der Startseite, damit beides vor dem ersten Zyklus feststeht. */
+  $("vw-standard-sub").textContent = tText("std_" + Standard.id())
+    + " · " + tText("std_" + Standard.id() + "_sub");
+  document.querySelectorAll("#vw-standard button").forEach(b =>
+    b.classList.toggle("active", b.dataset.standard === Standard.id()));
+  $("vw-aa-block").style.display = Standard.aaWahl() ? "" : "none";
+  if (Standard.aaWahl()){
+    const aa = Standard.aa();
+    $("vw-aa-sub").textContent = tText("aa_" + aa + "_d1") + " · " + tText("aa_" + aa + "_d2");
+    document.querySelectorAll("#vw-aa button").forEach(b =>
+      b.classList.toggle("active", b.dataset.aa === aa));
+  }
   $("vw-metro-sub").textContent = metronomText();
   $("vw-bpm").classList.toggle("an", w.metronomAn);
   document.querySelectorAll("#vw-bpm button").forEach(b =>
@@ -5801,6 +5858,13 @@ $("btn-start").addEventListener("click", () => {
 });
 
 /* ---- Vorwahl auf der Startseite ---- */
+/* ---- Vorwahl: Leitlinien-Standard und Antiarrhythmikum ---- */
+document.querySelectorAll("#vw-standard button").forEach(b =>
+  b.addEventListener("click", () => standardSetzen(b.dataset.standard)));
+document.querySelectorAll("#vw-aa button").forEach(b =>
+  b.addEventListener("click", () => aaSetzen(b.dataset.aa)));
+$("vw-standard-info").addEventListener("click", standardOeffnen);
+
 $("vw-metro").addEventListener("change", () => {
   Einst.set("metronomAn", $("vw-metro").checked);
   metronomAnwenden();
@@ -6377,10 +6441,9 @@ function renderStandards(){
       + '<path d="M5 12l5 5L20 7"/></svg>';
     b.querySelector("b").textContent = tText("std_" + s.id);
     b.querySelector(".eigen").textContent = tText("std_" + s.id + "_sub");
-    b.addEventListener("click", () => {
-      closeModal("modal-standard");
-      standardSetzen(s.id);
-    });
+    /* Der Dialog bleibt bewusst offen: Wer auf AHA/ACLS wechselt, soll
+       sehen, dass darunter noch die Wahl des Antiarrhythmikums erscheint. */
+    b.addEventListener("click", () => standardSetzen(s.id));
     li.appendChild(b);
     ul.appendChild(li);
   });
