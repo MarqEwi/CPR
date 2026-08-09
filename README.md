@@ -40,6 +40,16 @@ protokolliert jedes Ereignis mit Zeitstempel.
   und Einstellungen → Metronom. Außerhalb eines Einsatzes wird die Auswahl
   nur gespeichert und klingt nicht
 - **Ereignis-Protokoll** im Hintergrund: jeder Schritt mit Zeitstempel
+- **Korrigierbar im Einsatz:** Das Maßnahmen-Fenster nennt die zuletzt
+  dokumentierte Maßnahme und nimmt sie auf Wunsch zurück. Das
+  **Live-Protokoll** (Einstellungen, unter „Einsatz beenden") zeigt den
+  laufenden Verlauf mit Uhrzeiten; versehentlich erfasste Maßnahmen lassen
+  sich dort löschen – Zyklen, Schocks und Medikamentengaben tragen die
+  Zustandsmaschine und bleiben unantastbar
+- **Medikamente jederzeit dokumentierbar:** Adrenalin und das
+  Antiarrhythmikum lassen sich immer erfassen, auch vor dem empfohlenen
+  Fenster – die App zeigt dann „zu früh", entscheidet aber nicht für das
+  Team. Ein Doppeltipp-Schutz fängt nur versehentliche Mehrfach-Tipps ab
 - **Einsatzberichte benennen und weitergeben:** Jeder gespeicherte Einsatz
   bekommt auf Wunsch einen eigenen Namen und führt danach die Liste damit an.
   Aus ihm entsteht auf dem Gerät ein Bericht mit Zusammenfassung und

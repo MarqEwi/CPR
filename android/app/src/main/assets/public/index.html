@@ -579,6 +579,20 @@
     min-width:4.2em;font-weight:640}
   /* Tatsächliche Uhrzeit hinter dem Ereignis – zum Abgleich mit anderen
      Unterlagen (Einsatzprotokoll, Monitor, Klinikdokumentation). */
+  .verlauf .klein-btn{flex:none;background:none;border:none;color:var(--text2);
+    padding:6px;border-radius:8px;cursor:pointer;align-self:center}
+  .verlauf .klein-btn:hover{color:var(--bad);background:var(--bg3)}
+  .verlauf .klein-btn .ic{width:16px;height:16px}
+  /* Rückgängig-Zeile im Maßnahmen-Fenster: nennt die letzte Maßnahme,
+     damit klar ist, WAS zurückgenommen wird. */
+  .undozeile{display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 12px;
+    background:var(--bg3);border:1px solid var(--line);border-radius:var(--radius-s)}
+  .undozeile .txt{flex:1;min-width:0}
+  .undozeile .txt b{display:block;font-size:.72rem;text-transform:uppercase;
+    letter-spacing:.06em;color:var(--text2);font-weight:700;margin-bottom:2px}
+  .undozeile .txt span{font-size:.9rem;font-weight:640;overflow:hidden;
+    text-overflow:ellipsis;white-space:nowrap;display:block}
+  .undozeile .btn{min-height:44px;padding:0 14px;flex:none}
   .verlauf .uhr{display:block;font-style:normal;font-size:.72rem;color:var(--text3);
     font-variant-numeric:tabular-nums}
   /* Zusammenfassung im Beenden-Dialog */
@@ -996,6 +1010,13 @@
     <p class="frage" data-i18n="ms_frage">Ein Tipp genügt – die Maßnahme wird mit Zeitstempel
       protokolliert und dieses Fenster schließt sich.</p>
     <div class="massnahmenwahl" id="massnahmen-wahl"></div>
+    <div class="undozeile" id="ms-undo" style="display:none">
+      <div class="txt"><b data-i18n="ms_zuletzt">Zuletzt dokumentiert</b><span id="ms-undo-was"></span></div>
+      <button class="btn secondary" id="ms-undo-btn">
+        <svg class="ic" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 010 11H11"/></svg>
+        <span data-i18n="g_rueckgaengig">Rückgängig</span>
+      </button>
+    </div>
     <button class="settings-row" id="ms-verwalten">
       <svg class="ic" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
       <span class="t"><b data-i18n="ms_eigene">Eigene Maßnahmen</b><span data-i18n="ms_eigene_sub">anlegen, umbenennen, löschen</span></span>
@@ -1254,6 +1275,25 @@
   </div>
 </div>
 
+<!-- ======================= Dialog: Live-Protokoll ======================= -->
+<div class="modal-back" id="modal-protokoll">
+  <div class="modal">
+    <button class="modal-x" data-close="modal-protokoll" data-i18n-aria="g_schliessen" aria-label="Schließen">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <h3 class="mt"><svg class="ic" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
+      <span data-i18n="lp_titel">Live-Protokoll</span></h3>
+    <p class="frage" data-i18n="lp_frage">Jedes Ereignis mit verstrichener Zeit und tatsächlicher
+      Uhrzeit – während der Einsatz weiterläuft. Versehentlich dokumentierte
+      Maßnahmen lassen sich hier löschen; Zyklen, Schocks und
+      Medikamentengaben gehören fest zum Ablauf und bleiben stehen.</p>
+    <ol class="verlauf" id="protokoll-liste"></ol>
+    <div class="btn-row">
+      <button class="btn secondary" data-close="modal-protokoll" style="flex:1" data-i18n="g_schliessen">Schließen</button>
+    </div>
+  </div>
+</div>
+
 <!-- ======================= Dialog: Bericht teilen ======================= -->
 <div class="modal-back" id="modal-bericht">
   <div class="modal">
@@ -1319,6 +1359,11 @@
     <button class="settings-row gefahr" id="s-ende" style="display:none">
       <svg class="ic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>
       <span class="t"><b data-i18n="en_titel">Einsatz beenden</b><span data-i18n="se_ende_sub">stoppt alle Timer, Protokoll bleibt gespeichert</span></span>
+    </button>
+
+    <button class="settings-row" id="s-protokoll" style="display:none">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
+      <span class="t"><b data-i18n="lp_titel">Live-Protokoll</b><span data-i18n="lp_sub">mitlesen, Maßnahmen entfernen</span></span>
     </button>
 
     <button class="settings-row" id="s-standard">
@@ -2106,6 +2151,13 @@ de: {
   ts_bericht_gespeichert: "Gespeichert: {n}",
   ts_bericht_ordner: "Im Ordner „Dokumente“ gespeichert: {n}",
   ts_bericht_fehler: "Der Bericht ließ sich nicht erzeugen.",
+  /* Rückgängig und Live-Protokoll */
+  ms_zuletzt: "Zuletzt dokumentiert",
+  g_rueckgaengig: "Rückgängig",
+  ts_rueckgaengig: "Entfernt: {n}",
+  lp_titel: "Live-Protokoll",
+  lp_sub: "mitlesen, Maßnahmen entfernen",
+  lp_frage: "Jedes Ereignis mit verstrichener Zeit und tatsächlicher Uhrzeit – während der Einsatz weiterläuft. Versehentlich dokumentierte Maßnahmen lassen sich hier löschen; Zyklen, Schocks und Medikamentengaben gehören fest zum Ablauf und bleiben stehen.",
 
   /* Sprache */
   sp_titel: "Sprache",
@@ -2556,6 +2608,13 @@ en: {
   ts_bericht_gespeichert: "Saved: {n}",
   ts_bericht_ordner: "Saved to the Documents folder: {n}",
   ts_bericht_fehler: "The report could not be created.",
+  /* Undo and live log */
+  ms_zuletzt: "Last documented",
+  g_rueckgaengig: "Undo",
+  ts_rueckgaengig: "Removed: {n}",
+  lp_titel: "Live log",
+  lp_sub: "read along, remove interventions",
+  lp_frage: "Every event with elapsed time and actual clock time – while the case is still running. Interventions documented by mistake can be deleted here; cycles, shocks and drug doses are part of the workflow and stay in place.",
 
   sp_titel: "Language",
   sp_frage: "The language applies to the whole app and takes effect immediately. Internationally used abbreviations such as VF/pVT, PEA, ROSC or etCO₂ are kept as they are.",
@@ -2997,6 +3056,13 @@ fr: {
   ts_bericht_gespeichert: "Enregistré : {n}",
   ts_bericht_ordner: "Enregistré dans le dossier Documents : {n}",
   ts_bericht_fehler: "Le rapport n’a pas pu être créé.",
+  /* Annuler et journal en direct */
+  ms_zuletzt: "Dernière saisie",
+  g_rueckgaengig: "Annuler",
+  ts_rueckgaengig: "Supprimé : {n}",
+  lp_titel: "Journal en direct",
+  lp_sub: "suivre, supprimer des gestes",
+  lp_frage: "Chaque événement avec le temps écoulé et l’heure réelle – pendant que l’intervention continue. Les gestes saisis par erreur peuvent être supprimés ici ; les cycles, chocs et administrations de médicaments font partie du déroulement et restent en place.",
 
   sp_titel: "Langue",
   sp_frage: "La langue s’applique à toute l’application et prend effet immédiatement. Les abréviations internationales comme VF/pVT, AESP, ROSC ou etCO₂ restent inchangées.",
@@ -3438,6 +3504,13 @@ es: {
   ts_bericht_gespeichert: "Guardado: {n}",
   ts_bericht_ordner: "Guardado en la carpeta Documentos: {n}",
   ts_bericht_fehler: "No se ha podido crear el informe.",
+  /* Deshacer y registro en vivo */
+  ms_zuletzt: "Último documentado",
+  g_rueckgaengig: "Deshacer",
+  ts_rueckgaengig: "Eliminado: {n}",
+  lp_titel: "Registro en vivo",
+  lp_sub: "seguir el registro, eliminar medidas",
+  lp_frage: "Cada evento con el tiempo transcurrido y la hora real, mientras la reanimación sigue en curso. Las medidas documentadas por error se pueden eliminar aquí; los ciclos, las descargas y las dosis de medicación forman parte del procedimiento y se mantienen.",
 
   sp_titel: "Idioma",
   sp_frage: "El idioma se aplica a toda la app y tiene efecto inmediato. Las abreviaturas internacionales como VF/pVT, AESP, ROSC o etCO₂ se mantienen igual.",
@@ -3879,6 +3952,13 @@ it: {
   ts_bericht_gespeichert: "Salvato: {n}",
   ts_bericht_ordner: "Salvato nella cartella Documenti: {n}",
   ts_bericht_fehler: "Non è stato possibile creare il referto.",
+  /* Annulla e registro in diretta */
+  ms_zuletzt: "Ultima registrazione",
+  g_rueckgaengig: "Annulla",
+  ts_rueckgaengig: "Rimosso: {n}",
+  lp_titel: "Registro in diretta",
+  lp_sub: "seguire il registro, rimuovere interventi",
+  lp_frage: "Ogni evento con il tempo trascorso e l’orario reale, mentre l’intervento prosegue. Gli interventi registrati per errore si possono eliminare qui; cicli, shock e somministrazioni di farmaci fanno parte della procedura e restano.",
 
   sp_titel: "Lingua",
   sp_frage: "La lingua vale per tutta l’app e viene applicata subito. Le sigle internazionali come VF/pVT, PEA, ROSC o etCO₂ restano invariate.",
@@ -4320,6 +4400,13 @@ pt: {
   ts_bericht_gespeichert: "Guardado: {n}",
   ts_bericht_ordner: "Guardado na pasta Documentos: {n}",
   ts_bericht_fehler: "Não foi possível criar o relatório.",
+  /* Anular e registo ao vivo */
+  ms_zuletzt: "Último documentado",
+  g_rueckgaengig: "Anular",
+  ts_rueckgaengig: "Removido: {n}",
+  lp_titel: "Registo ao vivo",
+  lp_sub: "acompanhar, remover medidas",
+  lp_frage: "Cada evento com o tempo decorrido e a hora real, enquanto o caso continua. Medidas documentadas por engano podem ser apagadas aqui; ciclos, choques e doses de medicação fazem parte do procedimento e permanecem.",
 
   sp_titel: "Idioma",
   sp_frage: "O idioma aplica-se a toda a aplicação e é aplicado de imediato. As siglas internacionais como VF/pVT, AESP, ROSC ou etCO₂ mantêm-se inalteradas.",
@@ -4810,6 +4897,29 @@ const Kern = {
     const name = this.massnahmeName(m);
     e.massnahmen.push({ id, t: now, name });
     this.ereignis(e, now, "massnahme", name);
+  },
+  letzteMassnahme(e){
+    return e.massnahmen[e.massnahmen.length - 1] || null;
+  },
+  /* Anzeigename eines erfassten Eintrags: der beim Dokumentieren
+     gespeicherte Name, sonst über die Maßnahmenliste aufgelöst. */
+  massnahmeEintragName(m){
+    if (!m) return "";
+    return m.name || this.massnahmeName(this.massnahmeFinden(m.id)) || "";
+  },
+  /* Entfernt eine Maßnahme samt ihrer Protokollzeile. Bewusst NUR
+     Maßnahmen: Zyklen, Schocks und Medikamentengaben tragen die
+     Zustandsmaschine und bleiben unantastbar. */
+  massnahmeEntfernen(e, zeit){
+    let i = -1;
+    e.massnahmen.forEach((m, k) => { if (m.t === zeit) i = k; });
+    if (i < 0) return null;
+    const weg = e.massnahmen.splice(i, 1)[0];
+    const name = this.massnahmeEintragName(weg);
+    const j = e.ereignisse.findIndex(ev =>
+      ev.typ === "massnahme" && ev.t === zeit && (!weg.name || ev.info === weg.name));
+    if (j >= 0) e.ereignisse.splice(j, 1);
+    return { id: weg.id, t: weg.t, name };
   },
   massnahmeZeit(e, id){
     let letzte = null;
@@ -5867,12 +5977,78 @@ function renderMassnahmen(){
     });
     box.appendChild(b);
   });
+  /* Rückgängig-Zeile: nennt die letzte Maßnahme mit Uhrzeit. */
+  const letzte = e ? Kern.letzteMassnahme(e) : null;
+  $("ms-undo").style.display = letzte ? "" : "none";
+  if (letzte){
+    $("ms-undo-was").textContent =
+      Kern.massnahmeEintragName(letzte) + " · " + Kern.uhrzeit(letzte.t);
+  }
 }
+$("ms-undo-btn").addEventListener("click", () => {
+  if (!Einsatz.aktiv()) return;
+  const letzte = Kern.letzteMassnahme(Einsatz.e);
+  if (!letzte) return;
+  const weg = Kern.massnahmeEntfernen(Einsatz.e, letzte.t);
+  if (!weg) return;
+  Einsatz.speichern();
+  renderMassnahmen();
+  vollRender();
+  toast(t("ts_rueckgaengig", { n: weg.name }));
+});
 function massnahmenOeffnen(){
   if (!Einsatz.aktiv()) return;
   renderMassnahmen();
   openModal("modal-massnahme");
 }
+
+/* ---------- Live-Protokoll ----------
+   Dieselbe Darstellung wie der Verlauf eines archivierten Einsatzes, nur
+   auf dem laufenden Einsatz – und mit Löschknopf an den Maßnahmen. */
+function renderProtokoll(){
+  const e = Einsatz.e;
+  if (!e) return;
+  const ol = $("protokoll-liste");
+  ol.innerHTML = "";
+  e.ereignisse.forEach(ev => {
+    const li = document.createElement("li");
+    const z = document.createElement("span"), txt = document.createElement("span");
+    z.className = "zeit";
+    z.textContent = Kern.fmtUhr(ev.t - e.startZeit);
+    txt.style.flex = "1";
+    txt.style.minWidth = "0";
+    const uhr = document.createElement("i");
+    uhr.className = "uhr";
+    uhr.textContent = Kern.uhrzeitGenau(ev.t);
+    txt.textContent = ev.info;
+    txt.appendChild(uhr);
+    li.appendChild(z); li.appendChild(txt);
+    if (ev.typ === "massnahme"){
+      const del = document.createElement("button");
+      del.type = "button";
+      del.className = "klein-btn";
+      del.setAttribute("aria-label", tText("g_loeschen"));
+      del.innerHTML = '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+        + 'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'
+        + '<path d="M4 7h16"/><path d="M9 7V5h6v2"/><path d="M6 7l1 13h10l1-13"/></svg>';
+      del.addEventListener("click", () => {
+        const weg = Kern.massnahmeEntfernen(e, ev.t);
+        if (!weg) return;
+        Einsatz.speichern();
+        renderProtokoll();
+        vollRender();
+        toast(t("ts_rueckgaengig", { n: weg.name }));
+      });
+      li.appendChild(del);
+    }
+    ol.appendChild(li);
+  });
+}
+$("s-protokoll").addEventListener("click", () => {
+  closeModal("modal-settings");
+  renderProtokoll();
+  openModal("modal-protokoll");
+});
 
 /* Kurzfassung der Metronom-Einstellung – gleich formuliert auf der
    Startseite und in den Einstellungen. Ein eigenes Tempo steht mit Namen
@@ -5950,6 +6126,7 @@ function renderSettings(){
   $("s-autostart").checked = Einst.werte.autostart;
   $("s-vibration").checked = Einst.werte.vibration;
   $("s-ende").style.display = Einsatz.aktiv() ? "" : "none";
+  $("s-protokoll").style.display = Einsatz.aktiv() ? "" : "none";
 }
 const UI = {
   metronomAnzeigen(){
