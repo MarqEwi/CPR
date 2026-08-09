@@ -1,4 +1,4 @@
-// Leitlinien-Standard: Europa (ERC/GRC) oder USA (AHA/ACLS). Der Wechsel
+// Leitlinien-Standard: Europa (ERC / ALS) oder USA (AHA / ACLS). Der Wechsel
 // muss die Rechenwerte, die Ursachenliste, die Post-ROSC-Ziele, die
 // Maßnahmen und die Quellen gleichzeitig umstellen – sonst entsteht ein
 // Mischzustand, der in keiner Leitlinie steht.
@@ -28,10 +28,10 @@ test("Voreinstellung ist Europa und die Auswahl nennt beide Standards", async ({
   await appOeffnen(page);
   expect(await page.evaluate(() => window.CPRA.Standard.id())).toBe("erc");
   await einstellungenOeffnen(page);
-  await expect(page.locator("#s-standard-sub")).toHaveText("ERC / GRC · Europa");
+  await expect(page.locator("#s-standard-sub")).toHaveText("ERC / ALS · Europa");
   await page.click("#s-standard");
   await expect(page.locator("#standard-liste li")).toHaveCount(2);
-  await expect(page.locator("#standard-liste li.aktiv b")).toHaveText("ERC / GRC");
+  await expect(page.locator("#standard-liste li.aktiv b")).toHaveText("ERC / ALS");
   /* Der Dialog nennt die Unterschiede, bevor jemand umschaltet. */
   await expect(page.locator("#standard-unterschiede li")).toHaveCount(5);
   await expect(page.locator("#standard-unterschiede")).toContainText("3. Schock");
@@ -46,7 +46,7 @@ test("Voreinstellung ist Europa und die Auswahl nennt beide Standards", async ({
 
 test("der Leitlinien-Standard laesst sich schon auf der Startseite waehlen", async ({ page }) => {
   await appOeffnen(page);
-  await expect(page.locator("#vw-standard-sub")).toHaveText("ERC / GRC · Europa");
+  await expect(page.locator("#vw-standard-sub")).toHaveText("ERC / ALS · Europa");
   await expect(page.locator("#vw-standard button[data-standard=\"erc\"]")).toHaveClass(/active/);
   /* Ohne AHA gibt es nichts zu wählen – der Block bleibt weg. */
   await expect(page.locator("#vw-aa-block")).toBeHidden();

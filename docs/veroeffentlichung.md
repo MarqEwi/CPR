@@ -46,7 +46,7 @@ und prüf, dass die Seite wirklich erscheint – Google prüft das auch.
 
 ### 2a. Leitlinien-Standard und was das fürs Review bedeutet
 
-Die App rechnet wahlweise nach ERC/GRC (Europa, ALS) oder nach AHA/ACLS
+Die App rechnet wahlweise nach ERC / ALS (Europa) oder nach AHA / ACLS
 (USA); die Wahl steht in den Einstellungen und ist **kostenfrei**. Für die
 Play Console ändert das nichts an den Formularen – wohl aber an der
 Beschreibung: Erwähne beide Standards ausdrücklich (Textbaustein „ZWEI

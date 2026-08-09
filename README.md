@@ -2,8 +2,8 @@
 
 CPR Assist ist eine **kognitive Unterstützung und ein strukturiertes
 Ereignis-Protokoll** für die Reanimation Erwachsener nach den
-Reanimationsleitlinien 2025 – wahlweise nach **ERC/GRC (ALS)** oder nach
-**AHA (ACLS)**. Die App strukturiert den Ablauf – 2-Minuten-Zyklen,
+Reanimationsleitlinien 2025 – wahlweise nach **ERC / ALS** (Europa)
+oder nach **AHA / ACLS** (USA). Die App strukturiert den Ablauf – 2-Minuten-Zyklen,
 Rhythmusanalyse, Medikamenten-Status, reversible Ursachen, Post-ROSC – und
 protokolliert jedes Ereignis mit Zeitstempel.
 
@@ -42,7 +42,7 @@ protokolliert jedes Ereignis mit Zeitstempel.
 - **Ereignis-Protokoll** im Hintergrund: jeder Schritt mit Zeitstempel
 - **Leitlinien-Standard umschaltbar** (kostenfrei, direkt auf der Startseite
   und in den Einstellungen):
-  **ERC/GRC** (Europa) oder **AHA/ACLS** (USA). Beide beruhen auf demselben
+  **ERC / ALS** (Europa) oder **AHA / ACLS** (USA). Beide beruhen auf demselben
   ILCOR-Konsens; der Wechsel stellt gleichzeitig um: erste Adrenalingabe bei
   VF/pVT (3. gegenüber 2. Schock), reversible Ursachen (4 H's & HITS
   gegenüber 5 H's & 5 T's), Zielwerte nach ROSC (SpO₂ 94–98 % gegenüber

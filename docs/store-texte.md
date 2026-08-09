@@ -42,7 +42,7 @@ Zyklen, Medikamente und Protokoll im ALS – Merkhilfe, kein Ersatz fürs Team.
 ```
 Im Kreislaufstillstand macht nicht das Fachwissen die Arbeit schwer, sondern die Gleichzeitigkeit: Der Zyklus läuft, jemand fragt nach der letzten Adrenalin-Gabe, die Schockzahl stimmt nicht mehr mit der Erinnerung überein, und hinterher fehlen die Zeiten fürs Protokoll.
 
-CPR Assist übernimmt genau diesen Teil. Die App strukturiert den Ablauf nach den Reanimationsleitlinien 2025 für Erwachsene – wahlweise nach ERC/GRC (ALS) oder nach AHA (ACLS) – und schreibt jeden Schritt mit Zeitstempel mit.
+CPR Assist übernimmt genau diesen Teil. Die App strukturiert den Ablauf nach den Reanimationsleitlinien 2025 für Erwachsene – wahlweise nach ERC / ALS (Europa) oder nach AHA / ACLS (USA) – und schreibt jeden Schritt mit Zeitstempel mit.
 
 WICHTIG – WAS DIESE APP NICHT IST
 CPR Assist ist eine kognitive Unterstützung und ein Ereignis-Protokoll für geschultes Personal. Die App stellt keine Diagnose, trifft keine Therapieentscheidung, gibt keine patientenspezifischen Empfehlungen und ersetzt weder Ausbildung noch klinisches Urteil. Verantwortlich für jede Maßnahme bleibt das behandelnde Team. Es gibt keinen Kindermodus: Die App bildet ausschließlich die Reanimation Erwachsener ab (ALS bzw. ACLS).
@@ -71,7 +71,7 @@ METRONOM
 Optionaler Taktgeber mit 100, 110 oder 120 Kompressionen pro Minute, Standard 110. Er sitzt klein in der Ecke und ist mit einem Tipp umgestellt oder abgeschaltet. Als Unterstützung gedacht, nicht als Qualitätskontrolle.
 
 ZWEI LEITLINIEN-STANDARDS
-Schon auf der Startseite lässt sich wählen, nach welcher Fassung die App rechnet: ERC/GRC (Europa, ALS) oder AHA/ACLS (USA). Beide beruhen auf demselben ILCOR-Konsens. Der Wechsel stellt gleichzeitig um, worin sie sich unterscheiden: die erste Adrenalingabe bei VF/pVT (3. gegenüber 2. Schock), die reversiblen Ursachen (4 H's und HITS gegenüber 5 H's und 5 T's) und die Zielwerte nach ROSC. Im ACLS-Standard lässt sich zusätzlich wählen, ob Amiodaron oder Lidocain die Medikamentenkarte führt – beide gelten als Alternativen zueinander, nicht als Kombination; das nicht gewählte Mittel steht in der Maßnahmen-Schnellauswahl. Welche Fassung gerade gilt, steht in den Einstellungen und unter „Leitlinien und Quellen“. Diese Wahl ist kostenfrei – nach welcher Leitlinie gearbeitet wird, gehört zum Kern der Reanimation und nicht zum Komfort.
+Schon auf der Startseite lässt sich wählen, nach welcher Fassung die App rechnet: ERC / ALS (Europa) oder AHA / ACLS (USA). Beide beruhen auf demselben ILCOR-Konsens. Der Wechsel stellt gleichzeitig um, worin sie sich unterscheiden: die erste Adrenalingabe bei VF/pVT (3. gegenüber 2. Schock), die reversiblen Ursachen (4 H's und HITS gegenüber 5 H's und 5 T's) und die Zielwerte nach ROSC. Im ACLS-Standard lässt sich zusätzlich wählen, ob Amiodaron oder Lidocain die Medikamentenkarte führt – beide gelten als Alternativen zueinander, nicht als Kombination; das nicht gewählte Mittel steht in der Maßnahmen-Schnellauswahl. Welche Fassung gerade gilt, steht in den Einstellungen und unter „Leitlinien und Quellen“. Diese Wahl ist kostenfrei – nach welcher Leitlinie gearbeitet wird, gehört zum Kern der Reanimation und nicht zum Komfort.
 
 SECHS SPRACHEN
 Deutsch, Englisch, Französisch, Spanisch, Italienisch und Portugiesisch. Beim ersten Start übernimmt die App die Sprache des Geräts, danach ist sie in den Einstellungen jederzeit umstellbar. International gebräuchliche Kurzformen wie VF/pVT, PEA, ROSC oder etCO2 bleiben in jeder Sprache stehen.

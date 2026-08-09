@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>CPR Assist – Erwachsenen-Reanimation</title>
-<meta name="description" content="Kognitive Unterstützung und Ereignis-Protokoll für die Reanimation Erwachsener – wahlweise nach ERC/GRC (ALS) oder AHA (ACLS): 2-Minuten-Zyklen, Rhythmusanalyse, Adrenalin- und Amiodaron-Status, Metronom, reversible Ursachen (4H/HITS bzw. 5H/5T) und Post-ROSC-Erinnerungen. Kein Ersatz für klinische Entscheidungen.">
+<meta name="description" content="Kognitive Unterstützung und Ereignis-Protokoll für die Reanimation Erwachsener – wahlweise nach ERC / ALS oder AHA / ACLS: 2-Minuten-Zyklen, Rhythmusanalyse, Adrenalin- und Amiodaron-Status, Metronom, reversible Ursachen (4H/HITS bzw. 5H/5T) und Post-ROSC-Erinnerungen. Kein Ersatz für klinische Entscheidungen.">
 <meta name="theme-color" content="#0b0e10">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%2310161a'/%3E%3Cpath d='M256 442 C 130 352 66 272 66 190 C 66 121 119 68 186 68 C 216 68 244 85 256 112 C 268 85 296 68 326 68 C 393 68 446 121 446 190 C 446 272 382 352 256 442 Z' fill='%232fb3a3'/%3E%3Cpath d='M88 240H168C176 206 206 206 214 240H232L244 268L262 150L280 336L292 240H318C330 194 360 194 372 240H424' fill='none' stroke='%23f4fbfa' stroke-width='22' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
@@ -728,7 +728,7 @@
   <!-- ======================= Bereit / Start ======================= -->
   <section class="view active" id="view-bereit">
     <div class="hinweisbox" style="margin-top:8px" data-i18n-html="st_hinweis">
-      <b>Erwachsenen-ALS · Leitlinien 2025 (ERC/GRC).</b>
+      <b>Erwachsenen-ALS · Leitlinien 2025 (ERC/ALS).</b>
       CPR Assist strukturiert Zyklen, Medikamente und Dokumentation.
       Die App trifft <b>keine Therapieentscheidungen</b> – verantwortlich
       bleibt das behandelnde Team.
@@ -750,14 +750,14 @@
            rechnet, und gehört damit vor jede Komforteinstellung. -->
       <div class="switchrow">
         <div class="txt"><b data-i18n="sd_titel">Leitlinien-Standard</b>
-          <span id="vw-standard-sub">ERC / GRC · Europa</span></div>
+          <span id="vw-standard-sub">ERC / ALS · Europa</span></div>
         <button class="kopfbtn nur-icon" id="vw-standard-info" data-i18n-aria="sd_unterschiede">
           <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
         </button>
       </div>
       <div class="bpmchips an" id="vw-standard">
-        <button type="button" data-standard="erc">ERC / GRC</button>
-        <button type="button" data-standard="aha">AHA / ACLS</button>
+        <button type="button" data-standard="erc" data-i18n="std_erc">ERC / ALS</button>
+        <button type="button" data-standard="aha" data-i18n="std_aha">AHA / ACLS</button>
       </div>
       <!-- Nur bei AHA/ACLS: dort sind Amiodaron und Lidocain gleichwertig. -->
       <div id="vw-aa-block" style="display:none">
@@ -1261,7 +1261,7 @@
 
     <button class="settings-row" id="s-standard">
       <svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
-      <span class="t"><b data-i18n="sd_titel">Leitlinien-Standard</b><span id="s-standard-sub">ERC / GRC</span></span>
+      <span class="t"><b data-i18n="sd_titel">Leitlinien-Standard</b><span id="s-standard-sub">ERC / ALS · Europa</span></span>
     </button>
 
     <button class="settings-row" id="s-sprache">
@@ -1338,7 +1338,7 @@
       <svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
       <b data-i18n="ob1_t">Unterstützung, keine Entscheidung</b>
       <p data-i18n-html="ob1_p">CPR Assist ist eine <b>kognitive Stütze und ein Protokoll</b> für die
-      Reanimation Erwachsener nach den Leitlinien 2025 von ERC/GRC. Die App
+      Reanimation Erwachsener nach den Leitlinien 2025 von ERC/ALS. Die App
       trifft keine Diagnose- oder Therapieentscheidungen und ersetzt weder
       Ausbildung noch klinisches Urteil.</p>
     </div>
@@ -1502,12 +1502,12 @@
 "use strict";
 /* =========================================================================
    CPR Assist – kognitive Unterstützung und Ereignis-Protokoll für die
-   Reanimation Erwachsener – wahlweise nach ERC/GRC (ALS) oder AHA (ACLS),
+   Reanimation Erwachsener – wahlweise nach ERC / ALS oder AHA / ACLS,
    Leitlinien bzw. Guidelines 2025.
 
    Aufbau in klar getrennten Ebenen (von unten nach oben):
      1. KONF     – alle medizinischen Konstanten an EINER Stelle.
-     1a. Standard– Leitlinien-Standard (ERC/GRC oder AHA/ACLS): setzt Werte
+     1a. Standard– Leitlinien-Standard (ERC/ALS oder AHA/ACLS): setzt Werte
                    und Listen in KONF, damit der Kern nichts davon wissen muss.
      1b. TEXTE   – Textkatalog für sechs Sprachen, Deutsch als Leitfassung.
      2. Kern     – reiner Rechenkern: Zustandsmaschine, Zyklus-, Adrenalin-
@@ -1531,7 +1531,7 @@ const $ = id => document.getElementById(id);
 /* =========================================================================
    1. KONF – medizinische Konstanten (Erwachsene, Leitlinien 2025)
    Nichts davon ist irgendwo anders hart codiert. Die Voreinstellung ist die
-   europäische Fassung (ERC/GRC); der gewählte Leitlinien-Standard (siehe
+   europäische Fassung (ERC/ALS); der gewählte Leitlinien-Standard (siehe
    Abschnitt 1a) überschreibt davon einzelne Werte und Listen.
    ========================================================================= */
 const KONF = {
@@ -1619,7 +1619,7 @@ const ALGO_STANDARD = {};
 KONF.ALGO_FELDER.forEach(f => ALGO_STANDARD[f.key] = KONF[f.key]);
 
 /* =========================================================================
-   1a. LEITLINIEN-STANDARD – Europa (ERC/GRC) oder USA (AHA/ACLS)
+   1a. LEITLINIEN-STANDARD – Europa (ERC/ALS) oder USA (AHA/ACLS)
 
    Beide Standards stammen aus demselben ILCOR-Konsens; sie widersprechen
    sich nicht, setzen ihn aber unterschiedlich um. Die App bildet genau
@@ -2161,7 +2161,7 @@ de: {
   sd_u3: "<b>Sauerstoff nach ROSC</b> – Ziel 94–98 % (ERC) gegenüber 90–98 % (AHA).",
   sd_u4: "<b>Blutdruck nach ROSC</b> – systolisch über 100 mmHg (ERC) gegenüber MAD ab 65 mmHg (AHA).",
   sd_u5: "<b>Antiarrhythmikum</b> – die AHA nennt Lidocain gleichwertig neben Amiodaron. Welches die Medikamentenkarte führt, wählst du unten; das andere steht in der Maßnahmen-Auswahl.",
-  std_erc: "ERC / GRC", std_erc_sub: "Europa", std_erc_kurz: "ERC/GRC",
+  std_erc: "ERC / ALS", std_erc_sub: "Europa", std_erc_kurz: "ERC/ALS",
   std_aha: "AHA / ACLS", std_aha_sub: "USA", std_aha_kurz: "AHA/ACLS",
   ak_ursachen_erc: "4H / HITS", ak_ursachen_aha: "5H / 5T",
   ur_titel_erc: "Reversible Ursachen – 4 H’s &amp; HITS",
@@ -2576,7 +2576,7 @@ en: {
   sd_u3: "<b>Oxygen after ROSC</b> – target 94–98 % (ERC) versus 90–98 % (AHA).",
   sd_u4: "<b>Blood pressure after ROSC</b> – systolic above 100 mmHg (ERC) versus MAP from 65 mmHg (AHA).",
   sd_u5: "<b>Antiarrhythmic</b> – the AHA names lidocaine alongside amiodarone. You choose below which one carries the drug card; the other appears in the intervention list.",
-  std_erc: "ERC / GRC", std_erc_sub: "Europe", std_erc_kurz: "ERC/GRC",
+  std_erc: "ERC / ALS", std_erc_sub: "Europe", std_erc_kurz: "ERC/ALS",
   std_aha: "AHA / ACLS", std_aha_sub: "USA", std_aha_kurz: "AHA/ACLS",
   ak_ursachen_erc: "4H / 4T", ak_ursachen_aha: "5H / 5T",
   ur_titel_erc: "Reversible causes – 4 H’s &amp; 4 T’s",
@@ -2990,7 +2990,7 @@ fr: {
   sd_u3: "<b>Oxygène après ROSC</b> – objectif 94–98 % (ERC) contre 90–98 % (AHA).",
   sd_u4: "<b>Pression artérielle après ROSC</b> – systolique au-dessus de 100 mmHg (ERC) contre PAM à partir de 65 mmHg (AHA).",
   sd_u5: "<b>Antiarythmique</b> – l’AHA place la lidocaïne au même niveau que l’amiodarone. Vous choisissez ci-dessous laquelle occupe la carte médicament ; l’autre figure dans la liste des gestes.",
-  std_erc: "ERC / GRC", std_erc_sub: "Europe", std_erc_kurz: "ERC/GRC",
+  std_erc: "ERC / ALS", std_erc_sub: "Europe", std_erc_kurz: "ERC/ALS",
   std_aha: "AHA / ACLS", std_aha_sub: "États-Unis", std_aha_kurz: "AHA/ACLS",
   ak_ursachen_erc: "4H / 4T", ak_ursachen_aha: "5H / 5T",
   ur_titel_erc: "Causes réversibles – 4 H &amp; 4 T",
@@ -3404,7 +3404,7 @@ es: {
   sd_u3: "<b>Oxígeno tras ROSC</b>: objetivo 94–98 % (ERC) frente a 90–98 % (AHA).",
   sd_u4: "<b>Presión arterial tras ROSC</b>: sistólica por encima de 100 mmHg (ERC) frente a PAM desde 65 mmHg (AHA).",
   sd_u5: "<b>Antiarrítmico</b>: la AHA sitúa la lidocaína al mismo nivel que la amiodarona. Abajo eliges cuál ocupa la tarjeta de medicación; la otra aparece en la lista de intervenciones.",
-  std_erc: "ERC / GRC", std_erc_sub: "Europa", std_erc_kurz: "ERC/GRC",
+  std_erc: "ERC / ALS", std_erc_sub: "Europa", std_erc_kurz: "ERC/ALS",
   std_aha: "AHA / ACLS", std_aha_sub: "EE. UU.", std_aha_kurz: "AHA/ACLS",
   ak_ursachen_erc: "4H / 4T", ak_ursachen_aha: "5H / 5T",
   ur_titel_erc: "Causas reversibles – 4 H y 4 T",
@@ -3818,7 +3818,7 @@ it: {
   sd_u3: "<b>Ossigeno dopo il ROSC</b>: obiettivo 94–98 % (ERC) contro 90–98 % (AHA).",
   sd_u4: "<b>Pressione dopo il ROSC</b>: sistolica sopra 100 mmHg (ERC) contro PAM da 65 mmHg (AHA).",
   sd_u5: "<b>Antiaritmico</b>: l’AHA mette la lidocaina sullo stesso piano dell’amiodarone. Qui sotto scegli quale occupa la scheda del farmaco; l’altro compare nell’elenco delle procedure.",
-  std_erc: "ERC / GRC", std_erc_sub: "Europa", std_erc_kurz: "ERC/GRC",
+  std_erc: "ERC / ALS", std_erc_sub: "Europa", std_erc_kurz: "ERC/ALS",
   std_aha: "AHA / ACLS", std_aha_sub: "USA", std_aha_kurz: "AHA/ACLS",
   ak_ursachen_erc: "4H / 4T", ak_ursachen_aha: "5H / 5T",
   ur_titel_erc: "Cause reversibili – 4 H e 4 T",
@@ -4232,7 +4232,7 @@ pt: {
   sd_u3: "<b>Oxigénio após ROSC</b>: objetivo 94–98 % (ERC) frente a 90–98 % (AHA).",
   sd_u4: "<b>Pressão arterial após ROSC</b>: sistólica acima de 100 mmHg (ERC) frente a PAM a partir de 65 mmHg (AHA).",
   sd_u5: "<b>Antiarrítmico</b>: a AHA coloca a lidocaína ao mesmo nível da amiodarona. Em baixo escolhe qual ocupa o cartão do fármaco; a outra aparece na lista de procedimentos.",
-  std_erc: "ERC / GRC", std_erc_sub: "Europa", std_erc_kurz: "ERC/GRC",
+  std_erc: "ERC / ALS", std_erc_sub: "Europa", std_erc_kurz: "ERC/ALS",
   std_aha: "AHA / ACLS", std_aha_sub: "EUA", std_aha_kurz: "AHA/ACLS",
   ak_ursachen_erc: "4H / 4T", ak_ursachen_aha: "5H / 5T",
   ur_titel_erc: "Causas reversíveis – 4 H e 4 T",
