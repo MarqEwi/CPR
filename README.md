@@ -40,12 +40,19 @@ protokolliert jedes Ereignis mit Zeitstempel.
   und Einstellungen → Metronom. Außerhalb eines Einsatzes wird die Auswahl
   nur gespeichert und klingt nicht
 - **Ereignis-Protokoll** im Hintergrund: jeder Schritt mit Zeitstempel
-- **Korrigierbar im Einsatz:** Das Maßnahmen-Fenster nennt die zuletzt
-  dokumentierte Maßnahme und nimmt sie auf Wunsch zurück. Das
-  **Live-Protokoll** (Einstellungen, unter „Einsatz beenden") zeigt den
-  laufenden Verlauf mit Uhrzeiten; versehentlich erfasste Maßnahmen lassen
-  sich dort löschen – Zyklen, Schocks und Medikamentengaben tragen die
-  Zustandsmaschine und bleiben unantastbar
+- **Korrigierbar im Einsatz:** Die Taste **Rückgängig** (direkt unter
+  „Maßnahme dokumentieren") nimmt die letzte Handlung komplett zurück –
+  Schock samt gestartetem Zyklus, Adrenalin- oder Antiarrhythmikum-Gabe,
+  Maßnahme, Zyklus-Neustart, Feld-Eintrag – und nennt vorher, was
+  zurückgeht. Eine Stufe, per Schnappschuss des ganzen Standes, damit auch
+  verkettete Folgen sauber verschwinden. Das **Live-Protokoll**
+  (Einstellungen, unter „Einsatz beenden") zeigt den laufenden Verlauf mit
+  Uhrzeiten; versehentliche Einträge – Maßnahmen, Schocks,
+  Medikamentengaben, eigene Felder – lassen sich dort einzeln löschen, die
+  Zähler und Status rechnen danach ohne sie. Zyklen und Zustandswechsel
+  tragen die Zeitstruktur und bleiben stehen. Das Maßnahmen-Fenster nennt
+  zusätzlich die zuletzt dokumentierte Maßnahme mit eigener
+  Rückgängig-Zeile
 - **Medikamente jederzeit dokumentierbar:** Adrenalin und das
   Antiarrhythmikum lassen sich immer erfassen, auch vor dem empfohlenen
   Fenster – die App zeigt dann „zu früh", entscheidet aber nicht für das

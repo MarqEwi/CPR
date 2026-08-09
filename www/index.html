@@ -928,6 +928,12 @@
       <span class="unter" id="massnahme-unter"></span>
     </button>
 
+    <button class="aktion breit" id="btn-undo" style="display:none">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 010 11H11"/></svg>
+      <span data-i18n="g_rueckgaengig">Rückgängig</span>
+      <span class="unter" id="btn-undo-was"></span>
+    </button>
+
     <!-- Eigene Felder (Premium): leer und unsichtbar, solange keine da sind -->
     <div class="feldgrid" id="feldgrid"></div>
 
@@ -1284,9 +1290,10 @@
     <h3 class="mt"><svg class="ic" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
       <span data-i18n="lp_titel">Live-Protokoll</span></h3>
     <p class="frage" data-i18n="lp_frage">Jedes Ereignis mit verstrichener Zeit und tatsächlicher
-      Uhrzeit – während der Einsatz weiterläuft. Versehentlich dokumentierte
-      Maßnahmen lassen sich hier löschen; Zyklen, Schocks und
-      Medikamentengaben gehören fest zum Ablauf und bleiben stehen.</p>
+      Uhrzeit – während der Einsatz weiterläuft. Versehentliche Einträge –
+      Maßnahmen, Schocks, Medikamentengaben, eigene Felder – lassen sich
+      löschen; Zähler und Status rechnen danach ohne sie. Zyklen und
+      Zustandswechsel tragen die Zeitstruktur und bleiben stehen.</p>
     <ol class="verlauf" id="protokoll-liste"></ol>
     <div class="btn-row">
       <button class="btn secondary" data-close="modal-protokoll" style="flex:1" data-i18n="g_schliessen">Schließen</button>
@@ -2155,9 +2162,10 @@ de: {
   ms_zuletzt: "Zuletzt dokumentiert",
   g_rueckgaengig: "Rückgängig",
   ts_rueckgaengig: "Entfernt: {n}",
+  ts_undo: "Zurückgenommen: {n}",
   lp_titel: "Live-Protokoll",
   lp_sub: "mitlesen, Maßnahmen entfernen",
-  lp_frage: "Jedes Ereignis mit verstrichener Zeit und tatsächlicher Uhrzeit – während der Einsatz weiterläuft. Versehentlich dokumentierte Maßnahmen lassen sich hier löschen; Zyklen, Schocks und Medikamentengaben gehören fest zum Ablauf und bleiben stehen.",
+  lp_frage: "Jedes Ereignis mit verstrichener Zeit und tatsächlicher Uhrzeit – während der Einsatz weiterläuft. Versehentliche Einträge – Maßnahmen, Schocks, Medikamentengaben, eigene Felder – lassen sich löschen; Zähler und Status rechnen danach ohne sie. Zyklen und Zustandswechsel tragen die Zeitstruktur und bleiben stehen.",
 
   /* Sprache */
   sp_titel: "Sprache",
@@ -2612,9 +2620,10 @@ en: {
   ms_zuletzt: "Last documented",
   g_rueckgaengig: "Undo",
   ts_rueckgaengig: "Removed: {n}",
+  ts_undo: "Undone: {n}",
   lp_titel: "Live log",
   lp_sub: "read along, remove interventions",
-  lp_frage: "Every event with elapsed time and actual clock time – while the case is still running. Interventions documented by mistake can be deleted here; cycles, shocks and drug doses are part of the workflow and stay in place.",
+  lp_frage: "Every event with elapsed time and actual clock time – while the case is still running. Accidental entries – interventions, shocks, drug doses, custom fields – can be deleted; counters and status then calculate without them. Cycles and state changes carry the timeline and stay in place.",
 
   sp_titel: "Language",
   sp_frage: "The language applies to the whole app and takes effect immediately. Internationally used abbreviations such as VF/pVT, PEA, ROSC or etCO₂ are kept as they are.",
@@ -3060,9 +3069,10 @@ fr: {
   ms_zuletzt: "Dernière saisie",
   g_rueckgaengig: "Annuler",
   ts_rueckgaengig: "Supprimé : {n}",
+  ts_undo: "Annulé : {n}",
   lp_titel: "Journal en direct",
   lp_sub: "suivre, supprimer des gestes",
-  lp_frage: "Chaque événement avec le temps écoulé et l’heure réelle – pendant que l’intervention continue. Les gestes saisis par erreur peuvent être supprimés ici ; les cycles, chocs et administrations de médicaments font partie du déroulement et restent en place.",
+  lp_frage: "Chaque événement avec le temps écoulé et l’heure réelle – pendant que l’intervention continue. Les saisies faites par erreur – gestes, chocs, administrations de médicaments, champs personnels – peuvent être supprimées ; compteurs et statuts recalculent ensuite sans elles. Les cycles et changements d’état portent la chronologie et restent en place.",
 
   sp_titel: "Langue",
   sp_frage: "La langue s’applique à toute l’application et prend effet immédiatement. Les abréviations internationales comme VF/pVT, AESP, ROSC ou etCO₂ restent inchangées.",
@@ -3508,9 +3518,10 @@ es: {
   ms_zuletzt: "Último documentado",
   g_rueckgaengig: "Deshacer",
   ts_rueckgaengig: "Eliminado: {n}",
+  ts_undo: "Deshecho: {n}",
   lp_titel: "Registro en vivo",
   lp_sub: "seguir el registro, eliminar medidas",
-  lp_frage: "Cada evento con el tiempo transcurrido y la hora real, mientras la reanimación sigue en curso. Las medidas documentadas por error se pueden eliminar aquí; los ciclos, las descargas y las dosis de medicación forman parte del procedimiento y se mantienen.",
+  lp_frage: "Cada evento con el tiempo transcurrido y la hora real, mientras la reanimación sigue en curso. Las entradas hechas por error – medidas, descargas, dosis de medicación, campos propios – se pueden eliminar; contadores y estados vuelven a calcularse sin ellas. Los ciclos y cambios de estado sostienen la cronología y se mantienen.",
 
   sp_titel: "Idioma",
   sp_frage: "El idioma se aplica a toda la app y tiene efecto inmediato. Las abreviaturas internacionales como VF/pVT, AESP, ROSC o etCO₂ se mantienen igual.",
@@ -3956,9 +3967,10 @@ it: {
   ms_zuletzt: "Ultima registrazione",
   g_rueckgaengig: "Annulla",
   ts_rueckgaengig: "Rimosso: {n}",
+  ts_undo: "Annullato: {n}",
   lp_titel: "Registro in diretta",
   lp_sub: "seguire il registro, rimuovere interventi",
-  lp_frage: "Ogni evento con il tempo trascorso e l’orario reale, mentre l’intervento prosegue. Gli interventi registrati per errore si possono eliminare qui; cicli, shock e somministrazioni di farmaci fanno parte della procedura e restano.",
+  lp_frage: "Ogni evento con il tempo trascorso e l’orario reale, mentre l’intervento prosegue. Le voci registrate per errore – interventi, shock, somministrazioni di farmaci, campi personali – si possono eliminare; contatori e stati ricalcolano poi senza di esse. Cicli e cambi di stato reggono la cronologia e restano.",
 
   sp_titel: "Lingua",
   sp_frage: "La lingua vale per tutta l’app e viene applicata subito. Le sigle internazionali come VF/pVT, PEA, ROSC o etCO₂ restano invariate.",
@@ -4404,9 +4416,10 @@ pt: {
   ms_zuletzt: "Último documentado",
   g_rueckgaengig: "Anular",
   ts_rueckgaengig: "Removido: {n}",
+  ts_undo: "Anulado: {n}",
   lp_titel: "Registo ao vivo",
   lp_sub: "acompanhar, remover medidas",
-  lp_frage: "Cada evento com o tempo decorrido e a hora real, enquanto o caso continua. Medidas documentadas por engano podem ser apagadas aqui; ciclos, choques e doses de medicação fazem parte do procedimento e permanecem.",
+  lp_frage: "Cada evento com o tempo decorrido e a hora real, enquanto o caso continua. Registos feitos por engano – medidas, choques, doses de medicação, campos próprios – podem ser apagados; contadores e estados passam a calcular sem eles. Ciclos e mudanças de estado sustentam a cronologia e permanecem.",
 
   sp_titel: "Idioma",
   sp_frage: "O idioma aplica-se a toda a aplicação e é aplicado de imediato. As siglas internacionais como VF/pVT, AESP, ROSC ou etCO₂ mantêm-se inalteradas.",
@@ -4916,10 +4929,47 @@ const Kern = {
     if (i < 0) return null;
     const weg = e.massnahmen.splice(i, 1)[0];
     const name = this.massnahmeEintragName(weg);
+    /* Nach einem Eingriff von Hand passt die Sicherung nicht mehr zum
+       Stand – ein Rückgängig danach würde Gelöschtes wiederbeleben. */
+    delete e.undo;
     const j = e.ereignisse.findIndex(ev =>
       ev.typ === "massnahme" && ev.t === zeit && (!weg.name || ev.info === weg.name));
     if (j >= 0) e.ereignisse.splice(j, 1);
     return { id: weg.id, t: weg.t, name };
+  },
+  /* Welche Protokolleinträge sich nachträglich löschen lassen. Zyklen und
+     Zustandswechsel (Rhythmus, ROSC, Standard) bleiben: sie tragen die
+     Zeitstruktur des Einsatzes. */
+  LOESCHBAR: ["massnahme", "adrenalin", "amiodaron", "schock", "feld"],
+  /* Entfernt einen löschbaren Eintrag samt seiner Zähler-Spur, damit
+     Status und Schwellen danach ohne ihn rechnen. Gibt den Protokolltext
+     zurück – oder null, wenn nichts entfernt wurde. */
+  eintragEntfernen(e, zeit, typ){
+    const j = e.ereignisse.findIndex(ev => ev.typ === typ && ev.t === zeit);
+    if (j < 0 || this.LOESCHBAR.indexOf(typ) < 0) return null;
+    if (typ === "massnahme"){
+      const weg = this.massnahmeEntfernen(e, zeit);
+      return weg ? weg.name : null;
+    }
+    if (typ === "adrenalin"){
+      const i = e.adrenalin.indexOf(zeit);
+      if (i >= 0) e.adrenalin.splice(i, 1);
+    } else if (typ === "amiodaron"){
+      const i = e.amiodaron.findIndex(d => d.t === zeit);
+      if (i >= 0) e.amiodaron.splice(i, 1);
+    } else if (typ === "schock"){
+      const i = e.schocks.indexOf(zeit);
+      if (i >= 0) e.schocks.splice(i, 1);
+    } else if (typ === "feld"){
+      Object.keys(e.felder || {}).forEach(id => {
+        const i = e.felder[id].indexOf(zeit);
+        if (i >= 0) e.felder[id].splice(i, 1);
+      });
+    }
+    const info = e.ereignisse[j].info;
+    e.ereignisse.splice(j, 1);
+    delete e.undo;   /* die Sicherung passt nach einem Hand-Eingriff nicht mehr */
+    return info;
   },
   massnahmeZeit(e, id){
     let letzte = null;
@@ -5123,6 +5173,7 @@ function standardSetzen(id){
     const e = Einsatz.e;
     KONF.URSACHEN.forEach(u => { if (!(u.id in e.ursachen)) e.ursachen[u.id] = 0; });
     e.standard = id;
+    delete e.undo;   /* die Sicherung stammt aus der alten Fassung */
     Kern.ereignis(e, Date.now(), "standard", t("ev_standard", { n: Standard.kurz() }));
     Einsatz.speichern();
   }
@@ -5163,6 +5214,29 @@ const Einsatz = {
   },
 
   speichern(){ if (this.e) store(this.KEY, this.e); },
+
+  /* Führt eine rückgängig machbare Handlung aus. Vorher wird der komplette
+     Stand gesichert – so gehen auch verkettete Folgen (ein Schock startet
+     den nächsten Zyklus) in einem Schritt zurück. Eine Stufe genügt: die
+     Schaltfläche heilt den einen falschen Tipp, sie ist kein Verlauf.
+     Beschriftet wird mit der zuletzt geschriebenen Protokollzeile, damit
+     auf der Schaltfläche exakt das steht, was zurückgenommen würde. */
+  handlung(fn){
+    if (!this.e) return;
+    const kopie = JSON.parse(JSON.stringify(this.e));
+    delete kopie.undo;
+    fn(this.e);
+    const letzte = this.e.ereignisse[this.e.ereignisse.length - 1];
+    this.e.undo = { stand: kopie, label: letzte ? letzte.info : "" };
+    this.speichern();
+  },
+  rueckgaengig(){
+    const u = this.e && this.e.undo;
+    if (!u) return null;
+    this.e = u.stand;
+    this.speichern();
+    return u.label;
+  },
 
   starten(now){
     this.e = Kern.neuerEinsatz(now);
@@ -5837,6 +5911,11 @@ function renderMedikamente(now){
 /* ---------- Rendering: Aktionen ---------- */
 function renderAktionen(){
   const e = Einsatz.e;
+  /* Rückgängig-Taste: steht nur da, wenn es etwas zurückzunehmen gibt,
+     und nennt exakt die Protokollzeile, die verschwinden würde. */
+  const u = e.undo;
+  $("btn-undo").style.display = u ? "" : "none";
+  if (u) $("btn-undo-was").textContent = u.label;
   $("schock-unter").textContent = t("ak_schock_unter", { n: e.schocks.length });
   $("rhythmus-unter").textContent = e.rhythmus
     ? Kern.rhythmusLabel(e.rhythmus) : tText("ak_rhythmus_offen");
@@ -5969,8 +6048,7 @@ function renderMassnahmen(){
     }
     b.addEventListener("click", () => {
       if (!Einsatz.aktiv()) return;
-      Kern.massnahme(Einsatz.e, Date.now(), m.id);
-      Einsatz.speichern();
+      Einsatz.handlung(x => Kern.massnahme(x, Date.now(), m.id));
       closeModal("modal-massnahme");
       vollRender();
       toast(t("ts_massnahme", { n: name }));
@@ -6023,7 +6101,7 @@ function renderProtokoll(){
     txt.textContent = ev.info;
     txt.appendChild(uhr);
     li.appendChild(z); li.appendChild(txt);
-    if (ev.typ === "massnahme"){
+    if (Kern.LOESCHBAR.indexOf(ev.typ) >= 0){
       const del = document.createElement("button");
       del.type = "button";
       del.className = "klein-btn";
@@ -6032,12 +6110,12 @@ function renderProtokoll(){
         + 'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'
         + '<path d="M4 7h16"/><path d="M9 7V5h6v2"/><path d="M6 7l1 13h10l1-13"/></svg>';
       del.addEventListener("click", () => {
-        const weg = Kern.massnahmeEntfernen(e, ev.t);
-        if (!weg) return;
+        const weg = Kern.eintragEntfernen(e, ev.t, ev.typ);
+        if (weg == null) return;
         Einsatz.speichern();
         renderProtokoll();
         vollRender();
-        toast(t("ts_rueckgaengig", { n: weg.name }));
+        toast(t("ts_rueckgaengig", { n: weg }));
       });
       li.appendChild(del);
     }
@@ -6310,8 +6388,8 @@ $("s-autostart").addEventListener("change", () => autostartUmschalten($("s-autos
 $("btn-cpr").addEventListener("click", () => {
   if (!Einsatz.aktiv()) return;
   const e = Einsatz.e;
-  Kern.zyklusStarten(e, Date.now(), e.phase === "analyse" ? null : tText("ev_grund_neustart"));
-  Einsatz.speichern();
+  Einsatz.handlung(x =>
+    Kern.zyklusStarten(x, Date.now(), x.phase === "analyse" ? null : tText("ev_grund_neustart")));
   Merker.warnGemeldet = false; Merker.analyseGemeldet = false;
   vollRender();
 });
@@ -6330,11 +6408,22 @@ document.querySelectorAll("#modal-rhythmus [data-rhythmus]").forEach(b =>
     else if (art === "nichtschockbar") toast(tText("ts_pea"));
   }));
 
+/* ---- Rückgängig: nimmt die letzte Handlung komplett zurück ---- */
+$("btn-undo").addEventListener("click", () => {
+  if (!Einsatz.aktiv()) return;
+  const label = Einsatz.rueckgaengig();
+  if (label == null) return;
+  /* Signal-Merker zurücksetzen wie nach einem Neustart – der wieder-
+     hergestellte Stand soll seine Hinweise selbst neu bewerten. */
+  Merker.warnGemeldet = false; Merker.analyseGemeldet = false; Merker.adrCode = null;
+  vollRender();
+  toast(t("ts_undo", { n: label }));
+});
+
 /* ---- Schock (halten) ---- */
 halteAktion($("btn-schock"), 600, () => {
   if (!Einsatz.aktiv() || Einsatz.e.phase === "rosc") return;
-  Kern.schock(Einsatz.e, Date.now());
-  Einsatz.speichern();
+  Einsatz.handlung(e => Kern.schock(e, Date.now()));
   Merker.warnGemeldet = false;
   Signale.vibrieren([80]);
   vollRender();
@@ -6350,8 +6439,7 @@ $("btn-adrenalin").addEventListener("click", () => {
     toast(t("ts_doppel", { t: Kern.fmtUhr(now - letzte) }));
     return;
   }
-  Kern.adrenalinGabe(e, now);
-  Einsatz.speichern();
+  Einsatz.handlung(x => Kern.adrenalinGabe(x, now));
   Merker.adrCode = "zufrueh";
   vollRender();
   toast(tText("ts_adrenalin"));
@@ -6368,8 +6456,7 @@ $("btn-amiodaron").addEventListener("click", () => {
     toast(t("ts_doppel", { t: Kern.fmtUhr(now - letzte.t) }));
     return;
   }
-  Kern.amiodaronGabe(e, now, mg, dosis);
-  Einsatz.speichern();
+  Einsatz.handlung(x => Kern.amiodaronGabe(x, now, mg, dosis));
   vollRender();
   toast(mg
     ? t("ts_amiodaron", { mg })
@@ -6531,8 +6618,7 @@ function renderFelder(now){
     btn.textContent = tText("fl_jetzt");
     btn.addEventListener("click", () => {
       if (!Einsatz.aktiv()) return;
-      Kern.feldEintrag(Einsatz.e, Date.now(), f);
-      Einsatz.speichern();
+      Einsatz.handlung(x => Kern.feldEintrag(x, Date.now(), f));
       vollRender();
       toast(t("ts_feld", { n: f.name }));
     });

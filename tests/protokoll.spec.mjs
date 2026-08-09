@@ -87,7 +87,7 @@ test("Adrenalin und Antiarrhythmikum lassen sich sofort geben, auch zu früh", a
   expect(stand.schocks).toBe(0);
 });
 
-test("das Live-Protokoll zeigt den laufenden Einsatz und löscht nur Maßnahmen", async ({ page }) => {
+test("das Live-Protokoll zeigt den laufenden Einsatz mit Löschknöpfen", async ({ page }) => {
   await appOeffnen(page);
 
   /* Ohne Einsatz gibt es die Zeile nicht. */
@@ -112,10 +112,10 @@ test("das Live-Protokoll zeigt den laufenden Einsatz und löscht nur Maßnahmen"
   await expect(liste.nth(2)).toContainText("Adrenalin");
   await expect(liste.nth(1).locator(".uhr")).toContainText("Uhr");
 
-  /* Löschknopf nur an der Maßnahme, nicht an Start oder Adrenalin. */
+  /* Löschknopf an Maßnahme und Adrenalin – nicht am Start-Ereignis. */
   await expect(liste.nth(0).locator(".klein-btn")).toHaveCount(0);
   await expect(liste.nth(1).locator(".klein-btn")).toHaveCount(1);
-  await expect(liste.nth(2).locator(".klein-btn")).toHaveCount(0);
+  await expect(liste.nth(2).locator(".klein-btn")).toHaveCount(1);
 
   await liste.nth(1).locator(".klein-btn").click();
   await expect(page.locator("#protokoll-liste li")).toHaveCount(2);
@@ -152,4 +152,117 @@ test("eine gelöschte Maßnahme fehlt auch im Bericht des Einsatzes", async ({ p
   });
   expect(text).toContain("Kapnographie");
   expect(text).not.toContain("i.v.-Zugang");
+});
+
+/* ------------------------------------------------------------------ */
+test("die Rückgängig-Taste nimmt die letzte Handlung komplett zurück", async ({ page }) => {
+  await appOeffnen(page);
+  await einsatzStarten(page);
+
+  /* Ohne Handlung keine Taste. */
+  await expect(page.locator("#btn-undo")).toBeHidden();
+
+  /* Adrenalin geben → Taste erscheint und nennt die Protokollzeile. */
+  await page.click("#btn-adrenalin");
+  await expect(page.locator("#btn-undo")).toBeVisible();
+  await expect(page.locator("#btn-undo-was")).toContainText("Adrenalin 1 mg");
+
+  await page.click("#btn-undo");
+  await expect(page.locator("#toast")).toContainText("Adrenalin");
+  await expect(page.locator("#btn-undo")).toBeHidden();
+  const adrenalin = await page.evaluate(() => window.CPRA.Einsatz.e.adrenalin.length);
+  expect(adrenalin).toBe(0);
+});
+
+test("Rückgängig nach einem Schock stellt auch den Zyklus wieder her", async ({ page }) => {
+  await appOeffnen(page);
+  await einsatzStarten(page);
+
+  const vorher = await page.evaluate(() => ({
+    zyklus: window.CPRA.Einsatz.e.zyklusNr,
+    start: window.CPRA.Einsatz.e.zyklusStart
+  }));
+
+  /* Schock auslösen (halten) – zählt hoch und startet Zyklus 2. */
+  const box = await page.locator("#btn-schock").boundingBox();
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.waitForTimeout(900);
+  await page.mouse.up();
+  await expect(page.locator("#btn-undo-was")).toContainText("Schock 1");
+  const mitSchock = await page.evaluate(() => ({
+    schocks: window.CPRA.Einsatz.e.schocks.length,
+    zyklus: window.CPRA.Einsatz.e.zyklusNr
+  }));
+  expect(mitSchock.schocks).toBe(1);
+  expect(mitSchock.zyklus).toBe(vorher.zyklus + 1);
+
+  /* Rückgängig: Schock UND Zyklusstart verschwinden gemeinsam. */
+  await page.click("#btn-undo");
+  const nachher = await page.evaluate(() => ({
+    schocks: window.CPRA.Einsatz.e.schocks.length,
+    zyklus: window.CPRA.Einsatz.e.zyklusNr,
+    start: window.CPRA.Einsatz.e.zyklusStart,
+    ereignisse: window.CPRA.Einsatz.e.ereignisse.length
+  }));
+  expect(nachher.schocks).toBe(0);
+  expect(nachher.zyklus).toBe(vorher.zyklus);
+  expect(nachher.start).toBe(vorher.start);
+  expect(nachher.ereignisse).toBe(1);   /* nur noch "Einsatz gestartet" */
+});
+
+test("die Rückgängig-Sicherung überlebt einen App-Neustart", async ({ page }) => {
+  await appOeffnen(page);
+  await einsatzStarten(page);
+  await page.click("#btn-adrenalin");
+  await page.reload();
+  await page.waitForFunction(() => !!window.CPRA);
+  await page.waitForSelector("#view-aktiv.active");
+  await expect(page.locator("#btn-undo")).toBeVisible();
+  await page.click("#btn-undo");
+  const adrenalin = await page.evaluate(() => window.CPRA.Einsatz.e.adrenalin.length);
+  expect(adrenalin).toBe(0);
+});
+
+test("im Live-Protokoll sind auch Schock und Adrenalin löschbar", async ({ page }) => {
+  await appOeffnen(page);
+  await einsatzStarten(page);
+  await page.click("#btn-adrenalin");
+  const box = await page.locator("#btn-schock").boundingBox();
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.waitForTimeout(900);
+  await page.mouse.up();
+
+  await page.click("#btn-settings-einsatz");
+  await page.click("#s-protokoll");
+
+  /* Adrenalin und Schock tragen Löschknöpfe, Start und Zyklus nicht. */
+  const liste = page.locator("#protokoll-liste li");
+  await expect(liste).toHaveCount(4);   /* Start, Adrenalin, Schock, Zyklus 2 */
+  await expect(liste.nth(0).locator(".klein-btn")).toHaveCount(0);
+  await expect(liste.nth(1).locator(".klein-btn")).toHaveCount(1);
+  await expect(liste.nth(2).locator(".klein-btn")).toHaveCount(1);
+  await expect(liste.nth(3).locator(".klein-btn")).toHaveCount(0);
+
+  /* Schock löschen: Zähler geht auf 0, Statuskarten rechnen neu. */
+  await liste.nth(2).locator(".klein-btn").click();
+  await expect(page.locator("#protokoll-liste li")).toHaveCount(3);
+  let stand = await page.evaluate(() => ({
+    schocks: window.CPRA.Einsatz.e.schocks.length,
+    adrenalin: window.CPRA.Einsatz.e.adrenalin.length
+  }));
+  expect(stand.schocks).toBe(0);
+  expect(stand.adrenalin).toBe(1);
+  await expect(page.locator("#schock-unter")).toContainText("0");
+
+  /* Adrenalin löschen: Status fällt zurück auf "keine Gabe". */
+  await page.locator('#protokoll-liste li:has-text("Adrenalin") .klein-btn').click();
+  stand = await page.evaluate(() => window.CPRA.Einsatz.e.adrenalin.length);
+  expect(stand).toBe(0);
+  await expect(page.locator("#adr-wert")).toHaveText("–");
+
+  /* Nach dem Hand-Eingriff gibt es nichts mehr "rückgängig" zu machen. */
+  await page.click('#modal-protokoll [data-close="modal-protokoll"]');
+  await expect(page.locator("#btn-undo")).toBeHidden();
 });
