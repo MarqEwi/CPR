@@ -44,8 +44,10 @@ protokolliert jedes Ereignis mit Zeitstempel.
   „Maßnahme dokumentieren") nimmt die letzte Handlung komplett zurück –
   Schock samt gestartetem Zyklus, Adrenalin- oder Antiarrhythmikum-Gabe,
   Maßnahme, Zyklus-Neustart, Feld-Eintrag – und nennt vorher, was
-  zurückgeht. Eine Stufe, per Schnappschuss des ganzen Standes, damit auch
-  verkettete Folgen sauber verschwinden. Das **Live-Protokoll**
+  zurückgeht (beim Schock den Schock selbst, nicht den Zyklusstart danach).
+  Bis zu zehn Schritte nacheinander, per Schnappschuss des ganzen Standes,
+  damit auch verkettete Folgen sauber verschwinden; die Taste bleibt
+  stehen, bis nichts mehr zurückzunehmen ist. Das **Live-Protokoll**
   (Einstellungen, unter „Einsatz beenden") zeigt den laufenden Verlauf mit
   Uhrzeiten; versehentliche Einträge – Maßnahmen, Schocks,
   Medikamentengaben, eigene Felder – lassen sich dort einzeln löschen, die

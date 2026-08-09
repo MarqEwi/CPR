@@ -189,7 +189,9 @@ test("Rückgängig nach einem Schock stellt auch den Zyklus wieder her", async (
   await page.mouse.down();
   await page.waitForTimeout(900);
   await page.mouse.up();
-  await expect(page.locator("#btn-undo-was")).toContainText("Schock 1");
+  /* Die Taste nennt den Schock selbst, nicht den Zyklusstart danach. */
+  await expect(page.locator("#btn-undo-was")).toContainText("Schock 1 abgegeben");
+  await expect(page.locator("#btn-undo-was")).not.toContainText("Zyklus");
   const mitSchock = await page.evaluate(() => ({
     schocks: window.CPRA.Einsatz.e.schocks.length,
     zyklus: window.CPRA.Einsatz.e.zyklusNr
@@ -289,4 +291,57 @@ test("der Doppeltipp-Schutz endet nach fünf Sekunden", async ({ page }) => {
   await page.click("#btn-adrenalin");
   n = await page.evaluate(() => window.CPRA.Einsatz.e.adrenalin.length);
   expect(n).toBe(2);
+});
+
+test("mehrere Handlungen lassen sich nacheinander zurückgehen", async ({ page }) => {
+  await appOeffnen(page);
+  await einsatzStarten(page);
+
+  /* Drei Handlungen: Maßnahme, Adrenalin, Schock. */
+  await massnahmeDokumentieren(page, 0);
+  await page.click("#btn-adrenalin");
+  const box = await page.locator("#btn-schock").boundingBox();
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.waitForTimeout(900);
+  await page.mouse.up();
+
+  /* Rückwärts in umgekehrter Reihenfolge – die Taste bleibt stehen und
+     beschriftet sich jeweils neu. */
+  await expect(page.locator("#btn-undo-was")).toContainText("Schock 1 abgegeben");
+  await page.click("#btn-undo");
+  await expect(page.locator("#btn-undo")).toBeVisible();
+  await expect(page.locator("#btn-undo-was")).toContainText("Adrenalin 1 mg");
+  await page.click("#btn-undo");
+  await expect(page.locator("#btn-undo")).toBeVisible();
+  await expect(page.locator("#btn-undo-was")).toContainText("i.v.-Zugang");
+  await page.click("#btn-undo");
+  await expect(page.locator("#btn-undo")).toBeHidden();
+
+  const stand = await page.evaluate(() => ({
+    schocks: window.CPRA.Einsatz.e.schocks.length,
+    adrenalin: window.CPRA.Einsatz.e.adrenalin.length,
+    massnahmen: window.CPRA.Einsatz.e.massnahmen.length,
+    ereignisse: window.CPRA.Einsatz.e.ereignisse.length
+  }));
+  expect(stand.schocks).toBe(0);
+  expect(stand.adrenalin).toBe(0);
+  expect(stand.massnahmen).toBe(0);
+  expect(stand.ereignisse).toBe(1);   /* nur "Einsatz gestartet" */
+});
+
+test("der Rückgängig-Stapel überlebt einen Neustart mit mehreren Schritten", async ({ page }) => {
+  await appOeffnen(page);
+  await einsatzStarten(page);
+  await massnahmeDokumentieren(page, 0);
+  await page.click("#btn-adrenalin");
+  await page.reload();
+  await page.waitForFunction(() => !!window.CPRA);
+  await page.waitForSelector("#view-aktiv.active");
+  await page.click("#btn-undo");
+  await expect(page.locator("#btn-undo-was")).toContainText("i.v.-Zugang");
+  await page.click("#btn-undo");
+  await expect(page.locator("#btn-undo")).toBeHidden();
+  const n = await page.evaluate(() => window.CPRA.Einsatz.e.ereignisse.length);
+  expect(n).toBe(1);
 });

@@ -5221,24 +5221,38 @@ const Einsatz = {
 
   speichern(){ if (this.e) store(this.KEY, this.e); },
 
+  UNDO_MAX: 10,            /* so viele Schritte lassen sich zurückgehen */
+
+  /* Der Rückgängig-Stapel. Ältere Einsätze trugen statt des Stapels ein
+     einzelnes Objekt – das wird beim ersten Zugriff überführt. */
+  undoStapel(){
+    if (!this.e) return [];
+    if (!Array.isArray(this.e.undo)) this.e.undo = this.e.undo ? [this.e.undo] : [];
+    return this.e.undo;
+  },
+
   /* Führt eine rückgängig machbare Handlung aus. Vorher wird der komplette
      Stand gesichert – so gehen auch verkettete Folgen (ein Schock startet
-     den nächsten Zyklus) in einem Schritt zurück. Eine Stufe genügt: die
-     Schaltfläche heilt den einen falschen Tipp, sie ist kein Verlauf.
-     Beschriftet wird mit der zuletzt geschriebenen Protokollzeile, damit
-     auf der Schaltfläche exakt das steht, was zurückgenommen würde. */
+     den nächsten Zyklus) in einem Schritt zurück. Beschriftet wird mit der
+     ERSTEN Protokollzeile, die die Handlung geschrieben hat: bei einem
+     Schock ist das "Schock N abgegeben", nicht der Zyklusstart danach. */
   handlung(fn){
     if (!this.e) return;
+    const stapel = this.undoStapel();
     const kopie = JSON.parse(JSON.stringify(this.e));
     delete kopie.undo;
+    const vorher = this.e.ereignisse.length;
     fn(this.e);
-    const letzte = this.e.ereignisse[this.e.ereignisse.length - 1];
-    this.e.undo = { stand: kopie, label: letzte ? letzte.info : "" };
+    const erste = this.e.ereignisse[vorher];
+    stapel.push({ stand: kopie, label: erste ? erste.info : "" });
+    if (stapel.length > this.UNDO_MAX) stapel.shift();
     this.speichern();
   },
   rueckgaengig(){
-    const u = this.e && this.e.undo;
-    if (!u) return null;
+    const stapel = this.undoStapel();
+    if (!stapel.length) return null;
+    const u = stapel.pop();
+    u.stand.undo = stapel;   /* die übrigen Schritte bleiben zurückgehbar */
     this.e = u.stand;
     this.speichern();
     return u.label;
@@ -5919,7 +5933,8 @@ function renderAktionen(){
   const e = Einsatz.e;
   /* Rückgängig-Taste: steht nur da, wenn es etwas zurückzunehmen gibt,
      und nennt exakt die Protokollzeile, die verschwinden würde. */
-  const u = e.undo;
+  const stapel = Einsatz.undoStapel();
+  const u = stapel[stapel.length - 1];
   $("btn-undo").style.display = u ? "" : "none";
   if (u) $("btn-undo-was").textContent = u.label;
   $("schock-unter").textContent = t("ak_schock_unter", { n: e.schocks.length });
