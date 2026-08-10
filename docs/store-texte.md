@@ -115,7 +115,15 @@ python3 ~/.claude/skills/mercwerk-store-grafiken/scripts/storegrafik.py \
 
 Die Store-Screenshots zeigen die echte App in einem gezeichneten Geräterahmen
 vor einem Foto aus der Notfallmedizin (kühl und klinisch, erzeugt mit
-Higgsfield AI; die Hintergründe liegen unter `screenshot-quellen/`). Der
+Higgsfield AI; die Hintergründe liegen unter `screenshot-quellen/`).
+
+Der Rahmen erbt sein Seitenverhältnis von der Aufnahme. Deshalb wird mit
+400 × 900 CSS-Pixeln aufgenommen (1 : 2,25) statt im alten 9:16 – sonst wirkt
+das Gerät wie ein Tablet. Die Gerätebreite von 613 px ist dazu passend
+gewählt, damit die Höhe im Band zwischen Überschrift und unterem Rand bleibt.
+Die 900 px sind kein runder Zufallswert: Die Einsatz-Ansicht ist bei 400 px
+Breite 953 px hoch, und erst ab rund 900 px steht die unterste Zeile
+(„Live-Protokoll") vollständig im Bild. Der
 Demo-Einsatz in `konfig.json` ist bewusst durchgehend chronologisch
 aufgebaut – das Live-Protokoll ist im Bild zu lesen, und dort fiele jede
 Unstimmigkeit auf. Personenbezogene Daten gibt es nicht: die App erfasst

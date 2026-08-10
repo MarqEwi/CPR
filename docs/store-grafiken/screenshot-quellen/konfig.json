@@ -55,9 +55,14 @@
         "js": "document.getElementById('toast').classList.remove('show');",
         "datei": "roh5.png"
       }
-    ]
+    ],
+    "breite": 400,
+    "hoehe": 900,
+    "skalierung": 2
   },
-  "screenshots": {},
+  "screenshots": {
+    "geraet_breite": 613
+  },
   "seiten": [
     {
       "aufnahme": "roh1.png",
