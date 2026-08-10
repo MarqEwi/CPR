@@ -1,0 +1,104 @@
+{
+  "_hinweis": "CPR Assist – Store-Screenshots auf Englisch, fuer alle Maerkte ausser dem deutschen. Gleiche Bildsprache und gleicher Demo-Einsatz wie die deutsche Fassung, nur Oberflaeche und Beschriftung in Englisch.",
+  "ausgabe": "fertig-en",
+  "aufnahmen": {
+    "url": "http://127.0.0.1:8931/index.html",
+    "anlauf": 1200,
+    "vorbereiten": "localStorage.setItem('cpra_onboarding_done','true');localStorage.setItem('cpra_edition',JSON.stringify('premium'));localStorage.setItem('cpra_einstellungen',JSON.stringify({sprache:'en'}));",
+    "schritte": [
+      {
+        "js": "(() => { const {Kern,Einsatz} = window.CPRA; const t0 = Date.now() - 10*60000; Einsatz.starten(t0); const e = Einsatz.e; Kern.rhythmusSetzen(e, t0+40000,  'schockbar'); Kern.schock(e, t0+120000); Kern.schock(e, t0+246000); Kern.schock(e, t0+372000); Kern.adrenalinGabe(e, t0+380000); Kern.amiodaronGabe(e, t0+395000, 300); Kern.massnahme(e, t0+430000, 'ivzugang'); Kern.ursacheSetzen(e, t0+470000, 'hypoxie', 2); Kern.massnahme(e, t0+500000, 'intubation'); Kern.schock(e, Date.now()-38000); Einsatz.speichern(); location.reload(); })()",
+        "warten": 1600
+      },
+      {
+        "js": "document.getElementById('toast').classList.remove('show');",
+        "warten": 500,
+        "datei": "en-roh1.png"
+      },
+      {
+        "klicken": "#btn-ursachen",
+        "warten": 600,
+        "js": "document.getElementById('toast').classList.remove('show');",
+        "datei": "en-roh2.png"
+      },
+      {
+        "js": "document.querySelectorAll('.modal-back.open').forEach(m => m.classList.remove('open'));document.getElementById('toast').classList.remove('show');",
+        "klicken": "#btn-protokoll",
+        "warten": 600,
+        "datei": "en-roh3.png"
+      },
+      {
+        "js": "document.querySelectorAll('.modal-back.open').forEach(m => m.classList.remove('open'));document.getElementById('toast').classList.remove('show');",
+        "klicken": "#btn-massnahme",
+        "warten": 600,
+        "datei": "en-roh4.png"
+      },
+      {
+        "js": "(() => { document.querySelectorAll('.modal-back.open').forEach(m => m.classList.remove('open')); const {Einsatz} = window.CPRA; Einsatz.beenden(Date.now()); Einsatz.archivBenennen(0, 'Night shift drill'); location.reload(); })()",
+        "warten": 1400
+      },
+      {
+        "klicken": "#btn-settings",
+        "warten": 350
+      },
+      {
+        "klicken": "#s-archiv",
+        "warten": 350
+      },
+      {
+        "klicken": "#archiv-liste li button",
+        "warten": 350
+      },
+      {
+        "klicken": "#archiv-teilen",
+        "warten": 600,
+        "js": "document.getElementById('toast').classList.remove('show');",
+        "datei": "en-roh5.png"
+      }
+    ],
+    "breite": 400,
+    "hoehe": 900,
+    "skalierung": 2,
+    "sprache": "en-GB"
+  },
+  "screenshots": {
+    "geraet_breite": 613
+  },
+  "seiten": [
+    {
+      "aufnahme": "en-roh1.png",
+      "hintergrund": "v1.png",
+      "titel": "The cycle always in view",
+      "unter": "Time left, adrenaline and amiodarone status at a glance",
+      "datei": "screenshot-en-1.png"
+    },
+    {
+      "aufnahme": "en-roh2.png",
+      "hintergrund": "v2.png",
+      "titel": "No cause overlooked",
+      "unter": "Work through the 4 H's & HITS in a structured way",
+      "datei": "screenshot-en-2.png"
+    },
+    {
+      "aufnahme": "en-roh3.png",
+      "hintergrund": "v3.png",
+      "titel": "Every step with a time",
+      "unter": "Read along live, remove mistaken entries",
+      "datei": "screenshot-en-3.png"
+    },
+    {
+      "aufnahme": "en-roh4.png",
+      "hintergrund": "v4.png",
+      "titel": "One tap is enough",
+      "unter": "Access, airway, capnography – with a time stamp",
+      "datei": "screenshot-en-4.png"
+    },
+    {
+      "aufnahme": "en-roh5.png",
+      "hintergrund": "v5.png",
+      "titel": "Take the report with you",
+      "unter": "Share or save as PDF or image",
+      "datei": "screenshot-en-5.png"
+    }
+  ]
+}

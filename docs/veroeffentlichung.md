@@ -38,8 +38,10 @@ und prüf, dass die Seite wirklich erscheint – Google prüft das auch.
    - Kurzbeschreibung und vollständige Beschreibung von dort einfügen
    - App-Symbol: `icons/icon-512.png`
    - Feature-Grafik: `docs/store-grafiken/feature-grafik-1024x500.png`
-   - Telefon-Screenshots: die sieben Dateien aus `docs/store-grafiken/`
-     (`screenshot-1…5-1080x1920.png`)
+   - Telefon-Screenshots: die fünf Dateien aus `docs/store-grafiken/`
+     – englisch `screenshot-en-1…5-1080x1920.png` für die Standardsprache,
+     deutsch `screenshot-1…5-1080x1920.png` für die deutsche Übersetzung
+     (siehe Abschnitt 2b)
    - Kategorie: **Medizin**
 4. Datenschutz-URL eintragen:
    `https://marqewi.github.io/CPR/datenschutz.html`
@@ -85,6 +87,30 @@ fällt durch.
 
 Es spricht nichts dagegen, zunächst nur Deutsch und Englisch zu pflegen und
 die übrigen später nachzuziehen.
+
+**Wichtig – welche Sprache ist die Standardsprache?** Play zeigt einem Nutzer
+den Eintrag in seiner Sprache, wenn es ihn gibt, und sonst **den Eintrag in
+der Standardsprache**. Steht die Standardsprache auf Deutsch, sieht also auch
+jemand in Frankreich oder Spanien den deutschen Text und die deutschen
+Screenshots – selbst dann, wenn eine englische Übersetzung hinterlegt ist.
+
+Soll überall außer in Deutschland Englisch erscheinen, muss es deshalb
+umgekehrt sein:
+
+1. **Standardsprache auf Englisch** stellen
+   (Store-Präsenz → Store-Einstellungen → Standardsprache) und dort die
+   englischen Texte und die Screenshots `screenshot-en-1…5-1080x1920.png`
+   hinterlegen.
+2. **Deutsch als Übersetzung** hinzufügen (`de-DE`) mit den deutschen Texten
+   und den Screenshots `screenshot-1…5-1080x1920.png`.
+
+Damit sehen deutsche Nutzer Deutsch und alle anderen Englisch. Die App selbst
+ist davon unberührt – sie stellt sich weiterhin auf die Gerätesprache ein und
+spricht sechs Sprachen.
+
+Die Standardsprache lässt sich vor der ersten Veröffentlichung ohne Weiteres
+umstellen; nach der Veröffentlichung ist sie zwar ebenfalls änderbar, wirkt
+sich aber sofort auf alle Märkte aus. Deshalb jetzt festlegen.
 
 ## 3. Die Formulare unter „Richtlinien → App-Inhalte“
 

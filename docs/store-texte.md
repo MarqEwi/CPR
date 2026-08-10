@@ -98,7 +98,8 @@ Alle Angaben ohne Gewähr. Maßgeblich sind die geltenden Leitlinien und die Ent
 | App-Icon 512 × 512 | `icons/icon-512.png` |
 | Feature-Grafik 1024 × 500 | `docs/store-grafiken/feature-grafik-1024x500.png` |
 | Feature-Illustration (Quelle) | `docs/store-grafiken/feature-hintergrund.png` |
-| Screenshots 1080 × 1920 (5 Stück) | `docs/store-grafiken/screenshot-1…5-1080x1920.png` |
+| Screenshots deutsch 1080 × 1920 | `docs/store-grafiken/screenshot-1…5-1080x1920.png` |
+| Screenshots englisch 1080 × 1920 | `docs/store-grafiken/screenshot-en-1…5-1080x1920.png` |
 | Screenshot-Quellen | `docs/store-grafiken/screenshot-quellen/` |
 
 Neu erzeugen lassen sie sich mit:
@@ -112,6 +113,14 @@ node  ~/.claude/skills/mercwerk-store-grafiken/scripts/aufnehmen.mjs \
 python3 ~/.claude/skills/mercwerk-store-grafiken/scripts/storegrafik.py \
       docs/store-grafiken/screenshot-quellen/konfig.json --nur screenshots
 ```
+
+Für die englische Fassung dasselbe mit `konfig-en.json`. Sie unterscheidet
+sich nur in drei Punkten: Die App startet auf Englisch (`cpra_einstellungen`
+mit `sprache: "en"`), der Browser läuft mit `en-GB`, und Überschriften,
+Unterzeilen sowie der Berichtsname („Night shift drill") sind englisch.
+Hintergründe, Demo-Einsatz, Geräteformat und Bildaufbau sind identisch –
+beide Sätze sehen im Store wie eine Familie aus. Die Rohaufnahmen tragen ein
+`en-`-Präfix, damit sich die beiden Läufe nicht gegenseitig überschreiben.
 
 Die Store-Screenshots zeigen die echte App in einem gezeichneten Geräterahmen
 vor einem Foto aus der Notfallmedizin (kühl und klinisch, erzeugt mit
