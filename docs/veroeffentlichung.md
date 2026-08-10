@@ -40,7 +40,8 @@ und prüf, dass die Seite wirklich erscheint – Google prüft das auch.
    Alle Texte stehen fertig in `docs/store-texte.md` zum Kopieren:
    - Kurzbeschreibung und vollständige Beschreibung von dort einfügen
    - App-Symbol: `icons/icon-512.png`
-   - Feature-Grafik: `docs/store-grafiken/feature-grafik-1024x500.png`
+   - Feature-Grafik: `feature-grafik-1024x500.png` (englisch, Standardsprache)
+     bzw. `feature-grafik-de-1024x500.png` für die deutsche Übersetzung
    - Telefon-Screenshots: die fünf Dateien aus `docs/store-grafiken/`
      – englisch `screenshot-en-1…5-1080x1920.png` für die Standardsprache,
      deutsch `screenshot-1…5-1080x1920.png` für die deutsche Übersetzung
