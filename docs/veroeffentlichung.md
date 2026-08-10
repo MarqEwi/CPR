@@ -132,7 +132,7 @@ Hier ist CPR Assist schnell abgehakt, weil die App nichts sammelt:
 | Datensicherheit | siehe unten – die wichtigste Antwort ist ein Nein |
 | Staatliche App | Nein |
 | Finanzfunktionen | Nein |
-| Gesundheits-Apps | Nein |
+| Gesundheits-Apps | **Ja** – siehe unten, das ist das einzige aufwendigere Formular |
 
 **Datensicherheit im Detail:** Auf die erste Frage „Erhebt oder teilt deine App
 die erforderlichen Nutzerdatentypen?“ antwortest du **Nein**. Danach ist das
@@ -145,12 +145,36 @@ erzeugt die Datei auf dem Gerät und reicht sie an den Teilen-Dialog des
 Systems weiter – sie sendet nichts an den Anbieter und erfährt nicht, wohin
 der Bericht geht.
 
-**Gesundheits-Apps:** Die Frage nach „Gesundheits-Apps" zielt auf klinische
-Studien, Gesundheitsforschung und den Umgang mit Gesundheitsdaten. CPR Assist
-erhebt keine Patientendaten und führt keine Studie durch – die Antwort ist
-also Nein. In der Store-Beschreibung muss aber unmissverständlich stehen, dass
-die App eine **Merkhilfe und Dokumentation für geschultes Personal** ist und
-keine ärztliche Entscheidung ersetzt (siehe `docs/store-texte.md`).
+**Gesundheits-Apps – hier ist die Antwort Ja.** Das Formular fragt *nicht*
+nach Gesundheits*daten*, sondern nach Gesundheits*funktionen*: „Gib alle
+Gesundheitsfunktionen an, die deine App ihren Nutzern bietet." Dass CPR
+Assist keine Patientendaten erhebt, ist dafür ohne Belang. Die Kategorie
+**Medizin** wählen und darin die zutreffenden Funktionen ankreuzen:
+
+| Funktion | Warum sie zutrifft |
+|---|---|
+| **Klinische Entscheidungsunterstützung** | Google definiert das als „Werkzeuge, die medizinisches Fachpersonal bei fundierten klinischen Entscheidungen unterstützen" – genau das tun Adrenalin-Fenster, Amiodaron-Dosisstatus und Schockzählung |
+| **Notfall und Erste Hilfe** | Reanimation im Kreislaufstillstand |
+| **Medizinische Referenz und Fortbildung** | Leitlinienwerte, Quellenangaben, Einsatz im Simulationstraining |
+
+**Nicht** ankreuzen: „Medikamenten- und Behandlungsmanagement" – damit sind
+Einnahmepläne, Erinnerungen und Apothekendienste für die eigene Medikation
+gemeint, nicht der Medikamentenstatus während einer Reanimation.
+
+Zur Frage nach dem **Medizinprodukt** (EU-MDR/IVDR): CPR Assist trägt keine
+CE-Kennzeichnung als Medizinprodukt und verarbeitet keine patientenbezogenen
+Daten – sie gibt eine veröffentlichte Leitlinie als Uhr, Taktgeber und
+Protokoll wieder. Die Antwort ist also Nein. Wer die Rolle der App später
+erweitert (patientenspezifische Berechnungen, Messwerte, Auswertung), muss
+das neu bewerten; das ist eine regulatorische Frage, keine Play-Frage.
+
+Daraus folgt eine **Pflichtangabe im Store-Text**: Apps, die keine
+Medizinprodukte sind, müssen laut Richtlinie „Gesundheitsinhalte und
+-dienste" in der Beschreibung ausdrücklich sagen, dass die App kein
+Medizinprodukt ist und keine Krankheit diagnostiziert, behandelt, heilt oder
+verhütet. Genau dieser Satz steht deshalb im zweiten Absatz beider
+Beschreibungen in `docs/store-texte.md` – er darf beim Kürzen nicht
+wegfallen.
 
 **Bildschirm anlassen:** Dass der Bildschirm während eines Einsatzes nicht
 abdunkelt, macht die App über das mitgelieferte Plugin `BildschirmWach`

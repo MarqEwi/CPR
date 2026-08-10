@@ -13,6 +13,13 @@ Therapieentscheidung, kein Ersatz für Ausbildung. Diese Sätze gehören in die
 Kurzbeschreibung *und* in den ersten Absatz der Vollbeschreibung – nicht ans
 Ende.
 
+Das ist keine Stilfrage, sondern eine **Pflichtangabe**: Die Richtlinie
+„Gesundheitsinhalte und -dienste" verlangt von jeder Gesundheits-App, die
+kein zugelassenes Medizinprodukt ist, den ausdrücklichen Hinweis in der
+Beschreibung, dass sie kein Medizinprodukt ist und keine Krankheit
+diagnostiziert, behandelt, heilt oder verhütet. Der Satz steht im zweiten
+Absatz beider Fassungen und darf beim Kürzen nicht wegfallen.
+
 ## Suchbegriffe
 
 Bei „CPR“ wird im Play Store am häufigsten nach **Metronom**, **Tempo** und
@@ -63,7 +70,7 @@ Zyklen, Medikamente, Protokoll – ERC & AHA. Metronom-Tempo 100–120. Training
 Im Kreislaufstillstand macht nicht das Fachwissen die Arbeit schwer, sondern die Gleichzeitigkeit: Der Zyklus läuft, jemand fragt nach der letzten Adrenalin-Gabe, die Schockzahl stimmt nicht mehr, und hinterher fehlen die Zeiten fürs Protokoll. CPR Assist übernimmt diesen Teil: Die App strukturiert den Ablauf nach den Reanimationsleitlinien 2025 für Erwachsene – wahlweise ERC / ALS (Europa) oder AHA / ACLS (USA) – und schreibt jeden Schritt mit Zeitstempel mit.
 
 WICHTIG – WAS DIESE APP NICHT IST
-CPR Assist ist eine kognitive Stütze und ein Ereignis-Protokoll für geschultes Personal. Die App stellt keine Diagnose, trifft keine Therapieentscheidung, gibt keine patientenspezifischen Empfehlungen und ersetzt weder Ausbildung noch klinisches Urteil. Verantwortlich bleibt das behandelnde Team. Kein Kindermodus: ausschließlich Reanimation Erwachsener.
+CPR Assist ist eine kognitive Stütze und ein Ereignis-Protokoll für geschultes Personal. Die App ist kein Medizinprodukt; sie diagnostiziert, behandelt, heilt und verhütet keine Krankheit. Sie gibt keine patientenspezifischen Empfehlungen und ersetzt weder Ausbildung noch klinisches Urteil. Verantwortlich bleibt das behandelnde Team. Kein Kindermodus: ausschließlich Reanimation Erwachsener.
 
 DER ZYKLUS IM MITTELPUNKT
 Ein großer Ring zählt die zwei Minuten herunter. Die letzten zehn Sekunden warnen, danach erinnert das Analysefenster an beides, woran unter Stress niemand denkt: Rhythmus prüfen, Helfer wechseln. Der Schock-Knopf wird gehalten statt getippt – gegen versehentliches Auslösen; jeder Schock zählt hoch und startet den nächsten Zyklus.
@@ -143,7 +150,7 @@ Cycles, drugs, event log - ERC & AHA guidelines. Metronome tempo 100-120.
 In cardiac arrest it is rarely the knowledge that makes the work hard - it is everything happening at once. The cycle is running, someone asks when adrenaline was last given, the shock count no longer matches, and afterwards the times for the report are missing. CPR Assist takes over that part: the app structures the workflow along the 2025 resuscitation guidelines for adults - either ERC / ALS (Europe) or AHA / ACLS (USA) - and records every step with a time stamp.
 
 IMPORTANT - WHAT THIS APP IS NOT
-CPR Assist is a cognitive aid and an event log for trained professionals. It makes no diagnosis, takes no treatment decision, gives no patient-specific advice and replaces neither training nor clinical judgement. Responsibility stays with the treating team. No paediatric mode: adult resuscitation only.
+CPR Assist is a cognitive aid and an event log for trained professionals. It is not a medical device and does not diagnose, treat, cure or prevent any medical condition. It gives no patient-specific advice and replaces neither training nor clinical judgement. Responsibility stays with the treating team. No paediatric mode: adult resuscitation only.
 
 THE CYCLE AT THE CENTRE
 A large ring counts down the two minutes. The last ten seconds warn visibly, then the analysis window prompts for the two things nobody thinks of under stress: check the rhythm, change the person compressing. The shock button is held instead of tapped - against accidental triggering; every shock increases the counter and starts the next cycle.
@@ -277,7 +284,7 @@ CPR Assist erhebt **keine** Daten. Das macht das Formular kurz:
 | Können Nutzer die Löschung beantragen? | entfällt – gelöscht wird in der App bzw. durch Deinstallation |
 | Enthält die App Werbung? | **Nein** |
 | Enthält die App In-App-Käufe? | **Ja** – ein einmaliger Kauf „Premium“ (kein Abo) |
-| Gesundheits-App? | **Nein** – keine Studie, keine Gesundheitsdaten, keine Patientendaten |
+| Gesundheits-App? | **Ja** – Kategorie Medizin; das Formular fragt nach Funktionen, nicht nach Daten (siehe `docs/veroeffentlichung.md`, Abschnitt 3) |
 
 Dass der Bildschirm im Einsatz anbleibt, macht das mitgelieferte Plugin
 `BildschirmWach` über `FLAG_KEEP_SCREEN_ON`. Dafür ist **keine Berechtigung**
