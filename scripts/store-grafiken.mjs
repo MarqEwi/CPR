@@ -1,10 +1,10 @@
-// Erzeugt die Grafiken für den Play-Store-Eintrag unter docs/store-grafiken/.
+// Erzeugt die Feature-Grafik für den Play-Store-Eintrag.
 //
-//   node scripts/screenshots.mjs && node scripts/store-grafiken.mjs
+//   node scripts/store-grafiken.mjs
 //
-// Grundlage sind die App-Aufnahmen aus docs/screenshots/. Die Überschriften
-// sind bewusst eigenständig formuliert: Bei mehreren Apps im selben Konto ist
-// "wiederholter Inhalt" das größte Ablehnungsrisiko beim Play-Review.
+// Nur noch die Feature-Grafik: Die fünf Store-Screenshots entstehen über den
+// Skill "mercwerk-store-grafiken" aus docs/store-grafiken/screenshot-quellen/
+// (Konfiguration, Hintergründe). Der Weg dorthin steht in docs/store-texte.md.
 import { chromium } from "@playwright/test";
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 
@@ -20,39 +20,8 @@ const SCHRIFT = 'system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Aria
 const GRUND = "#0b0e10";
 const AKZENT = "#3fbfae";
 
-const AUFNAHMEN = [
-  { datei: "02-aktiv",       text: "Der 2-Minuten-Zyklus<br>immer im Blick" },
-  { datei: "03-analyse",     text: "Analysefenster:<br>Rhythmus prüfen, Helfer wechseln" },
-  { datei: "04-rhythmus",    text: "VF/pVT oder PEA/Asystolie –<br>ein Tipp genügt" },
-  { datei: "05-ursachen",    text: "4 H\u2019s &amp; HITS<br>strukturiert abarbeiten" },
-  { datei: "08-massnahmen",  text: "Zugang, Atemweg, Kapnographie<br>mit Zeitstempel" },
-  { datei: "06-rosc",        text: "Nach ROSC<br>geht es strukturiert weiter" },
-  { datei: "27-bericht-teilen", text: "Einsatzbericht benennen,<br>als PDF oder Bild teilen" },
-  { datei: "01-bereit",      text: "Merkhilfe und Protokoll –<br>keine Therapieentscheidung" }
-];
-
 const browser = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
 const page = await browser.newPage();
-
-/* ---- Store-Screenshots 1080 × 1920 ---- */
-for (let i = 0; i < AUFNAHMEN.length; i++){
-  const a = AUFNAHMEN[i];
-  await page.setViewportSize({ width: 1080, height: 1920 });
-  await page.setContent(`<style>
-    html,body{margin:0;padding:0}
-    #b{width:1080px;height:1920px;background:${GRUND};font-family:${SCHRIFT};
-       display:flex;flex-direction:column;align-items:center;overflow:hidden}
-    h1{color:#eef3f5;font-size:60px;line-height:1.18;font-weight:700;letter-spacing:-.022em;
-       text-align:center;margin:76px 60px 0}
-    h1::after{content:"";display:block;width:96px;height:5px;border-radius:3px;
-       background:${AKZENT};margin:30px auto 0}
-    img{width:760px;border-radius:38px;margin-top:48px;
-        border:1px solid #252c33;box-shadow:0 26px 70px rgba(0,0,0,.55)}
-  </style><div id="b"><h1>${a.text}</h1><img src="${bild(`docs/screenshots/${a.datei}.png`)}"></div>`);
-  const name = `${ZIEL}/screenshot-${i + 1}-1080x1920.png`;
-  writeFileSync(name, await page.locator("#b").screenshot());
-  console.log(name);
-}
 
 /* ---- Feature-Grafik 1024 × 500 ----
    Heller Illustrations-Stil nach dem Vorbild klassischer Medizin-Einträge:

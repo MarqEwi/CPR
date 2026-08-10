@@ -39,7 +39,7 @@ und prüf, dass die Seite wirklich erscheint – Google prüft das auch.
    - App-Symbol: `icons/icon-512.png`
    - Feature-Grafik: `docs/store-grafiken/feature-grafik-1024x500.png`
    - Telefon-Screenshots: die sieben Dateien aus `docs/store-grafiken/`
-     (`screenshot-1…8-1080x1920.png`)
+     (`screenshot-1…5-1080x1920.png`)
    - Kategorie: **Medizin**
 4. Datenschutz-URL eintragen:
    `https://marqewi.github.io/CPR/datenschutz.html`

@@ -1,0 +1,93 @@
+{
+  "_hinweis": "CPR Assist – Store-Screenshots. Feature-Grafik und Logo bleiben unveraendert und werden hier nicht gebaut. Keine Personendaten: die App erfasst keine, der Berichtsname ist bewusst ein Uebungsname.",
+  "ausgabe": "fertig",
+  "aufnahmen": {
+    "url": "http://127.0.0.1:8931/index.html",
+    "anlauf": 1200,
+    "vorbereiten": "localStorage.setItem('cpra_onboarding_done','true');localStorage.setItem('cpra_edition',JSON.stringify('premium'));",
+    "schritte": [
+      {
+        "js": "(() => { const {Kern,Einsatz} = window.CPRA; const t0 = Date.now() - 10*60000; Einsatz.starten(t0); const e = Einsatz.e; Kern.rhythmusSetzen(e, t0+40000,  'schockbar'); Kern.schock(e, t0+120000); Kern.schock(e, t0+246000); Kern.schock(e, t0+372000); Kern.adrenalinGabe(e, t0+380000); Kern.amiodaronGabe(e, t0+395000, 300); Kern.massnahme(e, t0+430000, 'ivzugang'); Kern.ursacheSetzen(e, t0+470000, 'hypoxie', 2); Kern.massnahme(e, t0+500000, 'intubation'); Kern.schock(e, Date.now()-38000); Einsatz.speichern(); location.reload(); })()",
+        "warten": 1600
+      },
+      {
+        "js": "document.getElementById('toast').classList.remove('show');",
+        "warten": 500,
+        "datei": "roh1.png"
+      },
+      {
+        "klicken": "#btn-ursachen",
+        "warten": 600,
+        "js": "document.getElementById('toast').classList.remove('show');",
+        "datei": "roh2.png"
+      },
+      {
+        "js": "document.querySelectorAll('.modal-back.open').forEach(m => m.classList.remove('open'));document.getElementById('toast').classList.remove('show');",
+        "klicken": "#btn-protokoll",
+        "warten": 600,
+        "datei": "roh3.png"
+      },
+      {
+        "js": "document.querySelectorAll('.modal-back.open').forEach(m => m.classList.remove('open'));document.getElementById('toast').classList.remove('show');",
+        "klicken": "#btn-massnahme",
+        "warten": 600,
+        "datei": "roh4.png"
+      },
+      {
+        "js": "(() => { document.querySelectorAll('.modal-back.open').forEach(m => m.classList.remove('open')); const {Einsatz} = window.CPRA; Einsatz.beenden(Date.now()); Einsatz.archivBenennen(0, 'Übung Nachtschicht'); location.reload(); })()",
+        "warten": 1400
+      },
+      {
+        "klicken": "#btn-settings",
+        "warten": 350
+      },
+      {
+        "klicken": "#s-archiv",
+        "warten": 350
+      },
+      {
+        "klicken": "#archiv-liste li button",
+        "warten": 350
+      },
+      {
+        "klicken": "#archiv-teilen",
+        "warten": 600,
+        "js": "document.getElementById('toast').classList.remove('show');",
+        "datei": "roh5.png"
+      }
+    ]
+  },
+  "screenshots": {},
+  "seiten": [
+    {
+      "aufnahme": "roh1.png",
+      "hintergrund": "v1.png",
+      "titel": "Der Zyklus immer im Blick",
+      "unter": "Restzeit, Adrenalin- und Amiodaron-Status auf einen Blick"
+    },
+    {
+      "aufnahme": "roh2.png",
+      "hintergrund": "v2.png",
+      "titel": "Keine Ursache vergessen",
+      "unter": "4 H's & HITS strukturiert abarbeiten"
+    },
+    {
+      "aufnahme": "roh3.png",
+      "hintergrund": "v3.png",
+      "titel": "Jeder Schritt mit Uhrzeit",
+      "unter": "Live mitlesen, Fehleingaben wieder entfernen"
+    },
+    {
+      "aufnahme": "roh4.png",
+      "hintergrund": "v4.png",
+      "titel": "Ein Tipp genügt",
+      "unter": "Zugang, Atemweg, Kapnographie – mit Zeitstempel"
+    },
+    {
+      "aufnahme": "roh5.png",
+      "hintergrund": "v5.png",
+      "titel": "Bericht mitnehmen",
+      "unter": "Als PDF oder Bild teilen oder ablegen"
+    }
+  ]
+}
