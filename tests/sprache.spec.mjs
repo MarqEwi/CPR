@@ -100,3 +100,22 @@ test("Wirkstoffnamen auf der Startseite folgen der Sprache", async ({ page }) =>
   await page.evaluate(() => window.CPRA.spracheSetzen("fr"));
   await expect(chips().nth(0)).toHaveText(/Amiodarone/);
 });
+
+test("die Kurzeinführung nennt beide Leitlinien-Standards", async ({ page }) => {
+  /* Beim allerersten Start steht der Standard auf ERC. Wer in den USA
+     arbeitet, muss trotzdem sofort sehen, dass es AHA/ACLS auch gibt. */
+  await page.addInitScript(() => localStorage.clear());
+  await page.goto("/index.html");
+  await page.waitForFunction(() => !!window.CPRA);
+  await expect(page.locator("#modal-onboarding")).toHaveClass(/open/);
+  const text = await page.locator('[data-step="0"] p').textContent();
+  expect(text).toContain("ERC/ALS");
+  expect(text).toContain("AHA/ACLS");
+
+  /* Auch in der englischen Fassung. */
+  await page.evaluate(() => window.CPRA.spracheSetzen("en"));
+  const en = await page.locator('[data-step="0"] p').textContent();
+  expect(en).toContain("ERC/ALS");
+  expect(en).toContain("AHA/ACLS");
+  expect(en).toMatch(/start screen/i);
+});
