@@ -197,15 +197,51 @@ nutzbar, nur der Kauf schlägt fehl.
 1. Play Console → deine App → **Monetarisieren → Produkte →
    In-App-Produkte** → **Produkt erstellen**
 2. Werte eintragen:
-   - Produkt-ID: **`premium_unlock`** (genau so, mit Unterstrich – **nach dem
-     Anlegen nicht mehr änderbar**)
-   - Name: **Premium**
-   - Beschreibung: z. B. *Eigene Hinweistöne, frei einstellbares
-     Metronom-Tempo und eigene Felder mit Timer. Einmaliger Kauf, kein Abo.*
-   - Preis: nach eigener Entscheidung (z. B. 2,99 €)
+
+   | Feld | Wert |
+   |---|---|
+   | Produkt-ID | **`premium_unlock`** |
+   | Tags | leer lassen (oder `premium`) |
+   | Name (en-GB, max. 55) | `CPR Assist Premium` |
+   | Beschreibung (en-GB, max. 200) | siehe unten |
+   | Symbol | `docs/store-grafiken/produkt-premium-512.png` |
+   | Preis | nach eigener Entscheidung (z. B. 2,99 €) |
+
+   Die **Produkt-ID muss `premium_unlock` lauten** – exakt so, mit
+   Unterstrich. Sie steht in `index.html` als `Billing.PRODUCT`; die App
+   fragt Google genau nach dieser Kennung. Ein Tippfehler fällt beim Bauen
+   nicht auf, sondern erst beim Kaufversuch auf dem Gerät („kein Angebot
+   geladen"), und die ID ist **nach dem Anlegen weder änderbar noch erneut
+   verwendbar**. Wer sie vertippt, muss ein zweites Produkt anlegen und mit
+   der Leiche im Konto leben.
+
+   Texte für die Standardsprache **en-GB**:
+
+   ```
+   CPR Assist Premium
+   ```
+   ```
+   Own alert sounds, freely chosen metronome tempos, custom timed fields, custom interventions and editable base settings. One-off purchase, no subscription - the resuscitation features stay free.
+   ```
+
+   Danach **Übersetzung `de-DE`** hinzufügen:
+
+   ```
+   CPR Assist Premium
+   ```
+   ```
+   Eigene Hinweistöne, frei wählbare Metronom-Tempi, eigene Felder mit Timer, eigene Maßnahmen und bearbeitbare Grundeinstellungen. Einmaliger Kauf, kein Abo – die Reanimationsfunktionen bleiben frei.
+   ```
+
+   Beide Beschreibungen sagen ausdrücklich, dass die Reanimationsfunktionen
+   frei bleiben. Das ist keine Werbefloskel, sondern der Punkt, der einen
+   Kauf im Notfallwerkzeug vertretbar macht – und er steht so auch auf der
+   Startseite der App.
+
 3. Falls die Console nach einer **Kaufoption** fragt, dort die ID
    **`premium-unlock`** verwenden (mit Bindestrich – Unterstriche sind an
-   dieser Stelle nicht erlaubt).
+   dieser Stelle nicht erlaubt). Diese ID ist frei wählbar; die App fragt
+   nur nach der Produkt-ID.
 4. Produkt **aktivieren**.
 5. **Lizenztester eintragen**, sonst kostet ein Testkauf echtes Geld:
    Play Console → Haus-Symbol (Alle Apps) → **Einstellungen → Lizenztests**

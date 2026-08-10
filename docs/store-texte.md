@@ -199,11 +199,13 @@ All information without warranty. What counts are the applicable guidelines and 
 | Screenshots deutsch 1080 × 1920 | `docs/store-grafiken/screenshot-1…5-1080x1920.png` |
 | Screenshots englisch 1080 × 1920 | `docs/store-grafiken/screenshot-en-1…5-1080x1920.png` |
 | Screenshot-Quellen | `docs/store-grafiken/screenshot-quellen/` |
+| Produktsymbol In-App-Kauf 512 × 512 | `docs/store-grafiken/produkt-premium-512.png` |
 
 Neu erzeugen lassen sie sich mit:
 
 ```
-node scripts/store-grafiken.mjs          # nur die Feature-Grafik
+node scripts/store-grafiken.mjs          # Feature-Grafik, beide Sprachen
+node scripts/produktsymbol.mjs           # Produktsymbol des In-App-Kaufs
 
 python3 -m http.server 8931 &            # Store-Screenshots
 node  ~/.claude/skills/mercwerk-store-grafiken/scripts/aufnehmen.mjs \
