@@ -29,8 +29,11 @@ und prüf, dass die Seite wirklich erscheint – Google prüft das auch.
 1. [play.google.com/console](https://play.google.com/console) öffnen →
    **App erstellen**
 2. Ausfüllen:
-   - App-Name: **CPR Assist – Reanimation** (24 Zeichen, erlaubt sind 30)
-   - Standardsprache: **Deutsch (Deutschland)**
+   - App-Name: **CPR Assist – ALS & Metronome** (28 Zeichen, erlaubt sind 30;
+     die deutsche Übersetzung heißt **CPR Assist – ALS & Metronom** –
+     Begründung und Alternativen in `docs/store-texte.md`, „Suchbegriffe")
+   - Standardsprache: **Englisch (Vereinigtes Königreich)** – warum Englisch
+     und nicht Deutsch, steht in Abschnitt 2b
    - App oder Spiel: **App**
    - Kostenlos oder kostenpflichtig: **Kostenlos**
 3. Store-Eintrag ausfüllen (**Wachstum → Store-Präsenz → Haupt-Store-Eintrag**).
