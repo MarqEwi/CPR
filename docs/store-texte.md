@@ -186,7 +186,8 @@ All information without warranty. What counts are the applicable guidelines and 
 | Was | Datei |
 |---|---|
 | App-Icon 512 × 512 | `icons/icon-512.png` |
-| Feature-Grafik 1024 × 500 | `docs/store-grafiken/feature-grafik-1024x500.png` |
+| Feature-Grafik englisch 1024 × 500 | `docs/store-grafiken/feature-grafik-1024x500.png` |
+| Feature-Grafik deutsch 1024 × 500 | `docs/store-grafiken/feature-grafik-de-1024x500.png` |
 | Feature-Illustration (Quelle) | `docs/store-grafiken/feature-hintergrund.png` |
 | Screenshots deutsch 1080 × 1920 | `docs/store-grafiken/screenshot-1…5-1080x1920.png` |
 | Screenshots englisch 1080 × 1920 | `docs/store-grafiken/screenshot-en-1…5-1080x1920.png` |
@@ -232,10 +233,20 @@ Die Feature-Grafik ist bewusst hell und erzählend – zwei reanimieren, eine
 dritte Person dokumentiert am Handy – nach dem Vorbild etablierter
 Medizin-Einträge. Die Illustration stammt aus Higgsfield AI
 (`feature-hintergrund.png`, flacher Vektorstil, App-Teal als Akzent) und
-liegt rechtsbündig; Wortmarke und Untertitel stehen links. Weil Play die
-Feature-Grafik je nach Platzierung seitlich beschneidet, beginnt der Text
-erst bei 96 px und enden die Figuren mit gut 50 px Abstand vor der rechten
-Kante – ein Beschnitt von 40 px je Seite nimmt nichts Wichtiges mit.
+liegt rechtsbündig; Wortmarke und Untertitel stehen links.
+
+Es gibt sie in **zwei Sprachfassungen** aus derselben Zeichnung – die
+Illustration enthält selbst keinen Text, nur der Block links wechselt. Play
+erlaubt je Sprache eine eigene Feature-Grafik; die deutsche gehört zur
+Übersetzung `de-DE`, die englische in die Standardsprache. Die deutsche
+Merkmalzeile steht zwei Punkt kleiner (20 statt 22 px): Bei gleicher Größe
+stieß „Protokoll" in die Hose des stehenden Dokumentierenden. Das Skript
+misst das nach und meldet jede Zeile, die über 480 px hinausreicht.
+
+Weil Play die Feature-Grafik je nach Platzierung seitlich beschneidet,
+beginnt der Text erst bei 96 px und enden die Figuren mit gut 50 px Abstand
+vor der rechten Kante – ein Beschnitt von 40 px je Seite nimmt nichts
+Wichtiges mit.
 
 Die Überschriften der Store-Screenshots stehen in `scripts/store-grafiken.mjs`
 und sind bewusst anders formuliert als die Zwischenüberschriften im Text oben.
