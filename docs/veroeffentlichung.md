@@ -238,10 +238,19 @@ nutzbar, nur der Kauf schlägt fehl.
    Kauf im Notfallwerkzeug vertretbar macht – und er steht so auch auf der
    Startseite der App.
 
-3. Falls die Console nach einer **Kaufoption** fragt, dort die ID
-   **`premium-unlock`** verwenden (mit Bindestrich – Unterstriche sind an
-   dieser Stelle nicht erlaubt). Diese ID ist frei wählbar; die App fragt
-   nur nach der Produkt-ID.
+3. **Kaufoption** anlegen:
+
+   | Feld | Wert |
+   |---|---|
+   | Kaufoptions-ID | **`premium-unlock`** (Bindestrich – Unterstriche sind hier verboten) |
+   | Kauftyp | **Kauf** (nicht „Miete") |
+   | Mehrfachkauf / Mengen | **aus** |
+
+   Die Kaufoptions-ID ist frei wählbar und für Nutzer unsichtbar; die App
+   fragt nur nach der Produkt-ID. „Miete" gibt Zugriff auf Zeit und läuft
+   ab – Premium ist dauerhaft. Mehrfachkauf ist bei einem nicht
+   verbrauchbaren Produkt sinnlos: Es lässt sich ohnehin nur einmal kaufen
+   (`ProductType.NON_CONSUMABLE` in `index.html`).
 4. Produkt **aktivieren**.
 5. **Lizenztester eintragen**, sonst kostet ein Testkauf echtes Geld:
    Play Console → Haus-Symbol (Alle Apps) → **Einstellungen → Lizenztests**
