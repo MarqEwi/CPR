@@ -26,26 +26,33 @@ steht auch im Text; „Simulator“ nackt in den Titel zu setzen wäre irreführ
 und ein Review-Risiko. Titel und Kurzbeschreibung sind deutsch und englisch
 parallel gebaut, damit der Eintrag in beiden Sprachen gleich auftritt.
 
+Der Titel nennt **beide** Algorithmen (ALS/ACLS) – die App bildet ja beide
+Standards ab, und „ACLS“ ist zugleich der stärkste Suchbegriff im
+US-amerikanischen Raum. Die Kurzbeschreibung ergänzt die Herausgeber
+**ERC & AHA** – damit sind alle vier Fachbegriffe im Index, ohne dass
+irgendwo eine Zertifizierung behauptet würde.
+
 ## App-Name (max. 30 Zeichen)
 
 ```
-CPR Assist – ALS & Metronom
+CPR Assist: ALS/ACLS Metronom
 ```
 
-(27 Zeichen. Der Launcher-Name unter dem Icon bleibt kurz „CPR Assist“.)
+(29 Zeichen. Der Launcher-Name unter dem Icon bleibt kurz „CPR Assist“.)
 
 Alternative, falls der Name schon belegt ist:
 
 ```
-CPR Assist: Takt & Protokoll
+CPR Assist – Metronom & Doku
 ```
 
-(28 Zeichen)
+(28 Zeichen; „Doku“ ist im Rettungsdienst der gängige Begriff für die
+Dokumentation)
 
 ## Kurzbeschreibung (max. 80 Zeichen)
 
 ```
-ALS-Zyklen, Medikamente, Protokoll. Metronom-Tempo 100–120. Auch im Training.
+Zyklen, Medikamente, Protokoll – ERC & AHA. Metronom-Tempo 100–120. Training.
 ```
 
 (77 Zeichen)
@@ -109,15 +116,15 @@ Fachgesellschaft suggeriert – die App *follows* die Leitlinien, mehr nicht.
 ### App-Name (max. 30 Zeichen)
 
 ```
-CPR Assist – ALS & Metronome
+CPR Assist: ALS/ACLS Metronome
 ```
 
-(28 Zeichen – exakt parallel zum deutschen Titel)
+(30 Zeichen – exakt parallel zum deutschen Titel)
 
 Alternative, falls der Name belegt ist:
 
 ```
-CPR Assist: Beat & Event Log
+CPR Assist – Metronome & Log
 ```
 
 (28 Zeichen)
@@ -125,10 +132,10 @@ CPR Assist: Beat & Event Log
 ### Kurzbeschreibung (max. 80 Zeichen)
 
 ```
-ALS cycles, drugs, event log. Metronome tempo 100-120. Also for training use.
+Cycles, drugs, event log - ERC & AHA guidelines. Metronome tempo 100-120.
 ```
 
-(77 Zeichen)
+(73 Zeichen)
 
 ### Vollständige Beschreibung (max. 4000 Zeichen)
 
